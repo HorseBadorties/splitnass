@@ -177,13 +177,13 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMenu();
-    this.spieltagServiceSubscribtion = this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
+    this.socketServiceSubscribtion = this.socketService.updatedSpieltag.subscribe(spieltag => {
       this.spieltag = spieltag;
-      if (this.spieltagService.selectedRunde) {
-        this.setAktuelleRunde(this.spieltagService.selectedRunde);
-      } else {
+      // if (this.spieltagService.selectedRunde) {
+      //   this.setAktuelleRunde(this.spieltagService.selectedRunde);
+      // } else {
         this.setAktuelleRunde(spieltag.aktuelleRunde);
-      }
+      // }
     });
   }
 

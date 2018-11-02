@@ -4,7 +4,7 @@
 
 <p-confirmDialog icon="pi pi-exclamation-triangle" ></p-confirmDialog>
 
-<p-dialog header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog" 
+<p-dialog *ngIf="displayGewinnerDialog" header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog" 
   [modal]="true" [responsive]="true">
        
   <div class="bold-text">Ergebnis: {{aktuelleRunde.ergebnis}} {{aktuelleRunde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
@@ -50,13 +50,14 @@
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-table" routerLink="/rundenliste"></p-button>
-    <p-button style="padding-left: 2em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" 
-      [disabled]="aktuelleRunde.nr === 1">
-    </p-button>
-    <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" 
-      [disabled]="aktuelleRunde.nr === spieltag.runden.length">
-    </p-button>    
-     
+    <span *ngIf="spieltag">
+      <p-button style="padding-left: 2em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" 
+        [disabled]="aktuelleRunde.nr === 1">
+      </p-button>
+      <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" 
+        [disabled]="aktuelleRunde.nr === spieltag.runden.length">
+      </p-button>    
+    </span>
   </div>
   <div class="ui-toolbar-group-right">
     <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
@@ -65,7 +66,7 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel>
+<p-panel *ngIf="spieltag">
   <p-header>
     Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
   </p-header>
@@ -75,7 +76,7 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="!isNochNichtGespielteRunde()" >
+<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" >
   <p-header><span>Angesagt</span> </p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
@@ -105,7 +106,7 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="!isNochNichtGespielteRunde()">
+<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()">
   <p-header><span>Gespielt</span></p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col"> 
@@ -135,7 +136,7 @@
 </p-panel>
 
 
-<p-button *ngIf="!isNochNichtGespielteRunde()" class="pad-half" 
+<p-button *ngIf="spieltag && !isNochNichtGespielteRunde()" class="pad-half" 
   [disabled]="aktuelleRunde.gespielt === undefined" 
   label="{{aktuelleRunde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
   styleClass="{{aktuelleRunde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"

@@ -6,13 +6,14 @@ export const MAX_BOECKE = 3;
 
 export class Runde {
 
-  public static fromJsonObject(jsonObject: Runde, spieltag: Spieltag): Runde {
+  public static fromJsonObject(jsonObject: any, spieltag: Spieltag): Runde {
     const result = new Runde(spieltag, jsonObject.nr);
     Object.assign(result, jsonObject);
     result.spieler = jsonObject.spieler.map(s => Spieler.get(s.id));
     result.geber = jsonObject.geber ? Spieler.get(jsonObject.geber.id) : undefined;
     result.aufspieler = jsonObject.aufspieler ? Spieler.get(jsonObject.aufspieler.id) : undefined;
     result.gewinner = jsonObject.gewinner.map(s => Spieler.get(s.id));
+    result.solo = Solo.get(jsonObject.solo);
     return result;
   }
 
