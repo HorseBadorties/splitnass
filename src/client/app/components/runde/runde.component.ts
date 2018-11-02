@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { SpieltagService } from "../services/spieltag.service";
+import { SpieltagService } from "../../services/spieltag.service";
 import { MessageService, ConfirmationService, SelectItem, MenuItem } from "primeng/api";
-import { Runde, Gespielt, Ansage } from "../../../model/runde";
-import { Spieltag } from "../../../model/spieltag";
-import { Solo } from "../../../model/solo";
-import { Spieler } from "../../../model/spieler";
-import { SocketService } from "../services/socket.service";
+import { Runde, Gespielt, Ansage } from "../../../../model/runde";
+import { Spieltag } from "../../../../model/spieltag";
+import { Solo } from "../../../../model/solo";
+import { Spieler } from "../../../../model/spieler";
+import { SocketService } from "../../services/socket.service";
 import { Subscription } from "rxjs";
 
 @Component({

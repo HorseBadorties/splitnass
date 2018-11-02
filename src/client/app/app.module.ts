@@ -22,9 +22,9 @@ import { SidebarModule } from "primeng/sidebar";
 import { PanelMenuModule } from "primeng/panelmenu";
 import { InputTextModule } from "primeng/inputtext";
 
-import { AppComponent } from "./app.component";
-import { RundeComponent } from "./runde/runde.component";
-import { RundenlisteComponent } from "./rundenliste/rundenliste.component";
+import { AppComponent } from "./components/app.component";
+import { RundeComponent } from "./components/runde/runde.component";
+import { RundenlisteComponent } from "./components/rundenliste/rundenliste.component";
 import { AppRoutingModule } from "./app-routing.module";
 
 
