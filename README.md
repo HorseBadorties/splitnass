@@ -1,27 +1,18 @@
-# SplitnassTable
+# SplitnAss
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+A web app to enter and calculate scores for the german card game [Doppelkopf](https://en.wikipedia.org/wiki/Doppelkopf).
 
-## Development server
+Over the years we have customized the rules and scoring rules and this app uses our customized rule set.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## What's that name??
 
-## Code scaffolding
+The name SplitnAss refers to one of the typical scoring rules we use: `Gespaltener Arsch` - the literal english translation being `split ass/arse`.  ;-)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Software stack used
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- Node.js
+- Express
+- MongoDB
+- Angular
+- PrimeNg
+- Socket.io
