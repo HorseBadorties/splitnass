@@ -27,12 +27,12 @@ export class SplitnassServer {
 
       // Run the app by serving the static files
       // in the dist directory
-      this.app.use(express.static(__dirname + "/../../dist/splitnass-table"));
+      this.app.use(express.static(__dirname + "/../../dist/splitnass"));
 
       // For all GET requests, send back index.html
       // so that PathLocationStrategy can be used
       this.app.get("/*", function(req, res) {
-        res.sendFile(path.join(__dirname + "/../../dist/splitnass-table/index.html"));
+        res.sendFile(path.join(__dirname + "/../../dist/splitnass/index.html"));
       });
       const server = createServer(this.app);
       this.websocket = socketIo(server);
