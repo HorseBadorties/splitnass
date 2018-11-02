@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Spieltag } from "../../../model/spieltag";
-import { Spieler } from "../../../model/spieler";
-import { Runde } from "../../../model/runde";
+import { Spieltag } from "src/model/spieltag";
+import { Spieler } from "src/model/spieler";
+import { Runde } from "src/model/runde";
 import { SocketService } from "./socket.service";
 
 @Injectable({

@@ -23,11 +23,11 @@ export class SettingsService {
   }
 
   private setBoolean(name: string, value: boolean) {
-    this.localStorage.setItemSubscribe(name, Boolean(value));
+    this.localStorage.setItemSubscribe(name, value);
   }
 
   private getBoolean(name: string): Observable<Boolean> {
-    return this.localStorage.getItem<Boolean>(name, { schema: { type: 'boolean' } });
+    return this.localStorage.getItem<boolean>(name, { schema: { type: 'boolean' } });
   }
 
 }

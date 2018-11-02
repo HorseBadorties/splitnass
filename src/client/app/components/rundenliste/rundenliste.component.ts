@@ -1,8 +1,8 @@
 import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
 import { Subscription  } from "rxjs";
 
-import { Spieltag } from "../../../../model/spieltag";
-import { Runde } from "../../../../model/runde";
+import { Spieltag } from "src/model/spieltag";
+import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SocketService } from "../../services/socket.service";
 

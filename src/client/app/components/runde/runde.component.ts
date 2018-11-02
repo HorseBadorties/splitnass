@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { SpieltagService } from "../../services/spieltag.service";
-import { MessageService, ConfirmationService, SelectItem, MenuItem } from "primeng/api";
-import { Runde, Gespielt, Ansage } from "../../../../model/runde";
-import { Spieltag } from "../../../../model/spieltag";
-import { Solo } from "../../../../model/solo";
-import { Spieler } from "../../../../model/spieler";
-import { SocketService } from "../../services/socket.service";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ConfirmationService, MenuItem, MessageService, SelectItem } from "primeng/api";
 import { Subscription } from "rxjs";
+import { Ansage, Gespielt, Runde } from "src/model/runde";
+import { Solo } from "src/model/solo";
+import { Spieler } from "src/model/spieler";
+import { Spieltag } from "src/model/spieltag";
+import { SocketService } from "../../services/socket.service";
+import { SpieltagService } from "../../services/spieltag.service";
 
 @Component({
   selector: "app-runde",
@@ -26,7 +26,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   displaySpieltagDialog = false;
   moeglicheSpieler: Spieler[] = [];
   selectedSpieler: Spieler[] = [];
-  selectedRundenanzahl: 42;
+  selectedRundenanzahl = 42;
   moeglicheReAnsagen: SelectItem[];
   moeglicheKontraAnsagen: SelectItem[];
   moeglicheErgebnisse: SelectItem[];
