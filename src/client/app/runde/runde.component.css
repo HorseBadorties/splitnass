@@ -1,0 +1,69 @@
+.info {  
+  font-family:Verdana,sans-serif;
+  font-size:11px; 
+
+}
+
+.elevation {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.pad-half {
+  /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+  /* border-radius: 30px; */
+  padding: 0.5em;
+}
+
+.pad-1-top {
+  padding-top: 0.5em;
+}
+
+.pad-left-1 {
+  padding-left: 1em;
+}
+
+.pad-left-1-5 {
+  padding-left: 1.5em;
+}
+
+.pad-left-3 {
+  padding-left: 3em;
+}
+
+.pad-left-5 {
+  padding-left: 5em;
+}
+
+.p-col {
+  padding: 0.2em;
+  
+}
+
+.white {
+  color: white;
+  padding-left: 2em;
+  /* font-family:Verdana,sans-serif; */
+  /* font-size:20px; */
+}
+
+.ui-inputtext {
+  width: 30px; 
+  opacity: unset !important;
+  /* font-weight: bold; */
+}
+
+.extrapunkte-bold {
+  width: 30px; 
+  opacity: unset;
+  font-weight: bold;
+}
+
+.bold-text {
+  font-weight: bold;
+  /* color: #1f7ed0; */
+  /* color: #34A835; */
+}
+
+.ui-fieldset .ui-fieldset-legend {
+  padding: 0.2em;
+}
