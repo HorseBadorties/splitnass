@@ -5,7 +5,7 @@ import * as socketIo from "socket.io-client";
 import { Spieltag } from "../../../model/spieltag";
 
 const LOCAL_SERVER_URL = `http://localhost:${4200}`;
-const REMOTE_SERVER_URL = `https://splitnass-table.herokuapp.com`;
+const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 
 @Injectable({
   providedIn: "root"
