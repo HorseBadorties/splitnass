@@ -15,7 +15,8 @@
 <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
 <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr"
-  [scrollable]="true" scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde">
+  [scrollable]="true" scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde"
+  [expandedRowKeys]="expandedRunden">
 
   <ng-template pTemplate="header" let-columns>
     <tr class="p-table-row">

@@ -16,6 +16,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   subscribtion: Subscription;
   spieltag: Spieltag;
   selectedRunde: Runde;
+  expandedRunden: {} = {};
   displayMenu = false;
   displayedColumns: Column[];
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
@@ -45,6 +46,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (spieltag) {
       this.calcDisplayedColumns(spieltag);
       this.selectedRunde = spieltag.aktuelleRunde;
+      if (spieltag.aktuelleRunde.nr > 1) {
+        this.expandedRunden[spieltag.getVorherigeRunde(spieltag.aktuelleRunde).nr] = 1;
+      }
       this.scrollToRunde(this.selectedRunde);
     }
   }
