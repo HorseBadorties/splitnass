@@ -56,7 +56,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   private calcDisplayedColumns(s: Spieltag) {
-    const result = [new Column("nr", "Runde", "60%")];
+    const result = [new Column("nr", "Runde", "100%")];
     s.spieler.forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%")));
     result.push(new Column("boecke", "Böcke", "60%"));
     result.push(new Column("ergebnis", "Punkte", "60%"));
