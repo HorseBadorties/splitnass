@@ -14,21 +14,38 @@
 
 <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
-<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="300px"
-  selectionMode="single" [(selection)]="selectedRunde">
+<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr"
+  [scrollable]="true" scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde">
+
   <ng-template pTemplate="header" let-columns>
     <tr class="p-table-row">
+      <!-- <th style="width: 3em"></th> -->
       <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
         {{col.header}}
       </th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-runde let-columns="columns">
+  <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
     <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
+      <td>
+        <a *ngIf="runde.isBeendet" href="#" [pRowToggler]="runde">
+          <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+        </a>
+      </td>
       <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
         {{getValueFor(runde, col.field)}}
       </td>
     </tr>
   </ng-template>
+
+  <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
+    <tr *ngIf="runde.isBeendet">
+        <td [attr.colspan]="columns.length + 1">
+            <div >
+                Rundendetails: {{runde.nr}}
+            </div>
+        </td>
+    </tr>
+</ng-template>
 </p-table>
