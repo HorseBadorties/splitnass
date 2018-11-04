@@ -4,6 +4,8 @@ import { createServer } from "http";
 import * as express from "express";
 import * as path from "path";
 import * as socketIo from "socket.io";
+import { MongoClient, MongoError, Db, Collection } from "mongodb";
+
 import { Spieltag } from "../model/spieltag";
 
 export class SplitnassServer {
@@ -14,6 +16,7 @@ export class SplitnassServer {
     public port = process.env.PORT || SplitnassServer.PORT;
     private app: express.Application;
     private websocket: socketIo.Server;
+    private db: Db;
     private aktSpieltag: Spieltag;
 
     constructor() {
@@ -46,6 +49,12 @@ export class SplitnassServer {
             console.log(`sending updated spieltag`);
             this.aktSpieltag = data;
             this.websocket.compress(true).emit("spieltag", data);
+            if (this.db) {
+                // this.db.createCollection("test", (_err: MongoError, _coll: Collection) => {
+                //     _coll.insertOne({"data": data});
+                //     console.log("inserted Spieltag into db");
+                // });
+            }
         });
         socket.on("lastSpieltag", _ => {
             if (this.aktSpieltag) {
@@ -55,8 +64,14 @@ export class SplitnassServer {
             }
         });
       });
-      // start server
 
+      // MongoDB
+      MongoClient.connect(SplitnassServer.mongoUrl, (_err: MongoError, _db: Db) => {
+        console.log(`successfully connected to ${_db} @ ${SplitnassServer.mongoUrl}`);
+        this.db = _db.db("splitnass");
+      });
+
+      // start server
       server.listen(this.port, () => {
         console.log(`Splitnass server running on port ${this.port}`);
       });
