@@ -17,6 +17,7 @@ export class SplitnassServer {
     private app: express.Application;
     private websocket: socketIo.Server;
     private db: Db;
+    private dbCollection: Collection;
     private aktSpieltag: Spieltag;
 
     constructor() {
@@ -49,12 +50,17 @@ export class SplitnassServer {
             console.log(`sending updated spieltag`);
             this.aktSpieltag = data;
             this.websocket.compress(true).emit("spieltag", data);
-            if (this.db) {
-                // this.db.createCollection("test", (_err: MongoError, _coll: Collection) => {
-                //     _coll.insertOne({"data": data});
-                //     console.log("inserted Spieltag into db");
-                // });
-            }
+            if (this.dbCollection) {
+                const spieltagObject = JSON.parse(data);
+                this.dbCollection.replaceOne({"key": spieltagObject.key},
+                    spieltagObject, {"upsert": true}, (_err: MongoError, result: any) => {
+                        if (_err) {
+                            console.error(_err);
+                        } else {
+                            console.log(`updated ${spieltagObject.key} on db`);
+                        }
+                    });
+                }
         });
         socket.on("lastSpieltag", _ => {
             if (this.aktSpieltag) {
@@ -66,9 +72,13 @@ export class SplitnassServer {
       });
 
       // MongoDB
-      MongoClient.connect(SplitnassServer.mongoUrl, (_err: MongoError, _db: Db) => {
-        console.log(`successfully connected to ${_db} @ ${SplitnassServer.mongoUrl}`);
-        this.db = _db.db("splitnass");
+      MongoClient.connect(SplitnassServer.mongoUrl, { useNewUrlParser: true },
+        (_err: MongoError, _db: Db) => {
+            console.log(`successfully connected to ${SplitnassServer.mongoUrl}`);
+            this.db = _db.db("splitnass");
+            this.db.createCollection("test", (_err2: MongoError, _coll: Collection) => {
+                this.dbCollection = _coll;
+        });
       });
 
       // start server

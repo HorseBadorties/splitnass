@@ -33,7 +33,7 @@ export class SpieltagService {
   }
 
   public startSpieltag(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler): Spieltag {
-    const result = new Spieltag();
+    const result = new Spieltag(Date.now().toString());
     result.start(anzahlRunden, spieler, geber);
     this.aktuellerSpieltag = result;
     return result;

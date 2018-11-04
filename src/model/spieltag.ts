@@ -5,9 +5,7 @@ export class Spieltag {
 
   public static fromJSON(jsonString: string) {
     const result = new Spieltag();
-    const parsedJson = JSON.parse(jsonString, function replacer(key, value) {
-      return (key === "xyz") ? undefined : value;
-    });
+    const parsedJson = JSON.parse(jsonString);
     result.key = parsedJson.key;
     result.beginn = parsedJson.beginn ? new Date(parsedJson.beginn) : undefined;
     result.ende = parsedJson.ende ? new Date(parsedJson.ende) : undefined;
