@@ -27,7 +27,7 @@ export class Spieltag {
   public static toJSON(spieltag: Spieltag) {
     return JSON.stringify(spieltag, function replacer(key, value) {
       if (this instanceof Runde) {
-        return (key === "spieltag") ? undefined : value;
+        return (key === "spieltag" || key === "_ergebnisEvents") ? undefined : value;
       } else return value;
     });
   }

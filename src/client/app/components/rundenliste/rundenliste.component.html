@@ -15,7 +15,8 @@
 <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
 <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr"
-  [scrollable]="true" scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde"
+  [scrollable]="true" scrollHeight="300px" 
+  selectionMode="single"  [(selection)]="selectedRunde" 
   [expandedRowKeys]="expandedRunden">
 
   <ng-template pTemplate="header" let-columns>
@@ -43,8 +44,8 @@
   <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
     <tr *ngIf="runde.isBeendet">
         <td [attr.colspan]="columns.length + 1">
-            <div >
-                Rundendetails: {{runde.nr}}
+            <div *ngFor="let s of runde.ergebnisEvents">
+                {{s}}
             </div>
         </td>
     </tr>

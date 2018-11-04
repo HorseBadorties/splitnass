@@ -16,7 +16,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   subscribtion: Subscription;
   spieltag: Spieltag;
   selectedRunde: Runde;
-  expandedRunden: {} = {};
+  expandedRunden = [];
   displayMenu = false;
   displayedColumns: Column[];
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
@@ -46,10 +46,11 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (spieltag) {
       this.calcDisplayedColumns(spieltag);
       this.selectedRunde = spieltag.aktuelleRunde;
+      this.expandedRunden = [];
       if (spieltag.aktuelleRunde.nr > 1) {
         this.expandedRunden[spieltag.getVorherigeRunde(spieltag.aktuelleRunde).nr] = 1;
       }
-      this.scrollToRunde(this.selectedRunde);
+      setTimeout(() => this.scrollToRunde(spieltag.aktuelleRunde), 10);
     }
   }
 
@@ -106,9 +107,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scrollToRunde(runde: Runde) {
     if (runde) {
-      if (this.selectedRunde !== runde) {
-        this.selectedRunde = runde;
-      }
+      // if (this.selectedRunde !== runde) {
+      //   this.selectedRunde = runde;
+      // }
       this.scrollToNr(runde.nr.toString());
     }
   }
@@ -128,7 +129,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private scrollTo(row: ElementRef) {
     if (row != null) {
-      row.nativeElement.scrollIntoView(false, {behavior: "smooth"});
+      row.nativeElement.scrollIntoView({behavior: "smooth", inline: "center", block: "center"});
     }
   }
 
