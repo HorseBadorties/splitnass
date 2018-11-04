@@ -92,7 +92,7 @@ export class SplitnassServer {
 
     private readLatestSpieltagFromDB() {
         this.dbCollection.find({}).sort({ key: -1 }).limit(1).next((_err: MongoError, result: any) => {
-            if (!_err) {
+            if (!_err && result) {
                 this.aktSpieltag = JSON.stringify(result);
                 console.log(`Read latest Spieltag ${result.key} from db`);
             }
