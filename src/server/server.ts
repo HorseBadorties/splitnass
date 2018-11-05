@@ -38,10 +38,6 @@ export class SplitnassServer {
       console.error(error);
     }
 
-    // start server
-    this.httpServer.listen(this.port, () => {
-      console.log(`Splitnass server running on port ${this.port}`);
-    });
   }
 
   public getApp(): express.Application {
@@ -52,19 +48,19 @@ export class SplitnassServer {
     return this.httpServer;
   }
 
-  public getWebsocketServer(): WebsocketServer {
-    return this.websocketServer;
+  public dbSuccessfullyInitialized(spieltagJson: string) {
+    if (this.websocketServer) {
+      this.websocketServer.aktSpieltag = spieltagJson;
+    }
+    // start server
+    this.httpServer.listen(this.port, () => {
+      console.log(`Splitnass server running on port ${this.port}`);
+    });
   }
 
   public spieltagUpdate(spieltagJson: string) {
     if (this.db) {
       this.db.updateSpieltag(spieltagJson);
-    }
-  }
-
-  public latestSpieltag(spieltagJson: string) {
-    if (this.websocketServer) {
-      this.websocketServer.aktSpieltag = spieltagJson;
     }
   }
 

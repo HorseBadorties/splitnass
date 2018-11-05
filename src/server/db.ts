@@ -26,23 +26,24 @@ export class DB {
   }
 
   private getLatestSpieltag() {
-    this.dbCollection.find({}).sort({ key: -1 }).limit(1).next((_err: MongoError, result: any) => {
-      if (!_err && result) {
-        this.splitnassServer.latestSpieltag(JSON.stringify(result));
-        console.log(`Read latest Spieltag ${result.key} from db`);
+    this.dbCollection.find({}).sort({ beginn: -1 }).limit(1).next((_err: MongoError, result: any) => {
+      if (_err) throw (_err);
+      if (result) {
+        console.log(`Read latest Spieltag ${result.beginn} from db`);
       }
+      this.splitnassServer.dbSuccessfullyInitialized(result ? JSON.stringify(result) : undefined);
     });
   }
 
   public updateSpieltag(spieltagJson: string) {
     if (this.dbCollection) {
       const spieltagObject = JSON.parse(spieltagJson);
-      this.dbCollection.replaceOne({ "key": spieltagObject.key },
+      this.dbCollection.replaceOne({ "beginn": spieltagObject.beginn },
         spieltagObject, { "upsert": true }, (_err: MongoError, result: any) => {
           if (_err) {
             console.error(_err);
           } else {
-            console.log(`updated ${spieltagObject.key} on db`);
+            console.log(`updated ${spieltagObject.beginn} on db`);
           }
         });
     }

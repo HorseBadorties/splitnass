@@ -6,7 +6,6 @@ export class Spieltag {
   public static fromJSON(jsonString: string) {
     const result = new Spieltag();
     const parsedJson = JSON.parse(jsonString);
-    result.key = parsedJson.key;
     result.beginn = parsedJson.beginn ? new Date(parsedJson.beginn) : undefined;
     result.ende = parsedJson.ende ? new Date(parsedJson.ende) : undefined;
     result.spieler = [];
@@ -31,7 +30,6 @@ export class Spieltag {
   }
 
   constructor(
-      public key?: string,
       public beginn?: Date,
       public ende?: Date,
       public anzahlRunden = 0,
