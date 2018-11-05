@@ -26,7 +26,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public spieltagService: SpieltagService,
     public socketService: SocketService,
-    private settingsService: SettingsService) {}
+    public settingsService: SettingsService) {}
 
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;

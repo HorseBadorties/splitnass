@@ -40,7 +40,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     public socketService: SocketService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private settingsService: SettingsService) {
+    public settingsService: SettingsService) {
       this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
       this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
       this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
