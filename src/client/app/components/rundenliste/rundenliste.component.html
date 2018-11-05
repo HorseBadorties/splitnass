@@ -1,3 +1,16 @@
+<p-dialog header="Settings" [(visible)]="displaySettingsDialog" [modal]="true" [responsive]="true">
+  
+  <p-panel class="p-col" header="Rundenliste">
+    <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
+      binary="true">
+    </p-checkbox>
+  </p-panel>
+  
+  <p-footer>
+    <p-button label="Ok" icon="pi pi-check" (onClick)="displaySettingsDialog=false"></p-button>
+  </p-footer>
+</p-dialog>
+
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-pencil" routerLink="/runde"></p-button>
@@ -6,7 +19,7 @@
     <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
   </div>
   <div class="ui-toolbar-group-right">
-    <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
+    <p-button icon="pi pi-ellipsis-v" (click)="displaySettingsDialog = true"></p-button>
   </div>
 </p-toolbar>
 

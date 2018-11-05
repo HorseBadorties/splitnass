@@ -2,41 +2,60 @@
 
 <p-toast position="top-center"></p-toast>
 
-<p-confirmDialog icon="pi pi-exclamation-triangle" ></p-confirmDialog>
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
 
-<p-dialog *ngIf="displayGewinnerDialog" header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog" 
+<p-dialog *ngIf="displayGewinnerDialog" header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog"
   [modal]="true" [responsive]="true">
-       
+
   <div class="bold-text">Ergebnis: {{runde.ergebnis}} {{runde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
-  <p-listbox [options]="runde.spieler" [(ngModel)]="selectedGewinner" 
-    multiple="multiple" checkbox="checkbox" optionLabel="name" [showToggleAll]="false">
+  <p-listbox [options]="runde.spieler" [(ngModel)]="selectedGewinner" multiple="multiple" checkbox="checkbox"
+    optionLabel="name" [showToggleAll]="false">
   </p-listbox>
   <p-footer>
-      <p-button label="Ok" icon="pi pi-check" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()" ></p-button>
-      <p-button label="Cancel" icon="pi pi-close" (onClick)="displayGewinnerDialog=false"  class="ui-button-secondary"></p-button>
+    <p-button label="Ok" icon="pi pi-check" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
+    <p-button label="Cancel" icon="pi pi-close" (onClick)="displayGewinnerDialog=false" class="ui-button-secondary"></p-button>
   </p-footer>
 
 </p-dialog>
 
-<p-dialog header="Neuen Spieltag starten" [(visible)]="displaySpieltagDialog" 
-  [modal]="true" [responsive]="true">
-       
+<p-dialog header="Neuen Spieltag starten" [(visible)]="displaySpieltagDialog" [modal]="true" [responsive]="true">
+
   <div class="p-col">
-    <span>Rundenanzahl: </span><p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="selectedRundenanzahl"></p-spinner>
+    <span>Rundenanzahl: </span>
+    <p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="selectedRundenanzahl"></p-spinner>
   </div>
   <div class="p-col"></div>
-  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Mögliche Spieler"
-   targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!" [responsive]="true" 
-   [showSourceControls]="false" [showTargetControls]="false">
+  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Mögliche Spieler" targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!"
+    [responsive]="true" [showSourceControls]="false" [showTargetControls]="false">
     <ng-template let-spieler pTemplate="item">
-        <div>{{spieler.name}}</div>
+      <div>{{spieler.name}}</div>
     </ng-template>
-</p-pickList>
+  </p-pickList>
   <p-footer>
-      <p-button label="Ok" icon="pi pi-check" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4" ></p-button>
-      <p-button label="Cancel" icon="pi pi-close" (onClick)="displaySpieltagDialog=false"  class="ui-button-secondary"></p-button>
+    <p-button label="Ok" icon="pi pi-check" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4"></p-button>
+    <p-button label="Cancel" icon="pi pi-close" (onClick)="displaySpieltagDialog=false" class="ui-button-secondary"></p-button>
   </p-footer>
 
+</p-dialog>
+
+<p-dialog header="Settings" [(visible)]="displaySettingsDialog" [modal]="true" [responsive]="true">
+  <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
+    <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus"
+      binary="true">
+    </p-checkbox>
+  </p-panel>
+  <p-panel class="p-col" header="Rundenliste" [toggleable]="true">
+    <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
+      binary="true">
+    </p-checkbox>
+  </p-panel>
+  <p-panel class="p-col" header="Runde abrechnen" [toggleable]="true">
+    ToDo
+  </p-panel>
+
+  <p-footer>
+    <p-button label="Ok" icon="pi pi-check" (onClick)="displaySettingsDialog=false"></p-button>
+  </p-footer>
 </p-dialog>
 
 <!-- Menu -->
@@ -51,12 +70,10 @@
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-table" routerLink="/rundenliste"></p-button>
     <span *ngIf="spieltag">
-      <p-button style="padding-left: 2em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" 
-        [disabled]="runde.nr === 1">
+      <p-button style="padding-left: 2em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
       </p-button>
-      <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" 
-        [disabled]="runde.nr === spieltag.runden.length">
-      </p-button>    
+      <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
+      </p-button>
     </span>
   </div>
   <div class="ui-toolbar-group-right">
@@ -66,39 +83,38 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="spieltag">
+<p-panel *ngIf="spieltag" [toggleable]="true">
   <p-header>
     Runde Nr. {{runde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
   </p-header>
-  <span *ngFor="let info of getRundenInfo()" class="box">{{info}}</span> 
+  <span *ngFor="let info of getRundenInfo()" class="box">{{info}}</span>
   <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" >
+<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()">
   <p-header><span>Angesagt</span> </p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
-      <p-checkbox class="p-col" [(ngModel)]="runde.reVonVorneHerein" 
-        label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(true)">
+      <p-checkbox class="p-col" [(ngModel)]="runde.reVonVorneHerein" label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(true)">
       </p-checkbox>
-      <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" [style]="{'width':'200px'}"
-        [(ngModel)]="runde.reAngesagt" (onChange)="angesagtChanged(true)">
-          <ng-template let-item pTemplate="selectedItem"> 
-              <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-          </ng-template> 
+      <p-dropdown class="p-col" [options]="moeglicheReAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.reAngesagt"
+        (onChange)="angesagtChanged(true)">
+        <ng-template let-item pTemplate="selectedItem">
+          <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+        </ng-template>
       </p-dropdown>
     </div>
     <div class="p-col">
-      <p-checkbox  class="p-col" [(ngModel)]="runde.kontraVonVorneHerein" 
-        label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(false)">
+      <p-checkbox class="p-col" [(ngModel)]="runde.kontraVonVorneHerein" label="von vorneherein" binary="true"
+        (onChange)="vonVorneHereinChanged(false)">
       </p-checkbox>
-      <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" [style]="{'width':'200px'}"
-        [(ngModel)]="runde.kontraAngesagt" (onChange)="angesagtChanged(false)">
-          <ng-template let-item pTemplate="selectedItem"> 
-              <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-          </ng-template> 
+      <p-dropdown class="p-col" [options]="moeglicheKontraAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.kontraAngesagt"
+        (onChange)="angesagtChanged(false)">
+        <ng-template let-item pTemplate="selectedItem">
+          <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+        </ng-template>
       </p-dropdown>
     </div>
   </div>
@@ -109,26 +125,26 @@
 <p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()">
   <p-header><span>Gespielt</span></p-header>
   <div class="p-grid p-dir-col">
-    <div class="p-col"> 
-      <p-checkbox class="p-col" [(ngModel)]="runde.armut" label="Armut" binary="true"></p-checkbox>  
+    <div class="p-col">
+      <p-checkbox class="p-col" [(ngModel)]="runde.armut" label="Armut" binary="true"></p-checkbox>
       <p-checkbox class="pad-left-1" [(ngModel)]="runde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-    </div>  
+    </div>
     <div class="p-col">
       <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name">
-        <ng-template let-item pTemplate="selectedItem"> 
+        <ng-template let-item pTemplate="selectedItem">
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-        </ng-template> 
+        </ng-template>
       </p-dropdown>
       <span class="pad-left-1">Extrapunkte: </span>
-      <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true"> 
+      <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true">
       <p-button icon="pi pi-caret-down" (click)="runde.extrapunkte = runde.extrapunkte - 1"></p-button>
       <p-button icon="pi pi-caret-up" (click)="runde.extrapunkte = runde.extrapunkte + 1"></p-button>
     </div>
-    <div class="p-col"> 
+    <div class="p-col">
       <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="runde.gespielt">
-        <ng-template let-item pTemplate="selectedItem"> 
+        <ng-template let-item pTemplate="selectedItem">
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-        </ng-template> 
+        </ng-template>
       </p-dropdown>
       <p-checkbox class="pad-left-1" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
     </div>
@@ -136,9 +152,7 @@
 </p-panel>
 
 
-<p-button *ngIf="spieltag && !isNochNichtGespielteRunde()" class="pad-half" 
-  [disabled]="runde.gespielt === undefined" 
-  label="{{runde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
-  styleClass="{{runde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
+<p-button *ngIf="spieltag && !isNochNichtGespielteRunde()" class="pad-half" [disabled]="runde.gespielt === undefined"
+  label="{{runde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" styleClass="{{runde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
   (onClick)="rundeAbrechnen()">
 </p-button>

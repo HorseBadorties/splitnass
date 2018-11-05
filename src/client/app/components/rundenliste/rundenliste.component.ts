@@ -5,6 +5,7 @@ import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SocketService } from "../../services/socket.service";
+import { SettingsService } from "../../services/settings.service";
 
 @Component({
   selector: "app-rundenliste",
@@ -17,14 +18,15 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   spieltag: Spieltag;
   selectedRunde: Runde;
   expandedRunden = [];
-  displayMenu = false;
   displayedColumns: Column[];
+  displaySettingsDialog = false;
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
   constructor(
     public spieltagService: SpieltagService,
-    public socketService: SocketService) {}
+    public socketService: SocketService,
+    private settingsService: SettingsService) {}
 
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;
@@ -47,7 +49,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       this.calcDisplayedColumns(spieltag);
       this.selectedRunde = spieltag.aktuelleRunde;
       this.expandedRunden = [];
-      if (spieltag.aktuelleRunde.nr > 1) {
+      if (spieltag.aktuelleRunde.nr > 1 && this.settingsService.autoShowRundendetails) {
         this.expandedRunden[spieltag.getVorherigeRunde(spieltag.aktuelleRunde).nr] = 1;
       }
       setTimeout(() => this.scrollToRunde(spieltag.aktuelleRunde), 10);

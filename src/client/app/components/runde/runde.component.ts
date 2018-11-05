@@ -7,6 +7,7 @@ import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
 import { SocketService } from "../../services/socket.service";
 import { SpieltagService } from "../../services/spieltag.service";
+import { SettingsService } from "../../services/settings.service";
 
 @Component({
   selector: "app-runde",
@@ -21,6 +22,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   runde: Runde;
   displayMenu = false;
   menuItems: MenuItem[];
+  displaySettingsDialog = false;
   displayGewinnerDialog = false;
   selectedGewinner: Spieler[] = [];
   displaySpieltagDialog = false;
@@ -37,7 +39,8 @@ export class RundeComponent implements OnInit, OnDestroy {
     public spieltagService: SpieltagService,
     public socketService: SocketService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private settingsService: SettingsService) {
       this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
       this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
       this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
@@ -225,7 +228,8 @@ export class RundeComponent implements OnInit, OnDestroy {
           ]
       },
       {
-          label: "Settings", id: MenuItemId.Settings, icon: "pi pi-fw pi-cog",
+          label: "Settings", id: MenuItemId.Settings, 
+            icon: "pi pi-fw pi-cog",  command: _ => this.settings()
       }];
   }
 
@@ -238,6 +242,11 @@ export class RundeComponent implements OnInit, OnDestroy {
       }, result);
     }
     return flatten(this.menuItems, []).find(item => item.id === id);
+  }
+
+  settings() {
+    this.displayMenu = false;
+    this.displaySettingsDialog = true;
   }
 
 
