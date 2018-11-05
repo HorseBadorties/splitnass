@@ -8,11 +8,8 @@ import { DB } from "./db";
 import { WebsocketServer } from "./websocket.server";
 
 export class SplitnassServer {
-  public static readonly PORT: number = 4200;
-  // public static readonly mongoUrl: string = "mongodb://localhorst:27017/splitnass";
-  public static readonly mongoUrl: string = "mongodb://admin:admin123@ds243931.mlab.com:43931/splitnass";
 
-  public port = process.env.PORT || SplitnassServer.PORT;
+  public port = process.env.PORT || 4200;
   private app: express.Application;
   private httpServer: HttpServer;
   private websocketServer: WebsocketServer;
