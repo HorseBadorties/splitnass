@@ -93,7 +93,7 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()">
+<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" [toggleable]="true">
   <p-header><span>Angesagt</span> </p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
@@ -122,7 +122,7 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()">
+<p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" [toggleable]="true">
   <p-header><span>Gespielt</span></p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
