@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ng build --aot --prod",
-    "start": "ts-node src/server/server.ts"
+    "start": "ts-node src/server/server.ts",
+    "startlocal": "ng build --aot --prod && ts-node src/server/server.ts"
   },
   "private": true,
   "dependencies": {
