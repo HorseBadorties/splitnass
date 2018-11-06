@@ -1,10 +1,10 @@
 import {
-    trigger, animateChild, group,
+    trigger, animateChild, group, 
     transition, animate, style, query
   } from '@angular/animations';
     
   // Routable animations
-  export const slideInAnimation =
+  export const fadeInAnimation =
     trigger('routeAnimations', [
       transition('Rundenliste <=> Runde', [
         style({ position: 'relative' }),
@@ -13,22 +13,24 @@ import {
             position: 'absolute',
             top: 0,
             left: 0,
+            height: '100%',
             width: '100%'
           })
         ]),
-        query(':enter', [
-          style({ left: '-100%'})
-        ]),
-        query(':leave', animateChild()),
+        // query(':enter', [
+        //   // style({ top: '-100%'})
+        // ]),
+        // query(':leave', animateChild()),
         group([
           query(':leave', [
-            animate('500ms ease-out', style({ left: '100%'}))
+            animate(300, style({opacity: 0}))
           ]),
           query(':enter', [
-            animate('500ms ease-out', style({ left: '0%'}))
+            animate(300, style({opacity: 1}))
           ])
         ]),
-        query(':enter', animateChild()),
+        // query(':enter', animateChild()),
       ])
     ]);
+
   

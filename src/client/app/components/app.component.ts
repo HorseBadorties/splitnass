@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from '@angular/router';
 
-import { slideInAnimation } from './animations';
+import { fadeInAnimation } from './animations';
 import { SettingsService } from "../services/settings.service";
 
 @Component({
@@ -9,7 +9,7 @@ import { SettingsService } from "../services/settings.service";
   template: `<div [@routeAnimations]="prepareRoute(outlet)" >
               <router-outlet #outlet="outlet"></router-outlet>
             </div>`,
-  animations: [ slideInAnimation ]
+  animations: [ fadeInAnimation ]
 })
 export class AppComponent {
 
