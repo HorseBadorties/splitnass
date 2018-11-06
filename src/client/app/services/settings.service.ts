@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class SettingsService {
 
   private _offline: boolean;
+  private _adminMode: boolean;
   private _autoShowRundendetails: boolean;
 
   public get offline(): boolean {
@@ -18,6 +19,16 @@ export class SettingsService {
     this._offline = value;
     this.setBoolean("offline", value);
   }
+
+  public get adminMode(): boolean {
+    return this._adminMode;
+  }
+  
+  public set adminMode(value: boolean) {
+    this._adminMode = value;
+    this.setBoolean("adminMode", value);
+  }
+
   public get autoShowRundendetails(): boolean {
     return this._autoShowRundendetails;
   }
@@ -29,6 +40,7 @@ export class SettingsService {
 
   constructor(private localStorage: LocalStorage) { 
     this.getBoolean("offline").subscribe(value => this._offline = value && value.valueOf())
+    this.getBoolean("adminMode").subscribe(value => this._adminMode = value && value.valueOf())
     this.getBoolean("autoShowRundendetails").subscribe(value => this._autoShowRundendetails = value && value.valueOf())
   }
 

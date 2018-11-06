@@ -1,11 +1,18 @@
 <p-dialog header="Settings" [(visible)]="displaySettingsDialog" [modal]="true" [responsive]="true">
-  
-  <p-panel class="p-col" header="Rundenliste">
-    <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
-      binary="true">
-    </p-checkbox>
+  <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+      </p-checkbox>
+    </div>
   </p-panel>
-  
+  <p-panel class="p-col" header="Rundenliste" [toggleable]="true">
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
+        binary="true">
+      </p-checkbox>
+    </div>
+  </p-panel>
+
   <p-footer>
     <p-button label="Ok" icon="pi pi-check" (onClick)="displaySettingsDialog=false"></p-button>
   </p-footer>
@@ -13,7 +20,7 @@
 
 <p-toolbar>
   <div class="ui-toolbar-group-left">
-    <p-button icon="pi pi-pencil" routerLink="/runde"></p-button>
+    <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" routerLink="/runde"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
     <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
@@ -27,10 +34,8 @@
 
 <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
-<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr"
-  [scrollable]="true" scrollHeight="300px" 
-  selectionMode="single"  [(selection)]="selectedRunde" 
-  [expandedRowKeys]="expandedRunden">
+<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
+  scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 
   <ng-template pTemplate="header" let-columns>
     <tr class="p-table-row">
@@ -56,11 +61,11 @@
 
   <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
     <tr *ngIf="runde.isBeendet">
-        <td [attr.colspan]="columns.length + 1">
-            <div *ngFor="let s of runde.ergebnisEvents">
-                {{s}}
-            </div>
-        </td>
+      <td [attr.colspan]="columns.length + 1">
+        <div *ngFor="let s of runde.ergebnisEvents">
+          {{s}}
+        </div>
+      </td>
     </tr>
-</ng-template>
+  </ng-template>
 </p-table>
