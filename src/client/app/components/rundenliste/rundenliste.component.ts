@@ -6,6 +6,7 @@ import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SocketService } from "../../services/socket.service";
 import { SettingsService } from "../../services/settings.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-rundenliste",
@@ -26,8 +27,12 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public spieltagService: SpieltagService,
     public socketService: SocketService,
-    public settingsService: SettingsService) {}
+    public settingsService: SettingsService,
+    private router: Router) {}
 
+  toRunde() {
+    this.router.navigate(["runde"], {skipLocationChange: true});
+  }
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;
   }

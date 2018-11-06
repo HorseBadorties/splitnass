@@ -8,6 +8,7 @@ import { Spieltag } from "src/model/spieltag";
 import { SocketService } from "../../services/socket.service";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-runde",
@@ -40,12 +41,17 @@ export class RundeComponent implements OnInit, OnDestroy {
     public socketService: SocketService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    public settingsService: SettingsService) {
+    public settingsService: SettingsService,
+    private router: Router) {
       this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
       this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
       this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
+
+  toRundenliste() {
+    this.router.navigate(["rundenliste"], {skipLocationChange: true});
+  }
 
   newSpieltag() {
     this.displayMenu = false;

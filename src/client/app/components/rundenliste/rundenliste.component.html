@@ -20,7 +20,7 @@
 
 <p-toolbar>
   <div class="ui-toolbar-group-left">
-    <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" routerLink="/runde"></p-button>
+    <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
     <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
