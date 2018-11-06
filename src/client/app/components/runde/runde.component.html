@@ -41,11 +41,15 @@
 <p-dialog header="Settings" [(visible)]="displaySettingsDialog" [modal]="true" [responsive]="true">
   <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
     <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+      </p-checkbox>
+    </div>
+    <div>
       <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
       </p-checkbox>
     </div>
     <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Use Animation" binary="true">
       </p-checkbox>
     </div>
   </p-panel>

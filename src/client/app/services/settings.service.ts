@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class SettingsService {
 
   private _offline: boolean;
+  private _animateRoutes: boolean;
   private _adminMode: boolean;
   private _autoShowRundendetails: boolean;
 
@@ -18,6 +19,15 @@ export class SettingsService {
   public set offline(value: boolean) {
     this._offline = value;
     this.setBoolean("offline", value);
+  }
+
+  public get animateRoutes(): boolean {
+    return this._animateRoutes;
+  }
+  
+  public set animateRoutes(value: boolean) {
+    this._animateRoutes = value;
+    this.setBoolean("animateRoutes", value);
   }
 
   public get adminMode(): boolean {
@@ -40,6 +50,7 @@ export class SettingsService {
 
   constructor(private localStorage: LocalStorage) { 
     this.getBoolean("offline").subscribe(value => this._offline = value && value.valueOf())
+    this.getBoolean("animateRoutes").subscribe(value => this._animateRoutes = value && value.valueOf())
     this.getBoolean("adminMode").subscribe(value => this._adminMode = value && value.valueOf())
     this.getBoolean("autoShowRundendetails").subscribe(value => this._autoShowRundendetails = value && value.valueOf())
   }

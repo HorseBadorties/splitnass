@@ -5,8 +5,8 @@ import { RundenlisteComponent } from "./components/rundenliste/rundenliste.compo
 import { RundeComponent } from "./components/runde/runde.component";
 
 const routes: Routes = [
-  { path: "rundenliste", component: RundenlisteComponent },
-  { path: "runde", component: RundeComponent },
+  { path: "rundenliste", component: RundenlisteComponent, data: {animation: 'Rundenliste'} },
+  { path: "runde", component: RundeComponent, data: {animation: 'Runde'} },
   { path: "**", component: RundenlisteComponent }
 ];
 
