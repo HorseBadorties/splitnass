@@ -12,8 +12,8 @@
     optionLabel="name" [showToggleAll]="false">
   </p-listbox>
   <p-footer>
-    <p-button label="Ok" icon="pi pi-check" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
-    <p-button label="Cancel" icon="pi pi-close" (onClick)="displayGewinnerDialog=false" class="ui-button-secondary"></p-button>
+    <p-button label="Ok" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
+    <p-button label="Cancel" (onClick)="displayGewinnerDialog=false" class="ui-button-secondary"></p-button>
   </p-footer>
 
 </p-dialog>
@@ -32,8 +32,8 @@
     </ng-template>
   </p-pickList>
   <p-footer>
-    <p-button label="Ok" icon="pi pi-check" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4"></p-button>
-    <p-button label="Cancel" icon="pi pi-close" (onClick)="displaySpieltagDialog=false" class="ui-button-secondary"></p-button>
+    <p-button label="Ok" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4"></p-button>
+    <p-button label="Cancel" (onClick)="displaySpieltagDialog=false" class="ui-button-secondary"></p-button>
   </p-footer>
 
 </p-dialog>
@@ -65,7 +65,7 @@
   </p-panel>
 
   <p-footer>
-    <p-button label="Ok" icon="pi pi-check" (onClick)="displaySettingsDialog=false"></p-button>
+    <p-button label="Ok" (onClick)="displaySettingsDialog=false"></p-button>
   </p-footer>
 </p-dialog>
 
