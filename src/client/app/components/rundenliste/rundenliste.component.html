@@ -23,7 +23,7 @@
     <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
-    <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
+    <span *ngIf="spieltag" class="white" style="vertical-align: middle">{{getSpieltagInfo()}}</span>
   </div>
   <div class="ui-toolbar-group-right">
     <p-button icon="pi pi-ellipsis-v" (click)="displaySettingsDialog = true"></p-button>
@@ -63,7 +63,8 @@
     <tr *ngIf="runde.isBeendet">
       <td [attr.colspan]="columns.length + 1">
         <div *ngFor="let s of runde.ergebnisEvents">
-          {{s}}
+          <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
+          <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
         </div>
       </td>
     </tr>

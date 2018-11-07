@@ -44,7 +44,7 @@ export class Runde {
     public armut = false,
     public herzGehtRum = false,
     public ergebnis: number = -1,
-    private _ergebnisEvents: Array<string> = null) { }
+    private _ergebnisEvents: Array<object> = null) { }
 
   public start() {
     this.boeckeBeiBeginn = this.boecke;
@@ -97,7 +97,7 @@ export class Runde {
     this.ergebnis = 0;
     this._ergebnisEvents = [];
     if (this.herzGehtRum) {
-      this._ergebnisEvents.push("Herz geht rum");
+      this._ergebnisEvents.push({"event": "Herz geht rum", "icon": "pi-info"});
     }
     // Boecke
     let _boecke = this.boeckeBeiBeginn;
@@ -109,7 +109,7 @@ export class Runde {
     }
     if (this.gespielt === 0) {
       // Gespaltener Arsch!?
-      this._ergebnisEvents.push("Gepaltener Arsch");
+      this._ergebnisEvents.push({"event": "Gepaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -120,13 +120,13 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push("Re und Kontra haben falsche Ansagen gemacht: Gepaltener Arsch");
+      this._ergebnisEvents.push({"event": "Re und Kontra haben falsche Ansagen gemacht: Gepaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push("Keine 6 oder besser ohne Ansage: Gepaltener Arsch");
+      this._ergebnisEvents.push({"event": "Keine 6 oder besser ohne Ansage: Gepaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -167,35 +167,36 @@ export class Runde {
         gespieltEvents.push(this.translateAnsage(i));
       }
     }
-    this._ergebnisEvents.push(gespieltEvents.join(", "));
+    this._ergebnisEvents.push({"event": gespieltEvents.join(", "), "icon": null});
     // Gegen die Alten?
     if (!this.reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich) {
-      this._ergebnisEvents.push("Gegen die Alten");
+      this._ergebnisEvents.push({"event": "Gegen die Alten", "icon": null});
       this.ergebnis++;
     }
     if (this.gegenDieSau && this.solo.sauMoeglich) {
-      this._ergebnisEvents.push("Gegen die Sau");
+      this._ergebnisEvents.push({"event": "Gegen die Sau", "icon": null});
       this.ergebnis++;
     }
     if (this.solo !== Solo.KEIN_SOLO) {
-      this._ergebnisEvents.push("Solo");
+      this._ergebnisEvents.push({"event": "Solo", "icon": null});
       this.ergebnis++;
     }
     // verlorenes Solo?
     if (this.ergebnis > 0 && this.solo !== Solo.KEIN_SOLO && !this.reGewinnt) {
-      this._ergebnisEvents.push("Solo verloren");
+      this._ergebnisEvents.push({"event": "Solo verloren", "icon": null});
       this.ergebnis++;
     }
     if (this.reVonVorneHerein) {
-      this._ergebnisEvents.push("Re von vorneherein");
+      this._ergebnisEvents.push({"event": "Re von vorneherein", "icon": null});
       this.ergebnis++;
     }
     if (this.kontraVonVorneHerein) {
-      this._ergebnisEvents.push("Kontra von vorneherein");
+      this._ergebnisEvents.push({"event": "Kontra von vorneherein", "icon": null});
       this.ergebnis++;
     }
     if (this.extrapunkte !== 0) {
-      this._ergebnisEvents.push(`${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`);
+      this._ergebnisEvents.push({"event": `${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`
+        , "icon": null});
       this.ergebnis += this.extrapunkte;
     }
     // durch negative Extrapunkte kann die Gegenseite gewonnen haben...! (gegenDieAlten etc.)
@@ -206,11 +207,12 @@ export class Runde {
     // Böcke
     _boecke = Math.min(_boecke, MAX_BOECKE);
     if (_boecke) {
-      this._ergebnisEvents.push(`${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`);
+      this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`, "icon": null});
       for (let i = 0; i < _boecke; i++) {
         this.ergebnis *= 2;
       }
     }
+    this._ergebnisEvents.push({"event": `${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"}`, "icon": "pi-sign-in"});
     return this.ergebnis;
   }
 
