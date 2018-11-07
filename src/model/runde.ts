@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 import { Solo } from "./solo";
 import { Spieler } from "./spieler";
 import { Spieltag } from "./spieltag";
@@ -94,7 +96,7 @@ export class Runde {
   }
 
   public berechneErgebnis() {
-    if (!this.gespielt) return;
+    if (this.gespielt === null) return;
     this.ergebnis = 0;
     this._ergebnisEvents = [];
     if (this.herzGehtRum) {
@@ -110,7 +112,7 @@ export class Runde {
     }
     if (this.gespielt === 0) {
       // Gespaltener Arsch!?
-      this._ergebnisEvents.push({"event": "Gepaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "Gespaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -121,13 +123,13 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "Re und Kontra haben falsche Ansagen gemacht: Gepaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "Re und Kontra haben falsche Ansagen gemacht: Gespaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "Keine 6 oder besser ohne Ansage: Gepaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "Keine 6 oder besser ohne Ansage: Gespaltener Arsch", "icon": "pi-trash"});
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -142,13 +144,12 @@ export class Runde {
     const gespieltEvents = [];
     if (maxAnsage > gespieltePunkte && this.solo !== Solo.NULL) {
       const relevanteAnsage = this.reGewinnt ? this.kontraAngesagt : this.reAngesagt;
-      for (let i = maxAnsage; i > gespieltePunkte; i--) {
-        if (relevanteAnsage >= i) {
-          gespieltEvents.push(this.translateAnsage(i));
-          gespieltEvents.push(this.translateAnsage(i));
+      _.range(maxAnsage, gespieltePunkte, -1).forEach(value => {
+        if (relevanteAnsage >= value) {
+          _.times(2, v => gespieltEvents.push(this.translateAnsage(value)));
           this.ergebnis += 2;
         }
-      }
+      });
     }
     for (let i = gespieltePunkte; i > 0; i--) {
       const tmpErgebnis = this.ergebnis;
@@ -165,9 +166,7 @@ export class Runde {
           this.ergebnis++;
         }
       }
-      for (let y = 0; y < this.ergebnis - tmpErgebnis; y++) {
-        gespieltEvents.push(this.translateAnsage(i));
-      }
+      _.times(this.ergebnis - tmpErgebnis, v => gespieltEvents.push(this.translateAnsage(i)));
     }
     this._ergebnisEvents.push({"event": gespieltEvents.join(", "), "icon": null});
     // Gegen die Alten?
@@ -210,9 +209,7 @@ export class Runde {
     _boecke = Math.min(_boecke, MAX_BOECKE);
     if (_boecke) {
       this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`, "icon": null});
-      for (let i = 0; i < _boecke; i++) {
-        this.ergebnis *= 2;
-      }
+      _.times(_boecke, v => this.ergebnis *= 2);
     }
     this._ergebnisEvents.push({"event": `${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"}`, "icon": "pi-sign-in"});
     return this.ergebnis;
