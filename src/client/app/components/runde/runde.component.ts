@@ -209,13 +209,26 @@ export class RundeComponent implements OnInit, OnDestroy {
     }
   }
 
+  private berechnungPruefen() {
+    this.displayMenu = false;
+    if (this.runde.gespielt) {
+      this.runde.berechneErgebnis();    
+      this.confirmationService.confirm({
+        "message": this.runde.ergebnisEvents.map(e => e["event"]).join(", "),
+        "rejectVisible": false});
+    } else {
+      this.confirmationService.confirm({
+        "message": "Kein Ergebnis", "rejectVisible": false});
+    }
+  }
+
   private initMenu() {
     this.menuItems = [
       {
           label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
           items: [
             {label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
-              icon: "pi pi-fw pi-check", command: _ => this.showToDoMessage("Berechnung prüfen")},
+              icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()},
             {label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
               icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")},
             {label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
