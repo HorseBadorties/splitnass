@@ -94,6 +94,7 @@ export class Runde {
   }
 
   public berechneErgebnis() {
+    if (!this.gespielt) return;
     this.ergebnis = 0;
     this._ergebnisEvents = [];
     if (this.herzGehtRum) {
@@ -144,6 +145,7 @@ export class Runde {
       for (let i = maxAnsage; i > gespieltePunkte; i--) {
         if (relevanteAnsage >= i) {
           gespieltEvents.push(this.translateAnsage(i));
+          gespieltEvents.push(this.translateAnsage(i));
           this.ergebnis += 2;
         }
       }
@@ -170,11 +172,11 @@ export class Runde {
     this._ergebnisEvents.push({"event": gespieltEvents.join(", "), "icon": null});
     // Gegen die Alten?
     if (!this.reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich) {
-      this._ergebnisEvents.push({"event": "Gegen die Alten", "icon": null});
+      this._ergebnisEvents.push({"event": "gegen die Alten", "icon": null});
       this.ergebnis++;
     }
     if (this.gegenDieSau && this.solo.sauMoeglich) {
-      this._ergebnisEvents.push({"event": "Gegen die Sau", "icon": null});
+      this._ergebnisEvents.push({"event": "gegen die Sau", "icon": null});
       this.ergebnis++;
     }
     if (this.solo !== Solo.KEIN_SOLO) {
