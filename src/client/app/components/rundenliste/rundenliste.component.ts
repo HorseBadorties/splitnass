@@ -57,7 +57,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       if (spieltag.aktuelleRunde.nr > 1 && this.settingsService.autoShowRundendetails) {
         this.expandedRunden[spieltag.getVorherigeRunde(spieltag.aktuelleRunde).nr] = 1;
       }
-      setTimeout(() => this.scrollToRunde(spieltag.aktuelleRunde), 10);
+      setTimeout(() => this.scrollToRunde(spieltag.aktuelleRunde), 500);
     }
   }
 
