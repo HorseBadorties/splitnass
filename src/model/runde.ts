@@ -211,7 +211,11 @@ export class Runde {
       this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`, "icon": null});
       _.times(_boecke, v => this.ergebnis *= 2);
     }
-    this._ergebnisEvents.push({"event": `${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"}`, "icon": "pi-sign-in"});
+    if (this.ergebnis === 0) {
+      this._ergebnisEvents.push({"event": "Gespaltener Arsch", "icon": "pi-trash"});
+    } else {
+      this._ergebnisEvents.push({"event": `${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"}`, "icon": "pi-sign-in"});
+    }
     return this.ergebnis;
   }
 
