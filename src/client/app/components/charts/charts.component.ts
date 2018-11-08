@@ -6,6 +6,7 @@ import * as _ from "lodash";
 import { SocketService } from '../../services/socket.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
+import { Solo } from 'src/model/solo';
 
 @Component({
   selector: 'app-charts',
@@ -14,7 +15,6 @@ import { Spieler } from 'src/model/spieler';
 })
 export class ChartsComponent implements OnInit, OnDestroy {
 
-  subscribtion: Subscription;
   colors = [
     'rgb(255, 99, 132)', // red
 	  'rgb(153, 102, 255)', // purple
@@ -24,8 +24,13 @@ export class ChartsComponent implements OnInit, OnDestroy {
     'rgb(255, 159, 64)', // orange
     'rgb(201, 203, 207)' // grey
   ];
+  
+  subscribtion: Subscription;
   spieltag: Spieltag;
   spieltagsverlauf: any;
+  anzahlGewonnenerRunden: any;
+  anzahlSolos: any;
+
   optionsSpieltagsverlauf = {
     steppedLine : true,
     title: {
@@ -61,8 +66,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
       }]
     }
   };
-  anzahlGewonnenerRunden: any;
-  optionsAnzahlGewonnenerRunden = {
+  optionsAnzahlGewonneneRunden = {
     legend: {
       display: false
     },
@@ -126,13 +130,28 @@ export class ChartsComponent implements OnInit, OnDestroy {
     const dataset = {"label": ""};
     dataset["data"] = spieltag.spieler.map(s => this.countAnzahlGewonnenerRunden(s));
     dataset["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
-   
     newAnzahlGewonnenerRundenData["datasets"] = [dataset];
     this.anzahlGewonnenerRunden = newAnzahlGewonnenerRundenData;
+
+    // Anzahl Solos
+    const newAnzahlSolos = {};
+    newAnzahlSolos["labels"] = spieltag.spieler.map(s => s.name);
+    const datasetSolos = {"label": ""};
+    datasetSolos["data"] = spieltag.spieler.map(s => this.countAnzahlGespielteSolos(s));
+    datasetSolos["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
+    newAnzahlSolos["datasets"] = [datasetSolos];
+    this.anzahlSolos = newAnzahlSolos;
   }
 
   private countAnzahlGewonnenerRunden(spieler: Spieler) {
     return this.spieltag.runden.filter(r => r.gewinner.includes(spieler)).length;
+  }
+
+  private countAnzahlGespielteSolos(spieler: Spieler) {
+    return this.spieltag.runden.filter(r => {
+      if (r.solo === Solo.KEIN_SOLO) return false;
+      return (r.reGewinnt && r.gewinner.includes(spieler)) || (!r.reGewinnt && ! r.gewinner.includes(spieler));
+    }).length;
   }
 
 

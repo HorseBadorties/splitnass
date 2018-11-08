@@ -11,15 +11,20 @@
 
 <div *ngIf="spieltag">
   <p-tabView>
+    <p-tabPanel header="Gewonnene Runden">
+      <div>
+        <p-chart type="bar" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonneneRunden"></p-chart>  
+      </div>
+    </p-tabPanel>    
     <p-tabPanel header="Spieltagsverlauf">
       <div >
         <p-chart type="line" [data]="spieltagsverlauf" [options]="optionsSpieltagsverlauf"></p-chart>       
       </div>
-    </p-tabPanel>
-    <p-tabPanel header="Anzahl gewonnener Runden">
-      <div >
-        <p-chart type="bar" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonnenerRunden"></p-chart>  
-      </div>
     </p-tabPanel>    
+      <p-tabPanel header="Gespielte Solos">
+        <div >
+          <p-chart type="bar" [data]="anzahlSolos" [options]="optionsAnzahlGewonneneRunden"></p-chart>  
+        </div>
+      </p-tabPanel>    
   </p-tabView>
 </div>
