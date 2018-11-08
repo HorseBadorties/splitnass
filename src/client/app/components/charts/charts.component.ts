@@ -27,25 +27,61 @@ export class ChartsComponent implements OnInit, OnDestroy {
   spieltag: Spieltag;
   spieltagsverlauf: any;
   optionsSpieltagsverlauf = {
+    steppedLine : true,
     title: {
-        display: true,
-        text: 'Punkteverlauf des Spieltags',
-        fontSize: 16
+      display: false
     },
     legend: {
-        position: 'top'
+      display: true,
+      position: 'top',
+      labels: {
+        fontColor: 'white'
+      }
     },
-    steppedLine : true
+    scales: {
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Runde',
+          fontColor: 'white'
+        },
+        ticks: {
+          fontColor: 'white'
+        }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Punkte',
+          fontColor: 'white'
+        },
+        ticks: {
+          fontColor: 'white'
+        }
+      }]
+    }
   };
   anzahlGewonnenerRunden: any;
   optionsAnzahlGewonnenerRunden = {
-    title: {
-        display: true,
-        text: 'Anzahl gewonnener Runden',
-        fontSize: 16
-    },
     legend: {
-        position: 'top'
+      display: false
+    },
+    title: {
+      display: false      
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          fontColor: 'white'
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          stepSize: 1,
+          fontColor: 'white'
+        }
+      }]
     }
   };
 
@@ -87,15 +123,16 @@ export class ChartsComponent implements OnInit, OnDestroy {
     // Anzahl gewonnene Runden
     const newAnzahlGewonnenerRundenData = {};
     newAnzahlGewonnenerRundenData["labels"] = spieltag.spieler.map(s => s.name);
-    const dataset = {};
-    dataset["data"] = [];
-    spieltag.spieler.forEach(s => {
-      dataset["data"].push(spieltag.getPunktestand(spieltag.aktuelleRunde, s));      
-    });
+    const dataset = {"label": ""};
+    dataset["data"] = spieltag.spieler.map(s => this.countAnzahlGewonnenerRunden(s));
     dataset["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
    
     newAnzahlGewonnenerRundenData["datasets"] = [dataset];
     this.anzahlGewonnenerRunden = newAnzahlGewonnenerRundenData;
+  }
+
+  private countAnzahlGewonnenerRunden(spieler: Spieler) {
+    return this.spieltag.runden.filter(r => r.gewinner.includes(spieler)).length;
   }
 
 

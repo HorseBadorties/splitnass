@@ -12,14 +12,14 @@
 <div *ngIf="spieltag">
   <p-tabView>
     <p-tabPanel header="Spieltagsverlauf">
-      <div style="background-color: white;">
+      <div >
         <p-chart type="line" [data]="spieltagsverlauf" [options]="optionsSpieltagsverlauf"></p-chart>       
       </div>
     </p-tabPanel>
     <p-tabPanel header="Anzahl gewonnener Runden">
-      <div style="background-color: white;">
-        <p-chart type="pie" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonnenerRunden"></p-chart>  
+      <div >
+        <p-chart type="bar" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonnenerRunden"></p-chart>  
       </div>
     </p-tabPanel>    
-</p-tabView>
+  </p-tabView>
 </div>
