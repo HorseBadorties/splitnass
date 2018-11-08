@@ -26,6 +26,8 @@ import { AppComponent } from "./components/app.component";
 import { RundeComponent } from "./components/runde/runde.component";
 import { RundenlisteComponent } from "./components/rundenliste/rundenliste.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -57,7 +59,8 @@ import { AppRoutingModule } from "./app-routing.module";
     SidebarModule,
     PanelMenuModule,
     InputTextModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   bootstrap: [AppComponent]
 })
