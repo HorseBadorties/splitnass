@@ -23,7 +23,7 @@
     <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
-    <span *ngIf="spieltag" class="white" style="vertical-align: middle">{{getSpieltagInfo()}}</span>
+    <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
   </div>
   <div class="ui-toolbar-group-right">
     <p-button icon="pi pi-ellipsis-v" (click)="displaySettingsDialog = true"></p-button>
