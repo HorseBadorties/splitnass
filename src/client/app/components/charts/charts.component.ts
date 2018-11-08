@@ -32,7 +32,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
   anzahlSolos: any;
 
   optionsSpieltagsverlauf = {
-    steppedLine : true,
     title: {
       display: false
     },
@@ -105,7 +104,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     this.router.navigate(["rundenliste"], {skipLocationChange: true});
   }
 
-  private calcData(spieltag: Spieltag) {    
+  private calcData(spieltag: Spieltag) {  
     this.spieltag = spieltag;
     const gespielteRunden = spieltag.runden.filter(r => r.isBeendet);
 
@@ -149,8 +148,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   private countAnzahlGespielteSolos(spieler: Spieler) {
     return this.spieltag.runden.filter(r => {
-      if (r.solo === Solo.KEIN_SOLO) return false;
-      return (r.reGewinnt && r.gewinner.includes(spieler)) || (!r.reGewinnt && ! r.gewinner.includes(spieler));
+      if (r.spieler.includes(spieler) && r.solo !== Solo.KEIN_SOLO) {
+        return (r.reGewinnt && r.gewinner.includes(spieler)) || (!r.reGewinnt && ! r.gewinner.includes(spieler));
+      }
     }).length;
   }
 
