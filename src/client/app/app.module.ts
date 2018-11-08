@@ -21,6 +21,8 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { SidebarModule } from "primeng/sidebar";
 import { PanelMenuModule } from "primeng/panelmenu";
 import { InputTextModule } from "primeng/inputtext";
+import { ChartModule } from "primeng/chart";
+import { TabViewModule } from "primeng/tabview";
 
 import { AppComponent } from "./components/app.component";
 import { RundeComponent } from "./components/runde/runde.component";
@@ -28,13 +30,15 @@ import { RundenlisteComponent } from "./components/rundenliste/rundenliste.compo
 import { AppRoutingModule } from "./app-routing.module";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ChartsComponent } from './components/charts/charts.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     RundeComponent,
-    RundenlisteComponent
+    RundenlisteComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +63,8 @@ import { environment } from '../environments/environment';
     SidebarModule,
     PanelMenuModule,
     InputTextModule,
+    ChartModule,
+    TabViewModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

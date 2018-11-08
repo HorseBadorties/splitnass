@@ -1,0 +1,25 @@
+
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+    <p-button icon="pi pi-table" (click)="toRundenliste()"></p-button>    
+  </div>  
+</p-toolbar>
+
+<div style="padding-top: 0.2em;"></div>
+
+<p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
+
+<div *ngIf="spieltag">
+  <p-tabView>
+    <p-tabPanel header="Spieltagsverlauf">
+      <div style="background-color: white;">
+        <p-chart type="line" [data]="spieltagsverlauf" [options]="optionsSpieltagsverlauf"></p-chart>       
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Anzahl gewonnener Runden">
+        <div style="background-color: white;">
+          <p-chart type="pie" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonnenerRunden"></p-chart>  
+        </div>
+    </p-tabPanel>    
+</p-tabView>
+</div>

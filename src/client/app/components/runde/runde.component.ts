@@ -251,7 +251,12 @@ export class RundeComponent implements OnInit, OnDestroy {
       {
           label: "Settings", id: MenuItemId.Settings, 
             icon: "pi pi-fw pi-cog",  command: _ => this.settings()
-      }];
+      },
+      {
+        label: "Statistik", id: MenuItemId.Statistik, 
+          icon: "pi pi-fw pi-info",  command: _ => this.statistik()
+    },
+    ];
   }
 
   private menuItemById(id: MenuItemId): MenuItem {
@@ -268,6 +273,11 @@ export class RundeComponent implements OnInit, OnDestroy {
   settings() {
     this.displayMenu = false;
     this.displaySettingsDialog = true;
+  }
+
+  statistik() {
+    this.displayMenu = false;
+    this.router.navigate(["charts"], {skipLocationChange: true});
   }
 
 
@@ -340,6 +350,7 @@ enum MenuItemId {
   SpielerRaus = "SpielerRaus",
   Rundenzahl = "Rundenzahl",
 
-  Settings = "Settings"
+  Settings = "Settings",
+  Statistik = "Statistik"
 }
 
