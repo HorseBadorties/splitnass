@@ -33,7 +33,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         fontSize: 16
     },
     legend: {
-        position: 'bottom'
+        position: 'top'
     },
     steppedLine : true
   };
@@ -45,7 +45,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         fontSize: 16
     },
     legend: {
-        position: 'bottom'
+        position: 'top'
     }
   };
 
@@ -87,12 +87,15 @@ export class ChartsComponent implements OnInit, OnDestroy {
     // Anzahl gewonnene Runden
     const newAnzahlGewonnenerRundenData = {};
     newAnzahlGewonnenerRundenData["labels"] = spieltag.spieler.map(s => s.name);
-    const datasetAnzahlGewonnenerRunden = {};
-    datasetAnzahlGewonnenerRunden["data"] = spieltag.spieler.forEach(s => {
-      return spieltag.getPunktestand(spieltag.aktuelleRunde, s);
+    const dataset = {};
+    dataset["data"] = [];
+    spieltag.spieler.forEach(s => {
+      dataset["data"].push(spieltag.getPunktestand(spieltag.aktuelleRunde, s));      
     });
-    newAnzahlGewonnenerRundenData["datasets"] = {datasetAnzahlGewonnenerRunden};
-    this.spieltagsverlauf = newSpieltagsverlaufData;
+    dataset["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
+   
+    newAnzahlGewonnenerRundenData["datasets"] = [dataset];
+    this.anzahlGewonnenerRunden = newAnzahlGewonnenerRundenData;
   }
 
 
