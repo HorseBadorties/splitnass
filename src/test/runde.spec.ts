@@ -20,6 +20,11 @@ describe("Runde berechnen - gespaltener Arsch", () => {
     runde.gespielt = Gespielt.GespaltenerArsch;
     expect(runde.berechneErgebnis()).toEqual(0);
   });
+  it("Re gewinnt, -1 Extrapunkt => 0 (Gespaltener Arsch)", () => {
+    runde.gespielt = Gespielt.Re;
+    runde.extrapunkte = -1;
+    expect(runde.berechneErgebnis()).toEqual(0);
+  });
 });
 
 describe("Runde berechnen", () => {
