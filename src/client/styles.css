@@ -30,3 +30,22 @@ body {
   padding-top: 2px;
   padding-bottom: 2px; */
 }
+
+.container {
+  position: absolute;
+  top: .5em;
+  bottom: .5em;
+  left: .5em;
+  right: .5em;  
+}
+
+.flexcolumn,
+.flexcolumn .ui-table,
+.flexcolumn .ui-table-scrollable-wrapper,
+.flexcolumn .ui-table-scrollable-view,
+.flexcolumn .ui-table-scrollable-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+}
+

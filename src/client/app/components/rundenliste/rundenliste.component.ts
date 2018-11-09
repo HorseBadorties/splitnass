@@ -7,6 +7,21 @@ import { SpieltagService } from "../../services/spieltag.service";
 import { SocketService } from "../../services/socket.service";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
+import { ScrollableView } from "primeng/table";
+import ResizeObserver from "resize-observer-polyfill";
+
+/** Hack: align header */
+ScrollableView.prototype.ngAfterViewChecked = function () {
+  if (!this.initialized && this.el.nativeElement.offsetParent) {
+    //this.alignScrollBar();
+    this.initialized = true;
+
+    new ResizeObserver(entries => {
+      //for (let entry of entries)
+        this.alignScrollBar();
+    }).observe(this.scrollBodyViewChild.nativeElement);
+  }
+};
 
 @Component({
   selector: "app-rundenliste",

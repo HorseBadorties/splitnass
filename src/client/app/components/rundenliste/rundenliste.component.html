@@ -18,6 +18,8 @@
   </p-footer>
 </p-dialog>
 
+<div class="flexcolumn container">
+
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
@@ -35,7 +37,7 @@
 <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
 <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
-  scrollHeight="300px" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
+  class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 
   <ng-template pTemplate="header" let-columns>
     <tr class="p-table-row">
@@ -70,3 +72,5 @@
     </tr>
   </ng-template>
 </p-table>
+
+</div>
