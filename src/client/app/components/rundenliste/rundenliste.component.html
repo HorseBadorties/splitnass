@@ -50,11 +50,11 @@
 
   <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
     <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
-      <td>
+      <!-- <td>
         <a *ngIf="runde.isBeendet" href="#" [pRowToggler]="runde">
           <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" style="vertical-align: middle"></i>
         </a>
-      </td>
+      </td> -->
       <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
         <span style="vertical-align: middle">{{getValueFor(runde, col.field)}}</span>
       </td>
