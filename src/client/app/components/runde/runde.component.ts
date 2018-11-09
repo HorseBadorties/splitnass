@@ -50,7 +50,7 @@ export class RundeComponent implements OnInit, OnDestroy {
      }
 
   toRundenliste() {
-    this.router.navigate(["rundenliste"], {skipLocationChange: true});
+    this.router.navigate(["rundenliste"], {skipLocationChange: false});
   }
 
   newSpieltag() {
@@ -277,7 +277,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   statistik() {
     this.displayMenu = false;
-    this.router.navigate(["charts"], {skipLocationChange: true});
+    this.router.navigate(["charts"], {skipLocationChange: false});
   }
 
 

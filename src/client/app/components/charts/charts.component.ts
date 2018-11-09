@@ -101,7 +101,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   toRundenliste() {
-    this.router.navigate(["rundenliste"], {skipLocationChange: true});
+    this.router.navigate(["rundenliste"], {skipLocationChange: false});
   }
 
   private calcData(spieltag: Spieltag) {  

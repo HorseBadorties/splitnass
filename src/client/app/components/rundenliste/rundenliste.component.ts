@@ -31,7 +31,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router) {}
 
   toRunde() {
-    this.router.navigate(["runde"], {skipLocationChange: true});
+    this.router.navigate(["runde"], {skipLocationChange: false});
   }
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;
@@ -62,8 +62,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.spieltag) {
-      this.scrollToRunde(this.spieltag.aktuelleRunde);
+    if (this.selectedRunde) {
+      this.scrollToRunde(this.selectedRunde);
     }
    }
 
@@ -113,10 +113,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrollToRunde(runde: Runde) {
-    if (runde) {
-      // if (this.selectedRunde !== runde) {
-      //   this.selectedRunde = runde;
-      // }
+    if (runde) {      
       this.scrollToNr(runde.nr.toString());
     }
   }
