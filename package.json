@@ -41,6 +41,7 @@
     "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0",
     "primeng": "^6.1.5",
+    "resize-observer-polyfill": "^1.5.0",
     "rxjs": "^6.3.3",
     "serve-favicon": "~2.3.0",
     "socket.io": "^2.1.1",
