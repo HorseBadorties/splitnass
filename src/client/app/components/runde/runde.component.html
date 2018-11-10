@@ -95,11 +95,11 @@
 <div style="padding-top: 0.2em;"></div>
 
 <p-panel *ngIf="spieltag" [toggleable]="true">
-  <p-header>
+  <p-header style="white-space: nowrap;">
     Runde Nr. {{runde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
   </p-header>
   <span *ngFor="let info of getRundenInfo()" class="info">{{info}}</span>
-  <div *ngIf="!isNochNichtGespielteRunde()" class="info">{{getPunktestand()}}</div>
+  <div class="no-wrap" *ngIf="!isNochNichtGespielteRunde()" class="info">{{getPunktestand()}}</div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>
@@ -146,10 +146,13 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template>
       </p-dropdown>
-      <span class="pad-left-1">Extrapunkte: </span>
-      <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true">
-      <p-button icon="pi pi-caret-down" (click)="runde.extrapunkte = runde.extrapunkte - 1"></p-button>
-      <p-button icon="pi pi-caret-up" (click)="runde.extrapunkte = runde.extrapunkte + 1"></p-button>
+      <span style="white-space: nowrap;">
+        <span class="pad-left-1">Extrapunkte </span>
+        <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true" 
+          [ngStyle]="{'font-weight': runde.extrapunkte !== 0 ? 'bold' : 'normal'}" class="ui-inputtext">
+        <p-button icon="pi pi-caret-down" (click)="runde.extrapunkte = runde.extrapunkte - 1"></p-button>
+        <p-button icon="pi pi-caret-up" (click)="runde.extrapunkte = runde.extrapunkte + 1"></p-button>
+      </span>
     </div>
     <div class="p-col">
       <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="runde.gespielt">
@@ -157,7 +160,9 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template>
       </p-dropdown>
-      <p-checkbox class="pad-left-1" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+      <span style="white-space: nowrap;">
+        <p-checkbox class="pad-left-1" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+      </span>
     </div>
   </div>
 </p-panel>

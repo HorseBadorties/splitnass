@@ -1,5 +1,6 @@
 .info {  
   padding-right: 1em;
+  white-space: nowrap;
 }
 
 @media (max-width: 500px) { 
@@ -68,19 +69,11 @@
 .ui-inputtext {
   width: 30px; 
   opacity: unset !important;
-  /* font-weight: bold; */
-}
-
-.extrapunkte-bold {
-  width: 30px; 
-  opacity: unset;
-  font-weight: bold;
+  text-align: center;
 }
 
 .bold-text {
   font-weight: bold;
-  /* color: #1f7ed0; */
-  /* color: #34A835; */
 }
 
 .ui-fieldset .ui-fieldset-legend {
