@@ -1,13 +1,58 @@
 
+.table-header-row {
+  font-size: 14px;
+}
 .p-table-row {    
   text-align: center;  
-  font-size: 12px; 
+  font-size: 14px; 
+}
+@media (max-width: 800px) { 
+  .table-header-row {
+    font-size: 12px;
+  }
+  .p-table-row {    
+    font-size: 12px; 
+  }
+}
+@media (max-width: 600px) { 
+  .table-header-row {    
+    font-size: 10px; 
+  }
+}
+@media (max-width: 500px) { 
+  .table-header-row {
+    font-size: 9px;
+  }
+}
+@media (max-width: 400px) { 
+  .table-header-row {
+    font-size: 8px;
+  }
+  .p-table-row {    
+    font-size: 10px; 
+  }
 }
 
 .white {
   color: #ffffff;
   font-size:20px; 
   vertical-align: middle; 
+}
+
+.verbindungsaufbau {
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-size: 14px; 
+}
+
+@media (max-width: 400px) {
+  .white {
+    font-size:16px; 
+  }
+}
+
+.ergebnis {
+  padding-left: .3em;
+  font-size: 16px;  
 }
 
   

@@ -1,11 +1,30 @@
 .info {  
-  font-family:Verdana,sans-serif;
-  font-size:11px; 
-
+  padding-right: 1em;
 }
 
-.elevation {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+@media (max-width: 500px) { 
+  .info {  
+    font-size: 12px; 
+  }
+}
+
+@media (max-width: 420px) { 
+  .info {  
+    font-size: 11px; 
+  }
+}
+
+@media (max-width: 400px) { 
+  .info {  
+    font-size: 10px; 
+  }
+}
+
+
+@media (max-width: 370px) { 
+  .info {  
+    font-size: 9px; 
+  }
 }
 
 .pad-half {

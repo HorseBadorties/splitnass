@@ -98,8 +98,8 @@
   <p-header>
     Runde Nr. {{runde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
   </p-header>
-  <span *ngFor="let info of getRundenInfo()" class="box">{{info}}</span>
-  <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
+  <span *ngFor="let info of getRundenInfo()" class="info">{{info}}</span>
+  <div *ngIf="!isNochNichtGespielteRunde()" class="info">{{getPunktestand()}}</div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>

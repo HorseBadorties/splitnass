@@ -20,52 +20,55 @@
 
 <div class="flexcolumn container">
 
-<p-toolbar>
-  <div class="ui-toolbar-group-left">
-    <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
-    <span class="box"> </span>
-    <span class="box"> </span>
-    <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
+  <p-toolbar>
+    <div class="ui-toolbar-group-left">
+      <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
+      <span class="box"> </span>
+      <span class="box"> </span>
+      <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
+    </div>
+    <div class="ui-toolbar-group-right">
+      <p-button icon="pi pi-ellipsis-v" (click)="displaySettingsDialog = true"></p-button>
+    </div>
+  </p-toolbar>
+
+  <div style="padding-top: 0.2em;"></div>
+  
+  <div *ngIf="!spieltag">
+    <p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
+    <div style="padding-left: 0.2em;"></div>
+    <span class="verbindungsaufbau">Connecting to Split'n Ass server...</span>
   </div>
-  <div class="ui-toolbar-group-right">
-    <p-button icon="pi pi-ellipsis-v" (click)="displaySettingsDialog = true"></p-button>
-  </div>
-</p-toolbar>
 
-<div style="padding-top: 0.2em;"></div>
+  <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
+    class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 
-<p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
+    <ng-template pTemplate="header" let-columns>
+      <tr class="table-header-row">
+        <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
 
-<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
-  class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
+    <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
+      <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
+        <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
+          <span>{{getValueFor(runde, col.field)}}</span>
+        </td>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="header" let-columns>
-    <tr class="p-table-row">
-      <!-- <th style="width: 3em"></th> -->
-      <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
-        {{col.header}}
-      </th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
-    <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
-      <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
-        <span style="vertical-align: middle">{{getValueFor(runde, col.field)}}</span>
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
-    <tr *ngIf="runde.isBeendet">
-      <td [attr.colspan]="columns.length + 1">
-        <div *ngFor="let s of runde.ergebnisEvents">
-          <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
-          <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
-        </div>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+    <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
+      <tr *ngIf="runde.isBeendet" class="ergebnis">
+        <td [attr.colspan]="columns.length + 1">
+          <div *ngFor="let s of runde.ergebnisEvents">
+              <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
+              <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
 </div>
