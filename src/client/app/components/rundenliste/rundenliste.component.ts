@@ -1,14 +1,15 @@
 import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { ScrollableView } from "primeng/table";
+import ResizeObserver from "resize-observer-polyfill";
 import { Subscription  } from "rxjs";
+import * as _ from "lodash";
 
 import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SocketService } from "../../services/socket.service";
 import { SettingsService } from "../../services/settings.service";
-import { Router } from "@angular/router";
-import { ScrollableView } from "primeng/table";
-import ResizeObserver from "resize-observer-polyfill";
 
 /** Hack: align header */
 ScrollableView.prototype.ngAfterViewChecked = function () {
@@ -137,7 +138,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     const yyyy = date.getFullYear();
     const mm = date.getMonth() + 1; // getMonth() is zero-based
     const dd  = date.getDate();
-    return dd.toString() + "." + mm.toString() + "." + yyyy.toString();
+    return _.padStart(dd.toString(), 2, "0") + "." + _.padStart(mm.toString(), 2, "0") + "." + yyyy.toString();
   }
 
   private scrollToNr(nr: string) {
