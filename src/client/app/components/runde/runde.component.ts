@@ -250,11 +250,11 @@ export class RundeComponent implements OnInit, OnDestroy {
       },
       {
           label: "Settings", id: MenuItemId.Settings, 
-            icon: "pi pi-fw pi-cog",  command: _ => this.settings()
+            icon: "pi pi-fw pi-cog",  command: _ => this.openSettings()
       },
       {
         label: "Statistik", id: MenuItemId.Statistik, 
-          icon: "pi pi-fw pi-info",  command: _ => this.statistik()
+          icon: "pi pi-fw pi-info",  command: _ => this.toCharts()
     },
     ];
   }
@@ -270,12 +270,12 @@ export class RundeComponent implements OnInit, OnDestroy {
     return flatten(this.menuItems, []).find(item => item.id === id);
   }
 
-  settings() {
+  openSettings() {
     this.displayMenu = false;
     this.displaySettingsDialog = true;
   }
 
-  statistik() {
+  toCharts() {
     this.displayMenu = false;
     this.router.navigate(["charts"], {skipLocationChange: false});
   }
@@ -327,8 +327,8 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   getPunktestand() {
     return this.spieltag.spieler
-      .map(spieler => `${spieler.name} = ${this.spieltag.getPunktestand(this.runde, spieler)}`)
-      .join(", ");
+      .map(spieler => `${spieler.name}: ${this.spieltag.getPunktestand(this.runde, spieler)}`)
+      .join(" | ");
   }
 
   private getGewinner() {

@@ -3,6 +3,10 @@
   white-space: nowrap;
 }
 
+.fontsize {  
+  
+}
+
 @media (max-width: 500px) { 
   .info {  
     font-size: 12px; 
@@ -15,17 +19,21 @@
   }
 }
 
-@media (max-width: 400px) { 
+@media (max-width: 380px) { 
   .info {  
     font-size: 10px; 
   }
+  .fontsize {  
+    font-size: 12px; 
+  }
+  
 }
 
 
 @media (max-width: 370px) { 
   .info {  
     font-size: 9px; 
-  }
+  }  
 }
 
 .pad-half {
