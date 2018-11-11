@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as _ from "lodash";
 
-import { SocketService } from '../../services/socket.service';
+import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
@@ -88,10 +88,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(public socketService: SocketService, private router: Router) { }
+  constructor(public spieltagService: SpieltagService, private router: Router) { }
 
   ngOnInit() {
-    this.subscribtion = this.socketService.updatedSpieltag.subscribe(spieltag => this.calcData(spieltag));
+    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));
   }
 
   ngOnDestroy() {

@@ -76,6 +76,7 @@
 </p-sidebar>
 
 <!-- Fenster -->
+<div (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
 
 <p-toolbar>
   <div class="ui-toolbar-group-left">
@@ -172,3 +173,5 @@
   label="{{runde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" styleClass="{{runde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
   (onClick)="rundeAbrechnen()">
 </p-button>
+
+</div>

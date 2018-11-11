@@ -8,7 +8,6 @@ import * as _ from "lodash";
 import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
-import { SocketService } from "../../services/socket.service";
 import { SettingsService } from "../../services/settings.service";
 
 /** Hack: align header */
@@ -42,9 +41,15 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     public spieltagService: SpieltagService,
-    public socketService: SocketService,
     public settingsService: SettingsService,
     private router: Router) {}
+
+  onSwipeLeft(evt) {
+    this.toRunde();
+  }
+  onSwipeRight(evt) {
+    this.toRunde();
+  }
 
   toRunde() {
     setTimeout(() => this.router.navigate(["runde"], {skipLocationChange: false}), 50);
@@ -54,8 +59,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.subscribtion = this.socketService.updatedSpieltag.subscribe(spieltag => this.setSpieltag(spieltag));
+    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));
   }
 
   ngOnDestroy() {

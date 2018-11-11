@@ -5,7 +5,6 @@ import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
-import { SocketService } from "../../services/socket.service";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
@@ -18,7 +17,6 @@ import { Router } from "@angular/router";
 })
 export class RundeComponent implements OnInit, OnDestroy {
   spieltagServiceSubscribtion: Subscription;
-  socketServiceSubscribtion: Subscription;
   spieltag: Spieltag;
   runde: Runde;
   displayMenu = false;
@@ -38,7 +36,6 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   constructor(
     public spieltagService: SpieltagService,
-    public socketService: SocketService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public settingsService: SettingsService,
@@ -49,6 +46,13 @@ export class RundeComponent implements OnInit, OnDestroy {
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
 
+  onSwipeLeft(evt) {
+    this.toRundenliste();
+  }
+  onSwipeRight(evt) {
+    this.toRundenliste();
+  }
+  
   toRundenliste() {
     setTimeout(() => this.router.navigate(["rundenliste"], {skipLocationChange: false}), 50);
   }
@@ -62,9 +66,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   startNewSpieltag() {
-    this.spieltag = this.spieltagService.startSpieltag(this.selectedRundenanzahl, this.selectedSpieler, this.selectedSpieler[0]);
-    this.runde = this.spieltag.aktuelleRunde;
-    this.socketService.sendSpieltag(this.spieltag);
+    this.spieltagService.startSpieltag(this.selectedRundenanzahl, this.selectedSpieler, this.selectedSpieler[0]);
     this.displaySpieltagDialog = false;
   }
 
@@ -132,7 +134,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       this.spieltag.startNaechsteRunde();
     }
     this.setAktuelleRunde(this.spieltag.aktuelleRunde);
-    this.socketService.sendSpieltag(this.spieltag);
+    this.spieltagService.sendSpieltag(this.spieltag);
   }
 
   confirmGespaltenerArsch() {
@@ -188,24 +190,15 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMenu();
-    this.socketServiceSubscribtion = this.socketService.updatedSpieltag.subscribe(spieltag => {
-      if (spieltag) {
+    this.spieltagServiceSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => {
         this.spieltag = spieltag;
-        // if (this.spieltagService.selectedRunde) {
-        //   this.setAktuelleRunde(this.spieltagService.selectedRunde);
-        // } else {
-          this.setAktuelleRunde(spieltag.aktuelleRunde);
-        // }
-      }
+        this.setAktuelleRunde(spieltag.aktuelleRunde);
     });
   }
 
   ngOnDestroy() {
     if (this.spieltagServiceSubscribtion) {
       this.spieltagServiceSubscribtion.unsubscribe();
-    }
-    if (this.socketServiceSubscribtion) {
-      this.socketServiceSubscribtion.unsubscribe();
     }
   }
 
