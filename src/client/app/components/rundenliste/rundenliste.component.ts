@@ -47,7 +47,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router) {}
 
   toRunde() {
-    this.router.navigate(["runde"], {skipLocationChange: false});
+    setTimeout(() => this.router.navigate(["runde"], {skipLocationChange: false}), 50);
   }
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;

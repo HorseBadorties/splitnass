@@ -50,7 +50,7 @@ export class RundeComponent implements OnInit, OnDestroy {
      }
 
   toRundenliste() {
-    this.router.navigate(["rundenliste"], {skipLocationChange: false});
+    setTimeout(() => this.router.navigate(["rundenliste"], {skipLocationChange: false}), 50);
   }
 
   newSpieltag() {
@@ -300,7 +300,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     const result = [];
     if (this.runde.isAktuelleRunde()) {
       result.push(`Geber: ${this.runde.geber.name}`);
-      result.push(`Aufspielt: ${this.runde.aufspieler.name}`);
+      result.push(`Aufspiel: ${this.runde.aufspieler.name}`);
       result.push(`Böcke: ${this.runde.boecke}`);
       if (this.getErgebnisVorherigeRunde()) {
         result.push(`Vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
