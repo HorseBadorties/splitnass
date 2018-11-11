@@ -67,11 +67,10 @@
   
 }
 
-.white {
-  color: white;
-  padding-left: 2em;
-  /* font-family:Verdana,sans-serif; */
-  /* font-size:20px; */
+.attention {
+  color: red;
+  /* font-size: 20px;  */
+  vertical-align: middle; 
 }
 
 .ui-inputtext {
