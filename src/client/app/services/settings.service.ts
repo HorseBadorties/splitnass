@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorage } from '@ngx-pwa/local-storage';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { first } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ export class SettingsService {
   private _adminMode: boolean;
   private _autoShowRundendetails: boolean;
 
+  public offlineStatus = new BehaviorSubject(undefined);
+
   public get offline(): boolean {
     return this._offline;
   }
@@ -19,6 +22,7 @@ export class SettingsService {
   public set offline(value: boolean) {
     this._offline = value;
     this.setBoolean("offline", value);
+    this.offlineStatus.next(value);
   }
 
   public get animateRoutes(): boolean {
@@ -48,11 +52,26 @@ export class SettingsService {
     this.setBoolean("autoShowRundendetails", value);
   }
 
+  public saveSpieltagJSON(spieltagJSON: string) {
+    this.localStorage.setItemSubscribe("savedSpieltag", spieltagJSON);
+  }
+
+  public getSavedSpieltagJSON(): Observable<string> {
+    return this.localStorage.getItem<string>("savedSpieltag", { schema: { type: 'string' } });
+  } 
+
   constructor(private localStorage: LocalStorage) { 
-    this.getBoolean("offline").subscribe(value => this._offline = value && value.valueOf())
-    this.getBoolean("animateRoutes").subscribe(value => this._animateRoutes = value && value.valueOf())
-    this.getBoolean("adminMode").subscribe(value => this._adminMode = value && value.valueOf())
-    this.getBoolean("autoShowRundendetails").subscribe(value => this._autoShowRundendetails = value && value.valueOf())
+    this.getBoolean("offline").pipe(first())
+      .subscribe(value => {
+        this._offline = value && value.valueOf();
+        this.offlineStatus.next(this._offline);
+      });
+    this.getBoolean("animateRoutes").pipe(first())
+      .subscribe(value => this._animateRoutes = value && value.valueOf())
+    this.getBoolean("adminMode").pipe(first())
+      .subscribe(value => this._adminMode = value && value.valueOf())
+    this.getBoolean("autoShowRundendetails").pipe(first())
+      .subscribe(value => this._autoShowRundendetails = value && value.valueOf())
   }
 
   private setBoolean(name: string, value: boolean) {

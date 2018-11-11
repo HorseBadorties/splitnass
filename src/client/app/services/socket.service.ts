@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject  } from "rxjs";
+import { BehaviorSubject  } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
