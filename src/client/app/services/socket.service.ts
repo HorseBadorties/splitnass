@@ -13,7 +13,7 @@ const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 export class SocketService {
   private socket;
   public lastSpieltag: Spieltag;
-  public updatedSpieltag = new BehaviorSubject(undefined);
+  public spieltag = new BehaviorSubject(undefined);
 
 
   constructor() {
@@ -60,7 +60,7 @@ export class SocketService {
 
   private nextSpieltag(data: string) {
     this.lastSpieltag = Spieltag.fromJSON(data);
-    this.updatedSpieltag.next(this.lastSpieltag);
+    this.spieltag.next(this.lastSpieltag);
   }
 
 }
