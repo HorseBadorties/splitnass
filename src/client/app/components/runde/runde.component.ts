@@ -46,13 +46,6 @@ export class RundeComponent implements OnInit, OnDestroy {
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
 
-  onSwipeLeft(evt) {
-    this.toRundenliste();
-  }
-  onSwipeRight(evt) {
-    this.toRundenliste();
-  }
-  
   toRundenliste() {
     setTimeout(() => this.router.navigate(["rundenliste"], {skipLocationChange: false}), 50);
   }

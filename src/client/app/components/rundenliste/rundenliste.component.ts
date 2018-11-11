@@ -44,16 +44,12 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     public settingsService: SettingsService,
     private router: Router) {}
 
-  onSwipeLeft(evt) {
-    this.toRunde();
-  }
-  onSwipeRight(evt) {
-    this.toRunde();
-  }
-
   toRunde() {
-    setTimeout(() => this.router.navigate(["runde"], {skipLocationChange: false}), 50);
+    if (this.settingsService.adminMode) {
+      setTimeout(() => this.router.navigate(["runde"], {skipLocationChange: false}), 50);
+    }
   }
+  
   getSpieltagInfo() {
     return this.spieltag ? `Spieltag vom ${this.formatDate(this.spieltag.beginn)}` : `no Spieltag`;
   }
