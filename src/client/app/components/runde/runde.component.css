@@ -67,12 +67,6 @@
   
 }
 
-.attention {
-  color: red;
-  /* font-size: 20px;  */
-  vertical-align: middle; 
-}
-
 .ui-inputtext {
   width: 30px; 
   opacity: unset !important;

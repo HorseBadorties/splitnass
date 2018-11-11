@@ -7,6 +7,7 @@ import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-charts',
@@ -88,7 +89,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(public spieltagService: SpieltagService, private router: Router) { }
+  constructor(
+    public spieltagService: SpieltagService, 
+    public settingsService: SettingsService, 
+    private router: Router) { }
 
   ngOnInit() {
     this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));
@@ -105,6 +109,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   private calcData(spieltag: Spieltag) {  
+    if (!spieltag) return;
     this.spieltag = spieltag;
     const gespielteRunden = spieltag.runden.filter(r => r.isBeendet);
 

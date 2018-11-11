@@ -8,7 +8,7 @@ import { ChartsComponent } from "./components/charts/charts.component";
 const routes: Routes = [
   { path: "rundenliste", component: RundenlisteComponent, data: {animation: 'Rundenliste'} },
   { path: "runde", component: RundeComponent, data: {animation: 'Runde'} },
-  { path: "charts", component: ChartsComponent },
+  { path: "charts", component: ChartsComponent, data: {animation: 'Charts'} },
   { path: "**", component: RundenlisteComponent }
 ];
 
