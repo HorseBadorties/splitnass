@@ -76,7 +76,12 @@
     Runde Nr. {{runde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
   </p-header>
   <span *ngFor="let info of getRundenInfo()" class="info">{{info}}</span>
-  <div class="no-wrap" *ngIf="!isNochNichtGespielteRunde()" class="info">{{getPunktestand()}}</div>
+  <div class="no-wrap" *ngIf="!isNochNichtGespielteRunde()" class="info">
+    <span *ngFor="let stand of getPunktestaende(); let i=index">
+        <span class="{{stand.aktiv ? '' : 'inactivePlayer'}}">{{stand.name}}: {{stand.punkte}}</span>
+        <span *ngIf="i < spieltag.spieler.length - 1" style="padding-left: 0.3em; padding-right: 0.3em;">|</span>
+    </span>
+  </div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>

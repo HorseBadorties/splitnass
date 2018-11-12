@@ -10,7 +10,9 @@ export class Spieltag {
     result.ende = parsedJson.ende ? new Date(parsedJson.ende) : undefined;
     result.spieler = [];
     parsedJson.spieler.forEach(s => {
-      result.spieler.push(Spieler.get(s.id));
+      const spieler = Spieler.get(s.id);
+      spieler.isAktiv = s.isAktiv;
+      result.spieler.push(spieler);
     });
     result.anzahlRunden = parsedJson.anzahlRunden;
     result.runden = [];
@@ -110,6 +112,10 @@ export class Spieltag {
     const i = this.spieler.indexOf(spieler);
     const next = i === this.spieler.length - 1 ? this.spieler[0] : this.spieler[i + 1];
     return next.isAktiv ? next : this.getNaechstenSpieler(next);
+  }
+
+  public findSpielerById(id: number) {
+    return this.spieler.find(s => s.id === id);
   }
 
   public getPunktestand(runde: Runde, spieler: Spieler) {

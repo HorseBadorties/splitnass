@@ -34,6 +34,7 @@ import { environment } from '../environments/environment';
 import { ChartsComponent } from './components/charts/charts.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { DialogModule as CustomDialogModule } from './dialog/dialog.module';
+import { SpielerauswahlComponent } from './components/spielerauswahl/spielerauswahl.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { DialogModule as CustomDialogModule } from './dialog/dialog.module';
     RundeComponent,
     RundenlisteComponent,
     ChartsComponent,
-    SettingsComponent
+    SettingsComponent,
+    SpielerauswahlComponent
   ],
   imports: [
     BrowserModule,

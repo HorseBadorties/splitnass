@@ -1,15 +1,18 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { ConfirmationService, MenuItem, MessageService, SelectItem } from "primeng/api";
 import { Subscription } from "rxjs";
+import * as _ from "lodash";
+
 import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
-import { Router } from "@angular/router";
 import { DialogService } from "../../dialog/dialog.service";
 import { SettingsComponent } from "../settings/settings.component";
+import { SpielerauswahlComponent } from "../spielerauswahl/spielerauswahl.component";
 
 @Component({
   selector: "app-runde",
@@ -50,6 +53,36 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   toRundenliste() {
     setTimeout(() => this.router.navigate(["rundenliste"], { skipLocationChange: false }), 50);
+  }
+
+  spielerSteigtAus() {
+    this.displayMenu = false;
+    const data: any = {spieler: this.spieltag.spieler.filter(s => s.isAktiv), message: "Wer steigt aus?"};
+    const ref = this.dialogService.open(SpielerauswahlComponent, data);
+    ref.afterClosed.subscribe(result => {      
+      if (result) {
+        const spieler = result as Spieler;
+        spieler.isAktiv = false;
+        this.messageService.add({ severity: "success", summary: "", detail: `${spieler.name} ist ausgestiegen!` }); 
+      }
+    });
+  }
+
+  spielerSteigtEin() {
+    this.displayMenu = false;
+    const moeglicheSpieler = _.difference(Spieler.all.slice(), this.spieltag.spieler.filter(s => s.isAktiv));
+    const data: any = {spieler: moeglicheSpieler, message: "Wer steigt ein?"};
+    const ref = this.dialogService.open(SpielerauswahlComponent, data);
+    ref.afterClosed.subscribe(result => {      
+      if (result) {
+        const spieler = result as Spieler;        
+        spieler.isAktiv = true;
+        if (!this.spieltag.spieler.includes(spieler)) {
+          this.spieltag.spieler.push(spieler);
+        }
+        this.messageService.add({ severity: "success", summary: "", detail: `${spieler.name} ist eingestiegen!` }); 
+      }
+    });
   }
 
   newSpieltag() {
@@ -242,11 +275,11 @@ export class RundeComponent implements OnInit, OnDestroy {
           },
           {
             label: "Spieler steigt ein", id: MenuItemId.SpielerRein,
-            icon: "pi pi-fw pi-user-plus", command: _ => this.showToDoMessage("Spieler steigt ein")
+            icon: "pi pi-fw pi-user-plus", command: _ => this.spielerSteigtEin()
           },
           {
             label: "Spieler steigt aus", id: MenuItemId.SpielerRaus,
-            icon: "pi pi-fw pi-user-minus", command: _ => this.showToDoMessage("Spieler steigt aus")
+            icon: "pi pi-fw pi-user-minus", command: _ => this.spielerSteigtAus()
           },
           {
             label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
@@ -278,7 +311,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   openSettings() {
     this.displayMenu = false;
-    const ref = this.dialogService.open(SettingsComponent, { data: { message: 'I am a dynamic component inside of a dialog!' } });
+    const ref = this.dialogService.open(SettingsComponent, null);
     ref.afterClosed.subscribe(result => {
       console.log('Dialog closed', result);
     });
@@ -334,10 +367,14 @@ export class RundeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPunktestand() {
-    return this.spieltag.spieler
-      .map(spieler => `${spieler.name}: ${this.spieltag.getPunktestand(this.runde, spieler)}`)
-      .join(" | ");
+  getPunktestaende() {
+    const result = [];
+    this.spieltag.spieler.forEach(s => result.push({
+      name: s.name, 
+      punkte: this.spieltag.getPunktestand(this.runde, s),
+      aktiv: s.isAktiv
+    }));
+    return result;
   }
 
   private getGewinner() {
