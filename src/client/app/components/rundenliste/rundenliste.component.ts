@@ -9,6 +9,8 @@ import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
+import { DialogService } from "../../dialog/dialog.service";
+import { SettingsComponent } from "../settings/settings.component";
 
 /** Hack: align header */
 ScrollableView.prototype.ngAfterViewChecked = function () {
@@ -35,14 +37,21 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedRunde: Runde;
   expandedRunden = [];
   displayedColumns: Column[];
-  displaySettingsDialog = false;
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
   constructor(
     public spieltagService: SpieltagService,
     public settingsService: SettingsService,
-    private router: Router) {}
+    private router: Router,
+    private dialogService: DialogService) {}
+
+  openDialog() {
+    const ref = this.dialogService.open(SettingsComponent, { data: { message: 'I am a dynamic component inside of a dialog!' } });
+    ref.afterClosed.subscribe(result => {
+      console.log('Dialog closed', result);
+    });
+  }
 
   toRunde() {
     if (this.settingsService.adminMode) {

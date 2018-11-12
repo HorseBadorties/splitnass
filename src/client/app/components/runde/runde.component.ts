@@ -8,6 +8,8 @@ import { Spieltag } from "src/model/spieltag";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
+import { DialogService } from "../../dialog/dialog.service";
+import { SettingsComponent } from "../settings/settings.component";
 
 @Component({
   selector: "app-runde",
@@ -21,7 +23,6 @@ export class RundeComponent implements OnInit, OnDestroy {
   runde: Runde;
   displayMenu = false;
   menuItems: MenuItem[];
-  displaySettingsDialog = false;
   displayGewinnerDialog = false;
   selectedGewinner: Spieler[] = [];
   displaySpieltagDialog = false;
@@ -39,15 +40,16 @@ export class RundeComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public settingsService: SettingsService,
+    private dialogService: DialogService,
     private router: Router) {
-      this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
-      this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
-      this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
-      this.moeglicheSoli = this.getMoeglicheSoli();
-     }
+    this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
+    this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
+    this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
+    this.moeglicheSoli = this.getMoeglicheSoli();
+  }
 
   toRundenliste() {
-    setTimeout(() => this.router.navigate(["rundenliste"], {skipLocationChange: false}), 50);
+    setTimeout(() => this.router.navigate(["rundenliste"], { skipLocationChange: false }), 50);
   }
 
   newSpieltag() {
@@ -108,7 +110,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     } else {
       this.runde.berechneErgebnis();
       if (this.runde.ergebnis === 0) {
-        this.messageService.add({severity: "info", summary: "Gespaltener Arsch!", detail: "Böcke! :-)"});
+        this.messageService.add({ severity: "info", summary: "Gespaltener Arsch!", detail: "Böcke! :-)" });
         this.rundeAbgerechnet();
       } else {
         this.displayGewinnerDialog = true;
@@ -143,29 +145,29 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   private getMoeglicheAnsagen(fuerRe: boolean): SelectItem[] {
     return [
-      {label: `<keine ${fuerRe ? "Re" : "Kontra"} Ansagen>`, value: Ansage.KeineAnsage},
-      {label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra},
-      {label: "keine 9", value: Ansage.Keine9},
-      {label: "keine 6", value: Ansage.Keine6},
-      {label: "keine 3", value: Ansage.Keine3},
-      {label: "schwarz", value: Ansage.Schwarz}
+      { label: `<keine ${fuerRe ? "Re" : "Kontra"} Ansagen>`, value: Ansage.KeineAnsage },
+      { label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra },
+      { label: "keine 9", value: Ansage.Keine9 },
+      { label: "keine 6", value: Ansage.Keine6 },
+      { label: "keine 3", value: Ansage.Keine3 },
+      { label: "schwarz", value: Ansage.Schwarz }
     ];
   }
 
   private getMoeglicheErgebnisse(): SelectItem[] {
     return [
-      {label: "<kein Ergebnis>", value: undefined},
-      {label: "Re gewinnt", value: Gespielt.Re},
-      {label: "Re keine 9", value: Gespielt.ReKeine9},
-      {label: "Re keine 6", value: Gespielt.ReKeine6},
-      {label: "Re keine 3", value: Gespielt.ReKeine3},
-      {label: "Re schwarz", value: Gespielt.ReSchwarz},
-      {label: "Kontra gewinnt", value: Gespielt.Kontra},
-      {label: "Kontra keine 9", value: Gespielt.KontraKeine9},
-      {label: "Kontra keine 6", value: Gespielt.KontraKeine6},
-      {label: "Kontra keine 3", value: Gespielt.KontraKeine3},
-      {label: "Kontra schwarz", value: Gespielt.KontraSchwarz},
-      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch}
+      { label: "<kein Ergebnis>", value: undefined },
+      { label: "Re gewinnt", value: Gespielt.Re },
+      { label: "Re keine 9", value: Gespielt.ReKeine9 },
+      { label: "Re keine 6", value: Gespielt.ReKeine6 },
+      { label: "Re keine 3", value: Gespielt.ReKeine3 },
+      { label: "Re schwarz", value: Gespielt.ReSchwarz },
+      { label: "Kontra gewinnt", value: Gespielt.Kontra },
+      { label: "Kontra keine 9", value: Gespielt.KontraKeine9 },
+      { label: "Kontra keine 6", value: Gespielt.KontraKeine6 },
+      { label: "Kontra keine 3", value: Gespielt.KontraKeine3 },
+      { label: "Kontra schwarz", value: Gespielt.KontraSchwarz },
+      { label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch }
     ];
   }
 
@@ -184,7 +186,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initMenu();
     this.spieltagServiceSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => {
-      if (spieltag) {  
+      if (spieltag) {
         this.spieltag = spieltag;
         this.setAktuelleRunde(spieltag.aktuelleRunde);
       }
@@ -200,50 +202,66 @@ export class RundeComponent implements OnInit, OnDestroy {
   private berechnungPruefen() {
     this.displayMenu = false;
     if (this.runde.gespielt) {
-      this.runde.berechneErgebnis();    
+      this.runde.berechneErgebnis();
       this.confirmationService.confirm({
         "message": this.runde.ergebnisEvents.map(e => e["event"]).join(", "),
-        "rejectVisible": false});
+        "rejectVisible": false
+      });
     } else {
       this.confirmationService.confirm({
-        "message": "Kein Ergebnis", "rejectVisible": false});
+        "message": "Kein Ergebnis", "rejectVisible": false
+      });
     }
   }
 
   private initMenu() {
     this.menuItems = [
       {
-          label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
-          items: [
-            {label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
-              icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()},
-            {label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
-              icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")},
-            {label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
-              icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")}
+        label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
+        items: [
+          {
+            label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
+            icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()
+          },
+          {
+            label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
+            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")
+          },
+          {
+            label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
+            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")
+          }
         ]
       },
       {
-          label: "Spieltag", id: MenuItemId.Spieltag, icon: "pi pi-fw pi-calendar",
-          items: [
-              {label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
-                icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()},
-              {label: "Spieler steigt ein", id: MenuItemId.SpielerRein,
-                icon: "pi pi-fw pi-user-plus", command: _ => this.showToDoMessage("Spieler steigt ein")},
-              {label: "Spieler steigt aus", id: MenuItemId.SpielerRaus,
-                icon: "pi pi-fw pi-user-minus", command: _ => this.showToDoMessage("Spieler steigt aus")},
-              {label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
-                icon: "pi pi-fw pi-sort", command: _ => this.showToDoMessage("Setze Rundenanzahl")}
-          ]
+        label: "Spieltag", id: MenuItemId.Spieltag, icon: "pi pi-fw pi-calendar",
+        items: [
+          {
+            label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
+            icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
+          },
+          {
+            label: "Spieler steigt ein", id: MenuItemId.SpielerRein,
+            icon: "pi pi-fw pi-user-plus", command: _ => this.showToDoMessage("Spieler steigt ein")
+          },
+          {
+            label: "Spieler steigt aus", id: MenuItemId.SpielerRaus,
+            icon: "pi pi-fw pi-user-minus", command: _ => this.showToDoMessage("Spieler steigt aus")
+          },
+          {
+            label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
+            icon: "pi pi-fw pi-sort", command: _ => this.showToDoMessage("Setze Rundenanzahl")
+          }
+        ]
       },
       {
-          label: "Settings", id: MenuItemId.Settings, 
-            icon: "pi pi-fw pi-cog",  command: _ => this.openSettings()
+        label: "Settings", id: MenuItemId.Settings,
+        icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
       {
-        label: "Statistik", id: MenuItemId.Statistik, 
-          icon: "pi pi-fw pi-info",  command: _ => this.toCharts()
-    },
+        label: "Statistik", id: MenuItemId.Statistik,
+        icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+      },
     ];
   }
 
@@ -260,18 +278,21 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   openSettings() {
     this.displayMenu = false;
-    this.displaySettingsDialog = true;
+    const ref = this.dialogService.open(SettingsComponent, { data: { message: 'I am a dynamic component inside of a dialog!' } });
+    ref.afterClosed.subscribe(result => {
+      console.log('Dialog closed', result);
+    });
   }
 
   toCharts() {
     this.displayMenu = false;
-    this.router.navigate(["charts"], {skipLocationChange: false});
+    this.router.navigate(["charts"], { skipLocationChange: false });
   }
 
 
   private showToDoMessage(message: string) {
     this.displayMenu = false;
-    this.messageService.add({severity: "info", summary: "ToDo", detail: message});
+    this.messageService.add({ severity: "info", summary: "ToDo", detail: message });
   }
 
   getStatusDerRunde() {

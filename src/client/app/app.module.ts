@@ -23,6 +23,7 @@ import { PanelMenuModule } from "primeng/panelmenu";
 import { InputTextModule } from "primeng/inputtext";
 import { ChartModule } from "primeng/chart";
 import { TabViewModule } from "primeng/tabview";
+import { CardModule } from "primeng/card";
 
 import { AppComponent } from "./components/app.component";
 import { RundeComponent } from "./components/runde/runde.component";
@@ -31,6 +32,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ChartsComponent } from './components/charts/charts.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { DialogModule as CustomDialogModule } from './dialog/dialog.module';
 
 
 @NgModule({
@@ -38,7 +41,8 @@ import { ChartsComponent } from './components/charts/charts.component';
     AppComponent,
     RundeComponent,
     RundenlisteComponent,
-    ChartsComponent
+    ChartsComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -66,9 +70,12 @@ import { ChartsComponent } from './components/charts/charts.component';
     ChartModule,
     TabViewModule,
     AppRoutingModule,
+    CardModule,
+    CustomDialogModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ChartsComponent]
 })
 export class AppModule { }
 

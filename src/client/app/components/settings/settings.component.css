@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.white {
+  color: #ffffff;
+  font-size: 14px; 
+  vertical-align: middle; 
+}

@@ -1,0 +1,33 @@
+<p-card>
+ 
+  <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+      </p-checkbox>
+    </div>
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
+      </p-checkbox>
+    </div>
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Use Animation" binary="true">
+      </p-checkbox>
+    </div>
+  </p-panel>
+  <p-panel class="p-col" header="Rundenliste" [toggleable]="true">
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
+        binary="true">
+      </p-checkbox>
+    </div>
+  </p-panel>
+  <p-panel class="p-col" header="Runde abrechnen" [toggleable]="true">
+    ToDo
+  </p-panel>
+
+  <div class="actions">
+      <p-button label="OK" (click)="onClose()"></p-button>
+  </div>
+
+
+</p-card>
