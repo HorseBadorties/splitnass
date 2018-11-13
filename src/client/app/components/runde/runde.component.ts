@@ -12,6 +12,7 @@ import { SettingsService } from "../../services/settings.service";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsComponent } from "../settings/settings.component";
 import { SpielerauswahlComponent } from "../spielerauswahl/spielerauswahl.component";
+import { NumberpickerComponent } from "../numberpicker/numberpicker.component";
 
 
 @Component({
@@ -80,6 +81,23 @@ export class RundeComponent implements OnInit, OnDestroy {
         const punkteNeuerSpieler = this.spieltag.getPunktestand(this.runde, neuerSpieler);    
         this.messageService.add({ severity: "success", summary: "", 
           detail: `${neuerSpieler.name} ist mit ${punkteNeuerSpieler} ${punkteNeuerSpieler === 1 ? "Punkt" : "Punkte"} eingestiegen!` }); 
+      }
+    });
+  }
+
+  setzeRundenanzahl() {
+    this.displayMenu = false;
+    const data: any = {
+      min: this.spieltag.aktuelleRunde.nr, 
+      value: this.spieltag.runden.length, 
+      message: "Wieviele Runden sollen gespielt werden?"
+    };
+    const ref = this.dialogService.open(NumberpickerComponent, data);
+    ref.afterClosed.subscribe(result => {      
+      if (result) {
+        this.spieltagService.setztRundenanzahl(result);
+        this.messageService.add({ severity: "success", summary: "", 
+          detail: `Spieltag hat jetzt ${result} Runden!`}); 
       }
     });
   }
@@ -278,7 +296,7 @@ export class RundeComponent implements OnInit, OnDestroy {
           },
           {
             label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
-            icon: "pi pi-fw pi-sort", command: _ => this.showToDoMessage("Setze Rundenanzahl")
+            icon: "pi pi-fw pi-sort", command: _ => this.setzeRundenanzahl()
           }
         ]
       },

@@ -94,6 +94,19 @@ export class Spieltag {
     return this;
   }
 
+  public setzeRundenanzahl(anzahl: number): Spieltag {
+    if (this.runden.length < anzahl) {
+      _.times(anzahl - this.runden.length, i => this.runden.push(new Runde(this, this.runden.length + 1)));
+    } else if (this.runden.length > anzahl) {
+      this.runden.splice(anzahl);
+    }
+    // Falls letzte Runde bereits gespielt, neue Runde beginnen
+    if (this.aktuelleRunde.isBeendet) {
+      this.startNaechsteRunde();
+    }
+    return this;
+  }
+
   public bock(): Spieltag {
     this.doBoecke(1);
     return this;

@@ -57,6 +57,10 @@ export class SpieltagService {
   public spielerSteigtAus(spieler: Spieler) {
     this.sendSpieltag(this.aktuellerSpieltag.spielerSteigtAus(spieler));
   }
+
+  public setztRundenanzahl(anzahl: number) {
+    this.sendSpieltag(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
+  }
   
 
   private sendSpieltag(spieltag: Spieltag) {

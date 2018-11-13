@@ -35,6 +35,7 @@ import { ChartsComponent } from './components/charts/charts.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { DialogModule as CustomDialogModule } from './dialog/dialog.module';
 import { SpielerauswahlComponent } from './components/spielerauswahl/spielerauswahl.component';
+import { NumberpickerComponent } from './components/numberpicker/numberpicker.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { SpielerauswahlComponent } from './components/spielerauswahl/spielerausw
     RundenlisteComponent,
     ChartsComponent,
     SettingsComponent,
-    SpielerauswahlComponent
+    SpielerauswahlComponent,
+    NumberpickerComponent
   ],
   imports: [
     BrowserModule,
