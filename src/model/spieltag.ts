@@ -117,6 +117,10 @@ export class Spieltag {
     return this;
   }
 
+  public getAktiveSpieler() {
+    return this.spieler.filter(s => s.isAktiv);
+  }
+
   public findSpielerById(id: number) {
     return this.spieler.find(s => s.id === id);
   }
@@ -136,6 +140,34 @@ export class Spieltag {
   public getNaechsteRunde(runde: Runde) {
     const indexOfRunde = this.runden.indexOf(runde);
     return indexOfRunde < this.runden.length - 1 ? this.runden[indexOfRunde + 1] : undefined;
+  }
+
+  public getAktuelleSitzreihenfolgeAsHTMLString() {
+    // Spieler am Tisch
+    let result = "<br>Am Tisch:<br>" + this.aktuelleRunde.spieler.map(s => {
+      if (this.aktuelleRunde.geber === s) {
+        return `<b>${s.name}</b> (Geber)`; 
+      } else if (this.aktuelleRunde.aufspieler === s) {
+        return `<b>${s.name}</b> (Aufspiel)`;
+      } else {
+        return `<b>${s.name}</b>`;
+      }
+    }).join(" - ");
+    // Spieler, die draußen warten
+    const notPlaying = _.difference(this.getAktiveSpieler(), this.aktuelleRunde.spieler);
+    if (!_.isEmpty(notPlaying)) {
+      result += "<br><br>Nicht am Tisch:<br>" + notPlaying.map(s => {
+        let _result = `<b>${s.name}</b>`;
+        if (this.aktuelleRunde.geber === s) {
+          _result += " (Geber";
+          _result += notPlaying.length === 2 ? ")" : `, kommt rein für ${this.aktuelleRunde.aufspieler.name})`;
+        } else {
+          _result += ` (kommt rein für ${this.aktuelleRunde.aufspieler.name})`;
+        }
+        return _result;
+      }).join(" - ");
+    }
+    return result;
   }
 
   private insertDummyRundeWith(spieler: Spieler, punkte: number, description: string) {

@@ -102,6 +102,17 @@ export class RundeComponent implements OnInit, OnDestroy {
     });
   }
 
+  zeigeSitzreihenfolge() {
+    this.displayMenu = false; 
+    this.confirmationService.confirm({
+      header: "Sitzreihenfolge",
+      rejectVisible: false,
+      acceptLabel: "Ok",
+      icon: "pi pi-info",
+      message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()
+    });
+  }
+
   newSpieltag() {
     this.displayMenu = false;
     this.selectedSpieler = [];
@@ -303,6 +314,10 @@ export class RundeComponent implements OnInit, OnDestroy {
       {
         label: "Statistik", id: MenuItemId.Statistik,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+      },
+      {
+        label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Statistik,
+        icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
       },
       {
         label: "Settings", id: MenuItemId.Settings,
