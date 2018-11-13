@@ -6,7 +6,7 @@
 
 <!-- Fenster -->
 
-<div class="flexcolumn container" >
+<div class="flexcolumn container">
 
   <p-toolbar>
     <div class="ui-toolbar-group-left">
@@ -17,21 +17,21 @@
       <span *ngIf="settingsService.offline" class="attention">Offline-Modus</span>
     </div>
     <div class="ui-toolbar-group-right">
-      <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
+      <button pButton type="button" icon="pi pi-ellipsis-v" style="background: rgba(0, 0, 0, 0); border: 0;" (click)="displayMenu = true">
+      </button>
     </div>
   </p-toolbar>
 
   <div style="padding-top: 0.2em;"></div>
-  
+
   <div *ngIf="!spieltag && !settingsService.offline">
     <p-progressSpinner></p-progressSpinner>
     <div style="padding-left: 0.2em;"></div>
     <span class="verbindungsaufbau">Connecting to Split'n Ass server...</span>
   </div>
 
-  <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" 
-    [scrollable]="true" class="flexcolumn" [responsive]="false" 
-    selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
+  <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
+    class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 
     <ng-template pTemplate="header" let-columns>
       <tr class="table-header-row">
@@ -53,8 +53,8 @@
       <tr *ngIf="runde.isBeendet" class="ergebnis">
         <td [attr.colspan]="columns.length + 1">
           <div *ngFor="let s of runde.ergebnisEvents">
-              <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
-              <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
+            <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
+            <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
           </div>
         </td>
       </tr>
