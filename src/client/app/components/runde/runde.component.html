@@ -73,7 +73,7 @@
 
 <p-panel *ngIf="spieltag" [toggleable]="true">
   <p-header style="white-space: nowrap;">
-    Runde Nr. {{runde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
+    Runde Nr. {{runde.nr}} von {{spieltag.runden.length}} ({{getStatusDerRunde()}})
   </p-header>
   <span *ngFor="let info of getRundenInfo()" class="info">{{info}}</span>
   <div class="no-wrap" *ngIf="!isNochNichtGespielteRunde()" class="info">

@@ -5,6 +5,7 @@ import { Spieltag } from "src/model/spieltag";
 import { Spieler } from "src/model/spieler";
 import { SocketService } from "./socket.service";
 import { SettingsService } from "./settings.service";
+import { Runde } from "src/model/runde";
 
 @Injectable({
   providedIn: "root"
@@ -39,12 +40,26 @@ export class SpieltagService {
   }
 
   public startSpieltag(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
-    const result = new Spieltag();
-    result.start(anzahlRunden, spieler, geber);
-    this.sendSpieltag(result);
+    this.sendSpieltag(new Spieltag().start(anzahlRunden, spieler, geber));
   }
 
-  public sendSpieltag(spieltag: Spieltag): void {
+  public rundeAbgerechnet(runde: Runde) {
+    if (runde.isAktuelleRunde()) {
+      this.aktuellerSpieltag.startNaechsteRunde();
+    }    
+    this.sendSpieltag(this.aktuellerSpieltag);
+  }
+
+  public spielerSteigtEin(spieler: Spieler) {
+    this.sendSpieltag(this.aktuellerSpieltag.spielerSteigtEin(spieler));
+  }
+
+  public spielerSteigtAus(spieler: Spieler) {
+    this.sendSpieltag(this.aktuellerSpieltag.spielerSteigtAus(spieler));
+  }
+  
+
+  private sendSpieltag(spieltag: Spieltag) {
     if (this.settingsService.offline) {
       this.setAktuellerSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));

@@ -10,7 +10,11 @@
       </p-checkbox>
     </div>
     <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Use Animation" binary="true">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Fensterwechsel animieren" binary="true">
+      </p-checkbox>
+    </div>
+    <div>
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.hideInactivePlayers" label="Inaktive Spieler ausblenden" binary="true">
       </p-checkbox>
     </div>
   </p-panel>
@@ -21,9 +25,9 @@
       </p-checkbox>
     </div>
   </p-panel>
-  <p-panel class="p-col" header="Runde abrechnen" [toggleable]="true">
+  <!-- <p-panel class="p-col" header="Runde abrechnen" [toggleable]="true">
     ToDo
-  </p-panel>
+  </p-panel> -->
 
   <div class="actions">
       <p-button label="OK" (click)="onClose()"></p-button>

@@ -68,6 +68,10 @@ export class Runde {
     return this.isBeendet;
   }
 
+  public isDummyRunde() {
+    return this.isBeendet && !this.geber;
+  }
+
   public addBock() {
     if (this.boecke < MAX_BOECKE) {
       this.boecke++;
@@ -96,7 +100,7 @@ export class Runde {
   }
 
   public berechneErgebnis() {
-    if (this.gespielt === null) return;
+    if (this.gespielt === null || this.isDummyRunde()) return;
     this.ergebnis = 0;
     this._ergebnisEvents = [];
     if (this.herzGehtRum) {
@@ -237,6 +241,9 @@ export class Runde {
     return this._ergebnisEvents;
   }
 
+  public setErgebnisEvents(value: Array<any>) {
+    this._ergebnisEvents = value;
+  }
 }
 
 export enum Gespielt {

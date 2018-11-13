@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import * as _ from "lodash";
 import { ConfirmationService, MenuItem, MessageService, SelectItem } from "primeng/api";
 import { Subscription } from "rxjs";
-import * as _ from "lodash";
-
 import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
-import { SpieltagService } from "../../services/spieltag.service";
-import { SettingsService } from "../../services/settings.service";
 import { DialogService } from "../../dialog/dialog.service";
+import { SettingsService } from "../../services/settings.service";
+import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsComponent } from "../settings/settings.component";
 import { SpielerauswahlComponent } from "../spielerauswahl/spielerauswahl.component";
+
 
 @Component({
   selector: "app-runde",
@@ -61,9 +61,9 @@ export class RundeComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(SpielerauswahlComponent, data);
     ref.afterClosed.subscribe(result => {      
       if (result) {
-        const spieler = result as Spieler;
-        spieler.isAktiv = false;
-        this.messageService.add({ severity: "success", summary: "", detail: `${spieler.name} ist ausgestiegen!` }); 
+        const inaktiverSpieler = result as Spieler;
+        this.spieltagService.spielerSteigtAus(inaktiverSpieler);
+        this.messageService.add({ severity: "success", summary: "", detail: `${inaktiverSpieler.name} ist ausgestiegen!` }); 
       }
     });
   }
@@ -75,12 +75,11 @@ export class RundeComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(SpielerauswahlComponent, data);
     ref.afterClosed.subscribe(result => {      
       if (result) {
-        const spieler = result as Spieler;        
-        spieler.isAktiv = true;
-        if (!this.spieltag.spieler.includes(spieler)) {
-          this.spieltag.spieler.push(spieler);
-        }
-        this.messageService.add({ severity: "success", summary: "", detail: `${spieler.name} ist eingestiegen!` }); 
+        const neuerSpieler = result as Spieler;
+        this.spieltagService.spielerSteigtEin(neuerSpieler);    
+        const punkteNeuerSpieler = this.spieltag.getPunktestand(this.runde, neuerSpieler);    
+        this.messageService.add({ severity: "success", summary: "", 
+          detail: `${neuerSpieler.name} ist mit ${punkteNeuerSpieler} ${punkteNeuerSpieler === 1 ? "Punkt" : "Punkte"} eingestiegen!` }); 
       }
     });
   }
@@ -158,11 +157,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   rundeAbgerechnet() {
     this.displayGewinnerDialog = false;
     this.runde.gewinner = this.selectedGewinner;
-    if (this.runde.isAktuelleRunde()) {
-      this.spieltag.startNaechsteRunde();
-    }
-    this.setAktuelleRunde(this.spieltag.aktuelleRunde);
-    this.spieltagService.sendSpieltag(this.spieltag);
+    this.spieltagService.rundeAbgerechnet(this.runde);
   }
 
   confirmGespaltenerArsch() {
@@ -311,10 +306,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   openSettings() {
     this.displayMenu = false;
-    const ref = this.dialogService.open(SettingsComponent, null);
-    ref.afterClosed.subscribe(result => {
-      console.log('Dialog closed', result);
-    });
+    const ref = this.dialogService.open(SettingsComponent, {});
   }
 
   toCharts() {
@@ -347,6 +339,10 @@ export class RundeComponent implements OnInit, OnDestroy {
       if (this.getErgebnisVorherigeRunde()) {
         result.push(`Vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
       }
+    } else if (this.runde.isDummyRunde()) {
+      if (this.runde.ergebnisEvents) {
+       result.push(_.first(this.runde.ergebnisEvents)["event"]);
+      }
     } else if (this.runde.isGespielteRunde()) {
       result.push(`Geber: ${this.runde.geber.name}`);
       result.push(`Böcke: ${this.runde.boecke}`);
@@ -369,7 +365,9 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   getPunktestaende() {
     const result = [];
-    this.spieltag.spieler.forEach(s => result.push({
+    this.spieltag.spieler
+      .filter(s => this.settingsService.hideInactivePlayers ? s.isAktiv : true)
+      .forEach(s => result.push({
       name: s.name, 
       punkte: this.spieltag.getPunktestand(this.runde, s),
       aktiv: s.isAktiv

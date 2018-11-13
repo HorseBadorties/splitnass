@@ -8,10 +8,11 @@ import { first } from "rxjs/operators";
 })
 export class SettingsService {
 
-  private _offline: boolean;
-  private _animateRoutes: boolean;
-  private _adminMode: boolean;
-  private _autoShowRundendetails: boolean;
+  private _offline = false;
+  private _animateRoutes = false;
+  private _adminMode = false;
+  private _autoShowRundendetails = true;
+  private _hideInactivePlayers = true;
 
   public offlineStatus = new BehaviorSubject(undefined);
 
@@ -52,6 +53,15 @@ export class SettingsService {
     this.setBoolean("autoShowRundendetails", value);
   }
 
+  public get hideInactivePlayers(): boolean {
+    return this._hideInactivePlayers;
+  }
+  
+  public set hideInactivePlayers(value: boolean) {
+    this._hideInactivePlayers = value;
+    this.setBoolean("hideInactivePlayers", value);
+  }
+
   public saveSpieltagJSON(spieltagJSON: string) {
     this.localStorage.setItemSubscribe("savedSpieltag", spieltagJSON);
   }
@@ -61,8 +71,7 @@ export class SettingsService {
   } 
 
   constructor(private localStorage: LocalStorage) { 
-    this.getBoolean("offline").pipe(first())
-      .subscribe(value => {
+    this.getBoolean("offline").pipe(first()).subscribe(value => {
         this._offline = value && value.valueOf();
         this.offlineStatus.next(this._offline);
       });
@@ -72,6 +81,8 @@ export class SettingsService {
       .subscribe(value => this._adminMode = value && value.valueOf())
     this.getBoolean("autoShowRundendetails").pipe(first())
       .subscribe(value => this._autoShowRundendetails = value && value.valueOf())
+    this.getBoolean("hideInactivePlayers").pipe(first())
+      .subscribe(value => this._hideInactivePlayers = value && value.valueOf())
   }
 
   private setBoolean(name: string, value: boolean) {

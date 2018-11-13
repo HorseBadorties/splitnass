@@ -15,11 +15,8 @@ import { SettingsComponent } from "../settings/settings.component";
 /** Hack: align header */
 ScrollableView.prototype.ngAfterViewChecked = function () {
   if (!this.initialized && this.el.nativeElement.offsetParent) {
-    //this.alignScrollBar();
     this.initialized = true;
-
     new ResizeObserver(entries => {
-      //for (let entry of entries)
         this.alignScrollBar();
     }).observe(this.scrollBodyViewChild.nativeElement);
   }
@@ -37,7 +34,6 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedRunde: Runde;
   expandedRunden = [];
   displayedColumns: Column[];
-  // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
   constructor(
@@ -46,11 +42,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private dialogService: DialogService) {}
 
-  openDialog() {
-    const ref = this.dialogService.open(SettingsComponent, { data: { message: 'I am a dynamic component inside of a dialog!' } });
-    ref.afterClosed.subscribe(result => {
-      console.log('Dialog closed', result);
-    });
+  openSettings() {
+    const ref = this.dialogService.open(SettingsComponent, {});
   }
 
   toRunde() {
@@ -94,7 +87,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private calcDisplayedColumns(s: Spieltag) {
     const result = [new Column("nr", "Runde", "60%")];
-    s.spieler.forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%", spieler.isAktiv)));
+    s.spieler
+      .filter(s => this.settingsService.hideInactivePlayers ? s.isAktiv : true)
+      .forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%", spieler.isAktiv)));
     result.push(new Column("boecke", "Böcke", "60%"));
     result.push(new Column("ergebnis", "Punkte", "60%"));
     this.displayedColumns = result;

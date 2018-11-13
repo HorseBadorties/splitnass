@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 import { Runde, MAX_BOECKE } from "./runde";
 import { Spieler } from "./spieler";
 
@@ -14,7 +16,6 @@ export class Spieltag {
       spieler.isAktiv = s.isAktiv;
       result.spieler.push(spieler);
     });
-    result.anzahlRunden = parsedJson.anzahlRunden;
     result.runden = [];
     parsedJson.runden.forEach(r => {
       result.runden.push(Runde.fromJsonObject(r, result));
@@ -26,24 +27,24 @@ export class Spieltag {
   public static toJSON(spieltag: Spieltag) {
     return JSON.stringify(spieltag, function replacer(key, value) {
       if (this instanceof Runde) {
-        return (key === "spieltag" || key === "_ergebnisEvents") ? undefined : value;
+        const runde = this as Runde;
+        return key === "spieltag" || (key === "_ergebnisEvents" && !runde.isDummyRunde()) ? undefined : value;
       } else return value;
     });
   }
 
   constructor(
-      public beginn?: Date,
-      public ende?: Date,
-      public anzahlRunden = 0,
-      public runden: Array<Runde> = [],
-      public aktuelleRunde?: Runde,
-      public spieler: Array<Spieler> = []) {}
+    public beginn?: Date,
+    public ende?: Date,
+    public runden: Array<Runde> = [],
+    public aktuelleRunde?: Runde,
+    public spieler: Array<Spieler> = []) { }
 
-  start(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
+  public start(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler): Spieltag {
     this.beginn = new Date();
     this.spieler = spieler;
-    this.anzahlRunden = anzahlRunden;
-    for (let i = 0; i < this.anzahlRunden; i++) {
+    this.spieler.forEach(s => s.isAktiv = true);
+    for (let i = 0; i < anzahlRunden; i++) {
       this.runden.push(new Runde(this, i + 1));
     }
     this.aktuelleRunde = this.runden[0];
@@ -51,9 +52,10 @@ export class Spieltag {
     this.aktuelleRunde.spieler = this.getSpieler(geber);
     this.aktuelleRunde.aufspieler = this.getNaechstenSpieler(geber);
     this.aktuelleRunde.start();
+    return this;
   }
 
-  startNaechsteRunde() {
+  public startNaechsteRunde(): Spieltag {
     this.aktuelleRunde.beenden();
     const naechsteRunde = this.getNaechsteRunde(this.aktuelleRunde);
     if (naechsteRunde) {
@@ -64,14 +66,81 @@ export class Spieltag {
       naechsteRunde.start();
       this.aktuelleRunde = naechsteRunde;
     }
+    return this;
   }
 
-  public bock() {
+  // Neuer Spieler sitzt hinter dem aktuellen Geber und wird zum Geber der aktuellen Runde!
+  public spielerSteigtEin(neuerSpieler: Spieler): Spieltag {
+    const hadPaused = this.spieler.includes(neuerSpieler);
+    neuerSpieler.isAktiv = true;
+    _.remove(this.spieler, s => s === neuerSpieler);
+    this.spieler.splice(this.spieler.indexOf(this.aktuelleRunde.geber) + 1, 0, neuerSpieler);
+    this.aktuelleRunde.geber = neuerSpieler;
+    if (!hadPaused) {
+      const punkte = this.lowestScoreOf(this.spieler.filter(s => s !== neuerSpieler));
+      this.insertDummyRundeWith(neuerSpieler, punkte,
+        `${neuerSpieler.name} steigt mit ${punkte} ${punkte === 1 ? "Punkt" : "Punkten"} ein`);
+    }
+    return this;
+  }
+
+  public spielerSteigtAus(aussteiger: Spieler): Spieltag {
+    aussteiger.isAktiv = false;
+    if (this.aktuelleRunde.geber === aussteiger) {
+      this.aktuelleRunde.geber = this.getVorherigenSpieler(aussteiger);
+    }
+    this.aktuelleRunde.aufspieler = this.getNaechstenSpieler(this.aktuelleRunde.geber);
+    this.aktuelleRunde.spieler = this.getSpieler(this.aktuelleRunde.geber);
+    return this;
+  }
+
+  public bock(): Spieltag {
     this.doBoecke(1);
+    return this;
   }
 
-  public boecke() {
+  public boecke(): Spieltag {
     this.doBoecke(this.spieler.length);
+    return this;
+  }
+
+  public findSpielerById(id: number) {
+    return this.spieler.find(s => s.id === id);
+  }
+
+  public getPunktestand(runde: Runde, spieler: Spieler) {
+    return this.runden.slice(0, this.runden.indexOf(runde) + 1)
+      .filter(r => r.gewinner.includes(spieler))
+      .map(r => r.ergebnis)
+      .reduce((acc, curr) => acc + curr, 0);
+  }
+
+  public getVorherigeRunde(runde: Runde) {
+    const indexOfRunde = this.runden.indexOf(runde);
+    return indexOfRunde > 0 ? this.runden[indexOfRunde - 1] : undefined;
+  }
+
+  public getNaechsteRunde(runde: Runde) {
+    const indexOfRunde = this.runden.indexOf(runde);
+    return indexOfRunde < this.runden.length - 1 ? this.runden[indexOfRunde + 1] : undefined;
+  }
+
+  private insertDummyRundeWith(spieler: Spieler, punkte: number, description: string) {
+    const dummyRunde = new Runde(this, this.aktuelleRunde.nr);
+    dummyRunde.spieler = [spieler];
+    dummyRunde.gewinner = [spieler];
+    dummyRunde.ergebnis = punkte;
+    dummyRunde.setErgebnisEvents([{"event": description, "icon": "pi-info"}]);
+    dummyRunde.isGestartet = true;
+    dummyRunde.isBeendet = true;
+    // adjust nr of following Runden
+    this.runden.slice(dummyRunde.nr - 1).forEach(r => r.nr++);
+    // insert new Runde
+    this.runden.splice(dummyRunde.nr - 1, 0, dummyRunde);
+  }
+
+  private lowestScoreOf(spieler: Array<Spieler>) {
+    return _.min(spieler.map(s => this.getPunktestand(this.aktuelleRunde, s)));
   }
 
   private doBoecke(count: number) {
@@ -114,25 +183,10 @@ export class Spieltag {
     return next.isAktiv ? next : this.getNaechstenSpieler(next);
   }
 
-  public findSpielerById(id: number) {
-    return this.spieler.find(s => s.id === id);
+  private getVorherigenSpieler(spieler: Spieler) {
+    const previous = _.nth(this.spieler, this.spieler.indexOf(spieler) - 1);
+    return previous.isAktiv ? previous : this.getVorherigenSpieler(previous);
   }
 
-  public getPunktestand(runde: Runde, spieler: Spieler) {
-    return this.runden.slice(0, this.runden.indexOf(runde) + 1)
-      .filter(r => r.gewinner.includes(spieler))
-      .map(r => r.ergebnis)
-      .reduce((acc, curr) => acc + curr, 0);
-  }
-
-  public getVorherigeRunde(runde: Runde) {
-    const indexOfRunde = this.runden.indexOf(runde);
-    return indexOfRunde > 0 ? this.runden[indexOfRunde - 1] : undefined;
-  }
-
-  public getNaechsteRunde(runde: Runde) {
-    const indexOfRunde = this.runden.indexOf(runde);
-    return indexOfRunde < this.runden.length - 1 ? this.runden[indexOfRunde + 1] : undefined;
-  }
 }
 
