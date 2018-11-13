@@ -11,6 +11,7 @@ import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
 import { DialogService } from "../../dialog/dialog.service";
 import { SettingsComponent } from "../settings/settings.component";
+import { MenuItem } from "primeng/api";
 
 /** Hack: align header */
 ScrollableView.prototype.ngAfterViewChecked = function () {
@@ -34,6 +35,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedRunde: Runde;
   expandedRunden = [];
   displayedColumns: Column[];
+  displayMenu = false;
+  menuItems: MenuItem[];
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
   constructor(
@@ -43,7 +46,13 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialogService: DialogService) {}
 
   openSettings() {
-    const ref = this.dialogService.open(SettingsComponent, {});
+    this.displayMenu = false;
+    this.dialogService.open(SettingsComponent, {});
+  }
+
+  toCharts() {
+    this.displayMenu = false;
+    this.router.navigate(["charts"], { skipLocationChange: false });
   }
 
   toRunde() {
@@ -57,6 +66,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initMenu();
     this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));
   }
 
@@ -157,6 +167,24 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private initMenu() {
+    this.menuItems = [
+      {
+        label: "Statistik", id: MenuItemId.Statistik,
+        icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+      },
+      {
+        label: "Settings", id: MenuItemId.Settings,
+        icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
+      },
+    ];
+  }
+
+}
+
+enum MenuItemId {
+  Settings = "Settings",
+  Statistik = "Statistik"
 }
 
 export class Column {

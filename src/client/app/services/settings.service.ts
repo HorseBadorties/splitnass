@@ -15,6 +15,7 @@ export class SettingsService {
   private _hideInactivePlayers = true;
 
   public offlineStatus = new BehaviorSubject(undefined);
+  public hideInactivePlayersStatus = new BehaviorSubject(undefined);
 
   public get offline(): boolean {
     return this._offline;
@@ -60,6 +61,7 @@ export class SettingsService {
   public set hideInactivePlayers(value: boolean) {
     this._hideInactivePlayers = value;
     this.setBoolean("hideInactivePlayers", value);
+    this.hideInactivePlayersStatus.next(value);
   }
 
   public saveSpieltagJSON(spieltagJSON: string) {

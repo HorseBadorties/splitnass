@@ -1,3 +1,11 @@
+<!-- Menu -->
+
+<p-sidebar [(visible)]="displayMenu" position="right">
+  <p-panelMenu [model]="menuItems"></p-panelMenu>
+</p-sidebar>
+
+<!-- Fenster -->
+
 <div class="flexcolumn container" >
 
   <p-toolbar>
@@ -9,7 +17,7 @@
       <span *ngIf="settingsService.offline" class="attention">Offline-Modus</span>
     </div>
     <div class="ui-toolbar-group-right">
-      <p-button icon="pi pi-ellipsis-v" (click)="openSettings()"></p-button>
+      <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
     </div>
   </p-toolbar>
 

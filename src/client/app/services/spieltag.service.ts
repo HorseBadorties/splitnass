@@ -21,6 +21,9 @@ export class SpieltagService {
         this.setAktuellerSpieltag(spieltag);
       }
     });
+    this.settingsService.hideInactivePlayersStatus.subscribe(_ => {
+      if (this.aktuellerSpieltag) this.spieltag.next(this.aktuellerSpieltag);
+    });
     this.settingsService.offlineStatus.subscribe(offline => this.offlineStatusChanded(offline));
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);

@@ -10,9 +10,9 @@ import { Spieltag } from "src/model/spieltag";
 import { DialogService } from "../../dialog/dialog.service";
 import { SettingsService } from "../../services/settings.service";
 import { SpieltagService } from "../../services/spieltag.service";
+import { NumberpickerComponent } from "../numberpicker/numberpicker.component";
 import { SettingsComponent } from "../settings/settings.component";
 import { SpielerauswahlComponent } from "../spielerauswahl/spielerauswahl.component";
-import { NumberpickerComponent } from "../numberpicker/numberpicker.component";
 
 
 @Component({
@@ -301,12 +301,12 @@ export class RundeComponent implements OnInit, OnDestroy {
         ]
       },
       {
-        label: "Settings", id: MenuItemId.Settings,
-        icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
-      },
-      {
         label: "Statistik", id: MenuItemId.Statistik,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+      },
+      {
+        label: "Settings", id: MenuItemId.Settings,
+        icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
     ];
   }
@@ -324,7 +324,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   openSettings() {
     this.displayMenu = false;
-    const ref = this.dialogService.open(SettingsComponent, {});
+    this.dialogService.open(SettingsComponent, {});
   }
 
   toCharts() {
