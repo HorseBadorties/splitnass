@@ -146,7 +146,7 @@ export class Spieltag {
     // Spieler am Tisch
     let result = "<br>Am Tisch:<br>" + this.aktuelleRunde.spieler.map(s => {
       if (this.aktuelleRunde.geber === s) {
-        return `<b>${s.name}</b> (Geber)`; 
+        return `<b>${s.name}</b> (Geber)`;
       } else if (this.aktuelleRunde.aufspieler === s) {
         return `<b>${s.name}</b> (Aufspiel)`;
       } else {
