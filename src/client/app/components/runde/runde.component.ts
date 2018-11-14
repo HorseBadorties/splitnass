@@ -7,12 +7,13 @@ import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
-import { DialogService } from "../../dialog/dialog.service";
+import { DialogService } from "../../dialogs/dialog.service";
 import { SettingsService } from "../../services/settings.service";
 import { SpieltagService } from "../../services/spieltag.service";
-import { NumberpickerComponent } from "../numberpicker/numberpicker.component";
-import { SettingsComponent } from "../settings/settings.component";
-import { SpielerauswahlComponent } from "../spielerauswahl/spielerauswahl.component";
+import { NumberpickerComponent } from "../../dialogs/numberpicker/numberpicker.component";
+import { SettingsComponent } from "../../dialogs/settings/settings.component";
+import { SpielerauswahlComponent } from "../../dialogs/spielerauswahl/spielerauswahl.component";
+import { NeuerSpieltagComponent } from "../../dialogs/neuer-spieltag/neuer-spieltag.component";
 
 
 @Component({
@@ -37,8 +38,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   moeglicheKontraAnsagen: SelectItem[];
   moeglicheErgebnisse: SelectItem[];
   moeglicheSoli: Solo[];
-
-
+ 
   constructor(
     public spieltagService: SpieltagService,
     private messageService: MessageService,
@@ -115,16 +115,10 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   newSpieltag() {
     this.displayMenu = false;
-    this.selectedSpieler = [];
-    this.moeglicheSpieler = Spieler.all.slice();
-    this.selectedRundenanzahl = 42;
-    this.displaySpieltagDialog = true;
+    this.dialogService.open(NeuerSpieltagComponent, {});    
   }
 
-  startNewSpieltag() {
-    this.spieltagService.startSpieltag(this.selectedRundenanzahl, this.selectedSpieler, this.selectedSpieler[0]);
-    this.displaySpieltagDialog = false;
-  }
+  
 
   vonVorneHereinChanged(re: boolean) {
     if (re && this.runde.reVonVorneHerein && this.runde.reAngesagt === Ansage.KeineAnsage) {

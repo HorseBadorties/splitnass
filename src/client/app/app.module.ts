@@ -32,10 +32,11 @@ import { AppRoutingModule } from "./app-routing.module";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ChartsComponent } from './components/charts/charts.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { DialogModule as CustomDialogModule } from './dialog/dialog.module';
-import { SpielerauswahlComponent } from './components/spielerauswahl/spielerauswahl.component';
-import { NumberpickerComponent } from './components/numberpicker/numberpicker.component';
+import { SettingsComponent } from './dialogs/settings/settings.component';
+import { DialogModule as CustomDialogModule } from './dialogs/dialog.module';
+import { SpielerauswahlComponent } from './dialogs/spielerauswahl/spielerauswahl.component';
+import { NumberpickerComponent } from './dialogs/numberpicker/numberpicker.component';
+import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { NumberpickerComponent } from './components/numberpicker/numberpicker.co
     ChartsComponent,
     SettingsComponent,
     SpielerauswahlComponent,
-    NumberpickerComponent
+    NumberpickerComponent,
+    NeuerSpieltagComponent
   ],
   imports: [
     BrowserModule,

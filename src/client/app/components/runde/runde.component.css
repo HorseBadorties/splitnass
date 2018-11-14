@@ -1,3 +1,8 @@
+:host >>> .ui-button {
+  background: rgba(0, 0, 0, 0); 
+  border: 0;
+}
+
 .info {  
   padding-right: 1em;
   white-space: nowrap;

@@ -1,3 +1,7 @@
+:host >>> .ui-button {
+  background: rgba(0, 0, 0, 0); 
+  border: 0;
+}
 
 .table-header-row {
   font-size: 14px;
@@ -49,5 +53,6 @@
   padding-left: .3em;
   font-size: 16px;  
 }
+
 
   

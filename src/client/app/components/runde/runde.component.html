@@ -7,33 +7,13 @@
 <p-dialog *ngIf="displayGewinnerDialog" header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog"
   [modal]="true" [responsive]="true">
 
-  <div class="bold-text">Ergebnis: {{runde.ergebnis}} {{runde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
+  <div class="bold-text" style="padding-bottom: 0.5em">Ergebnis: {{runde.ergebnis}} {{runde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
   <p-listbox [options]="runde.spieler" [(ngModel)]="selectedGewinner" multiple="multiple" checkbox="checkbox"
     optionLabel="name" [showToggleAll]="false">
   </p-listbox>
   <p-footer>
-    <p-button label="Ok" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
-    <p-button label="Cancel" (onClick)="displayGewinnerDialog=false" class="ui-button-secondary"></p-button>
-  </p-footer>
-
-</p-dialog>
-
-<p-dialog header="Neuen Spieltag starten" [(visible)]="displaySpieltagDialog" [modal]="true" [responsive]="true">
-
-  <div class="p-col">
-    <span>Rundenanzahl: </span>
-    <p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="selectedRundenanzahl"></p-spinner>
-  </div>
-  <div class="p-col"></div>
-  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Mögliche Spieler" targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!"
-    [responsive]="true" [showSourceControls]="false" [showTargetControls]="false">
-    <ng-template let-spieler pTemplate="item">
-      <div>{{spieler.name}}</div>
-    </ng-template>
-  </p-pickList>
-  <p-footer>
-    <p-button label="Ok" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4"></p-button>
-    <p-button label="Cancel" (onClick)="displaySpieltagDialog=false" class="ui-button-secondary"></p-button>
+    <p-button label="Ok" styleClass="ui-button-info" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
+    <p-button label="Cancel" styleClass="ui-button-info" (onClick)="displayGewinnerDialog=false"></p-button>
   </p-footer>
 
 </p-dialog>
@@ -59,8 +39,7 @@
     <span *ngIf="settingsService.offline" class="attention">Offline-Modus</span>
   </div>
   <div class="ui-toolbar-group-right">
-    <button pButton type="button" icon="pi pi-ellipsis-v" style="background: rgba(0, 0, 0, 0); border: 0;" (click)="displayMenu = true">
-    </button>
+    <button pButton type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></button>
   </div>
 </p-toolbar>
 

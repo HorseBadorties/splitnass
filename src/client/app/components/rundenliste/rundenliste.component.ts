@@ -9,8 +9,8 @@ import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
-import { DialogService } from "../../dialog/dialog.service";
-import { SettingsComponent } from "../settings/settings.component";
+import { DialogService } from "../../dialogs/dialog.service";
+import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { MenuItem } from "primeng/api";
 
 /** Hack: align header */

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DialogConfig } from '../../dialog/dialog-config';
-import { DialogRef } from '../../dialog/dialog-ref';
+import { DialogConfig } from '../dialog-config';
+import { DialogRef } from '../dialog-ref';
 import { SettingsService } from '../../services/settings.service';
 
 @Component({

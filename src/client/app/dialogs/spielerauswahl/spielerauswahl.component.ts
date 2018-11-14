@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Spieler } from 'src/model/spieler';
-import { DialogConfig } from '../../dialog/dialog-config';
-import { DialogRef } from '../../dialog/dialog-ref';
+import { DialogConfig } from '../dialog-config';
+import { DialogRef } from '../dialog-ref';
 
 @Component({
   selector: 'app-spielerauswahl',

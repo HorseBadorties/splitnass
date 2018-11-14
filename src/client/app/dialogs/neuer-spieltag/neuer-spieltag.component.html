@@ -1,0 +1,23 @@
+<p-card>
+
+  <div class="p-col">
+    <span>Rundenanzahl: </span>
+    <p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="anzahlRunden"></p-spinner>
+  </div>
+  <div class="p-col"></div>
+  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler"
+    sourceHeader="Mögliche Spieler" targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!"
+    [responsive]="true" [showSourceControls]="false" [showTargetControls]="false">
+    <ng-template let-spieler pTemplate="item">
+      <div>{{spieler.name}}</div>
+    </ng-template>
+  </p-pickList>
+
+  <div class="p-col"></div>
+
+  <div class="actions">
+    <p-button label="OK" (click)="onClose()" [disabled]="selectedSpieler.length < 4"></p-button>
+    <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+  </div>
+
+</p-card>
