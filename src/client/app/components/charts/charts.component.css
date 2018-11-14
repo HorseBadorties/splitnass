@@ -1,3 +1,14 @@
+:host >>> .ui-button {
+  background: rgba(0, 0, 0, 0); 
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+:host >>> .ui-button:enabled:focus {
+  background: rgba(0, 0, 0, 0); 
+  /* border: 1px solid #66afe9; */
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
 body { 
   /* height: 100vh;  */
   background-color: white;

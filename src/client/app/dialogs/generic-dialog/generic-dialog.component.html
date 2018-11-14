@@ -1,0 +1,15 @@
+<p-card>
+  
+  <p-panel [toggleable]="false">
+    <p-header>
+      {{header}}
+    </p-header>
+    <span [innerHTML]="message"></span>
+  </p-panel>
+
+  <div style="padding-top: 1em;" class="actions">
+    <p-button label="{{isConfirmationType() ? 'Yes' : 'Ok'}}" (click)="onClose()"></p-button>
+    <p-button *ngIf="isConfirmationType()" label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+  </div>
+
+</p-card>

@@ -9,8 +9,8 @@ import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
 import { SpieltagService } from "../../services/spieltag.service";
 import { SettingsService } from "../../services/settings.service";
-import { DialogService } from "../../dialog/dialog.service";
-import { SettingsComponent } from "../settings/settings.component";
+import { DialogService } from "../../dialogs/dialog.service";
+import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { MenuItem } from "primeng/api";
 
 /** Hack: align header */
@@ -170,7 +170,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   private initMenu() {
     this.menuItems = [
       {
-        label: "Statistik", id: MenuItemId.Statistik,
+        label: "Charts", id: MenuItemId.Charts,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
       },
       {
@@ -184,7 +184,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
 enum MenuItemId {
   Settings = "Settings",
-  Statistik = "Statistik"
+  Charts = "Charts"
 }
 
 export class Column {
