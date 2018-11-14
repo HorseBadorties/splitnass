@@ -7,6 +7,7 @@ import { SpielerauswahlComponent } from './spielerauswahl/spielerauswahl.compone
 import { NumberpickerComponent } from './numberpicker/numberpicker.component';
 import { NeuerSpieltagComponent } from './neuer-spieltag/neuer-spieltag.component';
 import { GewinnerauswahlComponent } from './gewinnerauswahl/gewinnerauswahl.component';
+import { GenericDialogComponent } from './generic-dialog/generic-dialog.component';
 
 @NgModule({
   declarations: [DialogComponent, InsertionDirective],
@@ -17,7 +18,8 @@ import { GewinnerauswahlComponent } from './gewinnerauswahl/gewinnerauswahl.comp
     SpielerauswahlComponent, 
     NumberpickerComponent,
     NeuerSpieltagComponent,
-    GewinnerauswahlComponent
+    GewinnerauswahlComponent,
+    GenericDialogComponent
   ]
 })
 export class DialogModule { }

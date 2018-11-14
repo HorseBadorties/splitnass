@@ -25,7 +25,7 @@ import { ChartModule } from "primeng/chart";
 import { TabViewModule } from "primeng/tabview";
 import { CardModule } from "primeng/card";
 
-import { AppComponent } from "./components/app.component";
+import { AppComponent } from "./app.component";
 import { RundeComponent } from "./components/runde/runde.component";
 import { RundenlisteComponent } from "./components/rundenliste/rundenliste.component";
 import { AppRoutingModule } from "./app-routing.module";
@@ -38,6 +38,7 @@ import { SpielerauswahlComponent } from './dialogs/spielerauswahl/spielerauswahl
 import { NumberpickerComponent } from './dialogs/numberpicker/numberpicker.component';
 import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.component';
 import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerauswahl.component';
+import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerausw
     SpielerauswahlComponent,
     NumberpickerComponent,
     NeuerSpieltagComponent,
-    GewinnerauswahlComponent
+    GewinnerauswahlComponent,
+    GenericDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import * as _ from "lodash";
-import { ConfirmationService, MenuItem, MessageService, SelectItem } from "primeng/api";
+import { MenuItem, MessageService, SelectItem } from "primeng/api";
 import { Subscription } from "rxjs";
 import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
@@ -15,13 +15,14 @@ import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { SpielerauswahlComponent } from "../../dialogs/spielerauswahl/spielerauswahl.component";
 import { NeuerSpieltagComponent } from "../../dialogs/neuer-spieltag/neuer-spieltag.component";
 import { GewinnerauswahlComponent } from "../../dialogs/gewinnerauswahl/gewinnerauswahl.component";
+import { GenericDialogComponent, Type } from "../../dialogs/generic-dialog/generic-dialog.component";
 
 
 @Component({
   selector: "app-runde",
   templateUrl: "./runde.component.html",
   styleUrls: ["./runde.component.css"],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService]
 })
 export class RundeComponent implements OnInit, OnDestroy {
   spieltagServiceSubscribtion: Subscription;
@@ -37,7 +38,6 @@ export class RundeComponent implements OnInit, OnDestroy {
   constructor(
     public spieltagService: SpieltagService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     public settingsService: SettingsService,
     private dialogService: DialogService,
     private router: Router) {
@@ -54,8 +54,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   spielerSteigtAus() {
     this.displayMenu = false;
     const data: any = {spieler: this.spieltag.spieler.filter(s => s.isAktiv), message: "Wer steigt aus?"};
-    const ref = this.dialogService.open(SpielerauswahlComponent, data);
-    ref.afterClosed.subscribe(result => {      
+    this.dialogService.open(SpielerauswahlComponent, data).afterClosed.subscribe(result => {
       if (result) {
         const inaktiverSpieler = result as Spieler;
         this.spieltagService.spielerSteigtAus(inaktiverSpieler);
@@ -68,8 +67,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.displayMenu = false;
     const moeglicheSpieler = _.difference(Spieler.all.slice(), this.spieltag.spieler.filter(s => s.isAktiv));
     const data: any = {spieler: moeglicheSpieler, message: "Wer steigt ein?"};
-    const ref = this.dialogService.open(SpielerauswahlComponent, data);
-    ref.afterClosed.subscribe(result => {      
+    this.dialogService.open(SpielerauswahlComponent, data).afterClosed.subscribe(result => {
       if (result) {
         const neuerSpieler = result as Spieler;
         this.spieltagService.spielerSteigtEin(neuerSpieler);    
@@ -87,8 +85,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       value: this.spieltag.runden.length, 
       message: "Wieviele Runden sollen gespielt werden?"
     };
-    const ref = this.dialogService.open(NumberpickerComponent, data);
-    ref.afterClosed.subscribe(result => {      
+    this.dialogService.open(NumberpickerComponent, data).afterClosed.subscribe(result => {
       if (result) {
         this.spieltagService.setztRundenanzahl(result);
         this.messageService.add({ severity: "success", summary: "", 
@@ -99,13 +96,8 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   zeigeSitzreihenfolge() {
     this.displayMenu = false; 
-    this.confirmationService.confirm({
-      header: "Sitzreihenfolge",
-      rejectVisible: false,
-      acceptLabel: "Ok",
-      icon: "pi pi-info",
-      message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()
-    });
+    const data: any = {header: "Sitzreihenfolge", message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()};
+    this.dialogService.open(GenericDialogComponent, data);
   }
 
   newSpieltag() {
@@ -174,8 +166,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       ergebnis: this.runde.ergebnis,
       anzahlGewinner: this.runde.solo === Solo.KEIN_SOLO ? 2 : this.runde.reGewinnt ? 1 : 3
     };
-    const ref = this.dialogService.open(GewinnerauswahlComponent, data);
-    ref.afterClosed.subscribe(result => {      
+    this.dialogService.open(GewinnerauswahlComponent, data).afterClosed.subscribe(result => { 
       if (result) {
         this.runde.gewinner = result as Array<Spieler>;
         this.spieltagService.rundeAbgerechnet(this.runde);
@@ -184,10 +175,13 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   confirmGespaltenerArsch() {
-    this.confirmationService.confirm({
-      header: "Gespaltener Arsch?",
+    const data: any = {
+      header: "Gespaltener Arsch",
       message: "Really?",
-      accept: () => {
+      type: Type.CONFIRMATION      
+    };
+    this.dialogService.open(GenericDialogComponent, data).afterClosed.subscribe(result => { 
+      if (result === "Yes") {
         this.runde.berechneErgebnis();
         this.spieltagService.rundeAbgerechnet(this.runde);
       }
@@ -251,18 +245,16 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   private berechnungPruefen() {
-    this.displayMenu = false;
+    this.displayMenu = false;   
+    const data: any = {
+      header: "Berechnetes Ergebnis", 
+      message: "Kein Ergebnis"
+    };
     if (this.runde.gespielt) {
       this.runde.berechneErgebnis();
-      this.confirmationService.confirm({
-        "message": this.runde.ergebnisEvents.map(e => e["event"]).join(", "),
-        "rejectVisible": false
-      });
-    } else {
-      this.confirmationService.confirm({
-        "message": "Kein Ergebnis", "rejectVisible": false
-      });
+      data.message = this.runde.ergebnisEvents.map(e => e["event"]).join("<br>");
     }
+    this.dialogService.open(GenericDialogComponent, data);
   }
 
   private initMenu() {
@@ -302,16 +294,16 @@ export class RundeComponent implements OnInit, OnDestroy {
           {
             label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
             icon: "pi pi-fw pi-sort", command: _ => this.setzeRundenanzahl()
+          },
+          {
+            label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Statistik,
+            icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
           }
         ]
       },
       {
         label: "Statistik", id: MenuItemId.Statistik,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
-      },
-      {
-        label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Statistik,
-        icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
       },
       {
         label: "Settings", id: MenuItemId.Settings,
