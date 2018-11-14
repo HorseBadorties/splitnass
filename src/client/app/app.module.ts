@@ -37,6 +37,7 @@ import { DialogModule as CustomDialogModule } from './dialogs/dialog.module';
 import { SpielerauswahlComponent } from './dialogs/spielerauswahl/spielerauswahl.component';
 import { NumberpickerComponent } from './dialogs/numberpicker/numberpicker.component';
 import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.component';
+import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerauswahl.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.
     SettingsComponent,
     SpielerauswahlComponent,
     NumberpickerComponent,
-    NeuerSpieltagComponent
+    NeuerSpieltagComponent,
+    GewinnerauswahlComponent
   ],
   imports: [
     BrowserModule,

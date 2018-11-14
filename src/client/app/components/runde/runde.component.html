@@ -4,20 +4,6 @@
 
 <p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
 
-<p-dialog *ngIf="displayGewinnerDialog" header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog"
-  [modal]="true" [responsive]="true">
-
-  <div class="bold-text" style="padding-bottom: 0.5em">Ergebnis: {{runde.ergebnis}} {{runde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
-  <p-listbox [options]="runde.spieler" [(ngModel)]="selectedGewinner" multiple="multiple" checkbox="checkbox"
-    optionLabel="name" [showToggleAll]="false">
-  </p-listbox>
-  <p-footer>
-    <p-button label="Ok" styleClass="ui-button-info" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()"></p-button>
-    <p-button label="Cancel" styleClass="ui-button-info" (onClick)="displayGewinnerDialog=false"></p-button>
-  </p-footer>
-
-</p-dialog>
-
 <!-- Menu -->
 
 <p-sidebar [(visible)]="displayMenu" position="right">

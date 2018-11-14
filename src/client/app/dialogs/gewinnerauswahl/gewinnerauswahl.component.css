@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;  
+}
+
+.left-pad {  
+  padding-left: 0.5em;
+}
+
+.anzahl {
+  white-space: pre;
+}
+
+.ergebnis {
+  white-space: pre;
+  font-weight: bold;
+}
+
+.box {
+  padding: 1em;
+}

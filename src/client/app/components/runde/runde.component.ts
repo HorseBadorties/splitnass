@@ -14,6 +14,7 @@ import { NumberpickerComponent } from "../../dialogs/numberpicker/numberpicker.c
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { SpielerauswahlComponent } from "../../dialogs/spielerauswahl/spielerauswahl.component";
 import { NeuerSpieltagComponent } from "../../dialogs/neuer-spieltag/neuer-spieltag.component";
+import { GewinnerauswahlComponent } from "../../dialogs/gewinnerauswahl/gewinnerauswahl.component";
 
 
 @Component({
@@ -28,12 +29,6 @@ export class RundeComponent implements OnInit, OnDestroy {
   runde: Runde;
   displayMenu = false;
   menuItems: MenuItem[];
-  displayGewinnerDialog = false;
-  selectedGewinner: Spieler[] = [];
-  displaySpieltagDialog = false;
-  moeglicheSpieler: Spieler[] = [];
-  selectedSpieler: Spieler[] = [];
-  selectedRundenanzahl = 42;
   moeglicheReAnsagen: SelectItem[];
   moeglicheKontraAnsagen: SelectItem[];
   moeglicheErgebnisse: SelectItem[];
@@ -155,8 +150,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   private setAktuelleRunde(r: Runde) {
-    this.runde = r;
-    this.selectedGewinner = this.runde.gewinner;
+    this.runde = r;    
   }
 
   rundeAbrechnen() {
@@ -166,21 +160,27 @@ export class RundeComponent implements OnInit, OnDestroy {
       this.runde.berechneErgebnis();
       if (this.runde.ergebnis === 0) {
         this.messageService.add({ severity: "info", summary: "Gespaltener Arsch!", detail: "Böcke! :-)" });
-        this.rundeAbgerechnet();
+        this.spieltagService.rundeAbgerechnet(this.runde);
       } else {
-        this.displayGewinnerDialog = true;
+        this.openGewinnerDialog();      
       }
     }
   }
 
-  getAnzahlGewinner() {
-    return this.runde.solo === Solo.KEIN_SOLO ? 2 : this.runde.reGewinnt ? 1 : 3;
-  }
-
-  rundeAbgerechnet() {
-    this.displayGewinnerDialog = false;
-    this.runde.gewinner = this.selectedGewinner;
-    this.spieltagService.rundeAbgerechnet(this.runde);
+  openGewinnerDialog() {
+    const data: any = {
+      spieler: this.runde.spieler,
+      gewinner: this.runde.gewinner,
+      ergebnis: this.runde.ergebnis,
+      anzahlGewinner: this.runde.solo === Solo.KEIN_SOLO ? 2 : this.runde.reGewinnt ? 1 : 3
+    };
+    const ref = this.dialogService.open(GewinnerauswahlComponent, data);
+    ref.afterClosed.subscribe(result => {      
+      if (result) {
+        this.runde.gewinner = result as Array<Spieler>;
+        this.spieltagService.rundeAbgerechnet(this.runde);
+      }
+    });
   }
 
   confirmGespaltenerArsch() {
@@ -189,7 +189,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       message: "Really?",
       accept: () => {
         this.runde.berechneErgebnis();
-        this.rundeAbgerechnet();
+        this.spieltagService.rundeAbgerechnet(this.runde);
       }
     });
   }

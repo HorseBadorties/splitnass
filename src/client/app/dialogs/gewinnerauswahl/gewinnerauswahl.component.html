@@ -1,0 +1,17 @@
+<p-card>
+
+  <p-listbox [options]="spieler" [(ngModel)]="selectedSpieler" multiple="multiple" checkbox="checkbox"
+    optionLabel="name" [showToggleAll]="false">
+    <p-header>
+      <div class="ergebnis">Ergebnis: {{ergebnis}} {{ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
+      <div class="box"></div>
+      <div class="anzahl"><span>{{anzahlGewinner}} Gewinner auswählen!</span></div>
+    </p-header>
+  </p-listbox>
+  <div class="box"></div>
+  <div class="actions">
+    <p-button label="OK" (click)="onClose()" [disabled]="selectedSpieler.length !== anzahlGewinner"></p-button>
+    <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+  </div>
+
+</p-card>
