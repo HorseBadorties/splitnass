@@ -296,13 +296,13 @@ export class RundeComponent implements OnInit, OnDestroy {
             icon: "pi pi-fw pi-sort", command: _ => this.setzeRundenanzahl()
           },
           {
-            label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Statistik,
+            label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Sitzreihenfolge,
             icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
           }
         ]
       },
       {
-        label: "Statistik", id: MenuItemId.Statistik,
+        label: "Charts", id: MenuItemId.Charts,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
       },
       {
@@ -412,8 +412,9 @@ enum MenuItemId {
   SpielerRein = "SpielerRein",
   SpielerRaus = "SpielerRaus",
   Rundenzahl = "Rundenzahl",
+  Sitzreihenfolge = "Sitzreihenfolge",
 
   Settings = "Settings",
-  Statistik = "Statistik"
+  Charts = "Statistik"
 }
 

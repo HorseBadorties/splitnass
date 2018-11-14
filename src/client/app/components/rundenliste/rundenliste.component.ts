@@ -170,7 +170,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   private initMenu() {
     this.menuItems = [
       {
-        label: "Statistik", id: MenuItemId.Statistik,
+        label: "Charts", id: MenuItemId.Charts,
         icon: "pi pi-fw pi-info", command: _ => this.toCharts()
       },
       {
@@ -184,7 +184,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
 enum MenuItemId {
   Settings = "Settings",
-  Statistik = "Statistik"
+  Charts = "Charts"
 }
 
 export class Column {
