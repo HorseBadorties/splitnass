@@ -294,7 +294,7 @@ export class RundeComponent implements OnInit, OnDestroy {
             icon: "pi pi-fw pi-user-minus", command: _ => this.spielerSteigtAus()
           },
           {
-            label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
+            label: "Rundenanzahl ändern", id: MenuItemId.Rundenzahl,
             icon: "pi pi-fw pi-sort", command: _ => this.setzeRundenanzahl()
           },
           {
