@@ -113,7 +113,7 @@ export class Spieltag {
   }
 
   public boecke(): Spieltag {
-    this.doBoecke(this.spieler.length);
+    this.doBoecke(this.getAktiveSpieler().length);
     return this;
   }
 
