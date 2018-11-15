@@ -1,3 +1,4 @@
+
 <!-- Menu -->
 
 <p-sidebar [(visible)]="displayMenu" position="right">
@@ -6,9 +7,9 @@
 
 <!-- Fenster -->
 
-<div class="flexcolumn container">
+<div class="flexcolumn container" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
 
-  <p-toolbar>
+  <p-toolbar (swipeleft)="onSwipeLeft($event)">
     <div class="ui-toolbar-group-left">
       <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
       <span class="box"> </span>
@@ -34,7 +35,7 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr class="table-header-row">
-        <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+        <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}" >
           <span class="{{col.isActive ? '' : 'inactivePlayer'}}">{{col.header}}</span>
         </th>
       </tr>
@@ -51,7 +52,7 @@
 
     <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
       <tr *ngIf="runde.isBeendet" class="ergebnis">
-        <td [attr.colspan]="columns.length + 1">
+        <td [attr.colspan]="columns.length + 1" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
           <div *ngFor="let s of runde.ergebnisEvents">
             <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
             <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
