@@ -188,15 +188,21 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   confirmGespaltenerArsch() {
+    this.doIfConfirmed("Gespaltener Arsch", "Wirklich?", () => {
+      this.runde.berechneErgebnis();
+      this.spieltagService.rundeAbgerechnet(this.runde);
+    });    
+  }
+
+  private doIfConfirmed(header: string, message: string, action: () => void) {
     const data: any = {
-      header: "Gespaltener Arsch",
-      message: "Really?",
+      header: header,
+      message: message,
       type: Type.CONFIRMATION      
     };
     this.dialogService.open(GenericDialogComponent, data).afterClosed.subscribe(result => { 
       if (result === "Yes") {
-        this.runde.berechneErgebnis();
-        this.spieltagService.rundeAbgerechnet(this.runde);
+        action();
       }
     });
   }
@@ -331,8 +337,11 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   private undoLetzteRunde() {
     this.displayMenu = false;   
-    this.spieltagService.undoLetzteRunde();
+    this.doIfConfirmed("Letzte Runde rückgängig machen?", "Wirklich?", () => {
+      this.spieltagService.undoLetzteRunde();
     this.messageService.add({ severity: "info", summary: "Undo erfolgt", detail: "Die letzte Runde wurde rückgängig gemacht!" });
+    });   
+    
   }
 
   private menuItemById(id: MenuItemId): MenuItem {

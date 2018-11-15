@@ -8,8 +8,8 @@
   </p-panel>
 
   <div style="padding-top: 1em;" class="actions">
-    <p-button label="{{isConfirmationType() ? 'Yes' : 'Ok'}}" (click)="onClose()"></p-button>
-    <p-button *ngIf="isConfirmationType()" label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+    <p-button label="{{isConfirmationType() ? 'Ja' : 'Ok'}}" (click)="onClose()"></p-button>
+    <p-button *ngIf="isConfirmationType()" label="Nein" (click)="onCancel()" class="left-pad"></p-button>
   </div>
 
 </p-card>
