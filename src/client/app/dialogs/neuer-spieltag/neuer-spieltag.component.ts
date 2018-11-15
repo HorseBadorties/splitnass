@@ -20,9 +20,15 @@ export class NeuerSpieltagComponent {
     this.message = config["message"];
   }
   
+  canConfirm() {
+    return this.selectedSpieler.length >= 4;
+  }
+
   onClose() {
-    this.spieltagService.startSpieltag(this.anzahlRunden, this.selectedSpieler, this.selectedSpieler[0]);
-    this.dialog.close(null);
+    if (this.canConfirm()) {
+      this.spieltagService.startSpieltag(this.anzahlRunden, this.selectedSpieler, this.selectedSpieler[0]);
+      this.dialog.close(null);
+    }
   }
 
   onCancel() {

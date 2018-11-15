@@ -22,8 +22,14 @@ export class GewinnerauswahlComponent {
       this.anzahlGewinner = config["anzahlGewinner"];
   }
   
+  canConfirm() {
+    return this.selectedSpieler.length == this.anzahlGewinner;
+  }
+
   onClose() {
-    this.dialog.close(this.selectedSpieler);
+    if (this.canConfirm()) {
+      this.dialog.close(this.selectedSpieler);
+    }
   }
 
   onCancel() {

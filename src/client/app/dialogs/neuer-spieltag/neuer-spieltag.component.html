@@ -16,7 +16,7 @@
   <div class="p-col"></div>
 
   <div class="actions">
-    <p-button label="OK" (click)="onClose()" [disabled]="selectedSpieler.length < 4"></p-button>
+    <p-button label="OK" (click)="onClose()" [disabled]="!canConfirm()"></p-button>
     <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
   </div>
 

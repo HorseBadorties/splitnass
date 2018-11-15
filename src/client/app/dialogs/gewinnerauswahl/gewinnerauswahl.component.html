@@ -10,7 +10,7 @@
   </p-listbox>
   <div class="box"></div>
   <div class="actions">
-    <p-button label="OK" (click)="onClose()" [disabled]="selectedSpieler.length !== anzahlGewinner"></p-button>
+    <p-button label="OK" (click)="onClose()" [disabled]="!canConfirm()"></p-button>
     <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
   </div>
 
