@@ -9,6 +9,11 @@
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
+:host >>> .ui-button:enabled:hover {
+  background: rgba(0, 0, 0, 0); 
+  border: 1px solid #66afe9;
+}
+
 .table-header-row {
   font-size: 14px;
 }

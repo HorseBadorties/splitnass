@@ -9,6 +9,11 @@
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
+:host >>> .ui-button:enabled:hover {
+  background: rgba(0, 0, 0, 0); 
+  border: 1px solid #66afe9;
+}
+
 .info {  
   padding-right: 1em;
   white-space: nowrap;
