@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { NgModule, Injectable } from "@angular/core";
+import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
@@ -40,6 +40,31 @@ import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.
 import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerauswahl.component';
 import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.component';
 
+@Injectable()
+export class ScollFixHammerConfig extends HammerGestureConfig {
+  buildHammer(element: HTMLElement) {
+    const mc = new (<any>window).Hammer(element);
+
+    for (const eventName in this.overrides) {
+      if (eventName) {
+        mc.get(eventName).set(this.overrides[eventName]);
+      }
+    }
+
+    return mc;
+  }
+  // overrides = {
+  //   pan: {
+  //     direction: 6
+  //   },
+  //   pinch: {
+  //     enable: false
+  //   },
+  //   rotate: {
+  //     enable: false
+  //   }
+  // };
+}
 
 @NgModule({
   declarations: [
@@ -84,8 +109,15 @@ import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.
     CustomDialogModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
+  providers: [
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: ScollFixHammerConfig
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [ChartsComponent]
 })
 export class AppModule { }
+
 

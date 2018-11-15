@@ -51,6 +51,14 @@ export class RundeComponent implements OnInit, OnDestroy {
     setTimeout(() => this.router.navigate(["rundenliste"], { skipLocationChange: false }), 50);
   }
 
+  onSwipeLeft(evt) {
+    this.toRundenliste();
+  }
+
+  onSwipeRight(evt) {
+    this.toRundenliste();
+  }
+
   spielerSteigtAus() {
     this.displayMenu = false;
     const data: any = {spieler: this.spieltag.spieler.filter(s => s.isAktiv), message: "Wer steigt aus?"};

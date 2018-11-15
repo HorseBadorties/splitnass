@@ -45,6 +45,14 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private dialogService: DialogService) {}
 
+
+  onSwipeLeft(evt) {
+    this.toRunde();
+  }
+  onSwipeRight(evt) {
+    this.toRunde();
+  }
+  
   openSettings() {
     this.displayMenu = false;
     this.dialogService.open(SettingsComponent, {});

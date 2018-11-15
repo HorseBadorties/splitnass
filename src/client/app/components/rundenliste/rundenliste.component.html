@@ -42,7 +42,8 @@
 
     <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
       <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
-        <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
+        <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" 
+          (click)="rundeClicked(runde)" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
           <span class="{{col.isActive ? '' : 'inactivePlayer'}}">{{getValueFor(runde, col.field)}}</span>
         </td>
       </tr>
