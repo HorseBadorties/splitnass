@@ -15,7 +15,7 @@
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-table" (click)="toRundenliste()"></p-button>
     <span *ngIf="spieltag">
-      <p-button style="padding-left: 2em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
+      <p-button style="padding-left: 1em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
       </p-button>
       <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
       </p-button>

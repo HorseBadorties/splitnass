@@ -64,6 +64,10 @@ export class SpieltagService {
   public setztRundenanzahl(anzahl: number) {
     this.sendSpieltag(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
   }
+
+  public undoLetzteRunde() {
+    this.sendSpieltag(this.aktuellerSpieltag.undoLetzteRunde());
+  }
   
 
   private sendSpieltag(spieltag: Spieltag) {

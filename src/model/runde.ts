@@ -48,16 +48,61 @@ export class Runde {
     public ergebnis: number = -1,
     private _ergebnisEvents: Array<object> = null) { }
 
-  public start() {
-    this.boeckeBeiBeginn = this.boecke;
-    this.isGestartet = true;
+  public reset(): Runde {
+    this.isGestartet = false;
+    this.isBeendet = false;
+    // this.spieler = [];
+    // this.geber = undefined;
+    // this.aufspieler = undefined;
+    this.gewinner = [];
+    this.reVonVorneHerein = false;
+    this.reAngesagt = Ansage.KeineAnsage;
+    this.kontraVonVorneHerein = false;
+    this.kontraAngesagt = Ansage.KeineAnsage;
+    this.boecke = this.boeckeBeiBeginn;
+    this.gespielt = undefined;
+    this.solo = Solo.KEIN_SOLO;
+    this.reGewinnt = false;
+    this.gegenDieSau = false;
+    this.extrapunkte = 0;
+    this.armut = false;
+    this.herzGehtRum = false;
+    this.ergebnis = -1;
+    this._ergebnisEvents = null;
+    return this;
   }
 
-  public beenden() {
+  public undoBoecke(): Runde {
+    const verteilteReKontraBoecke =
+      (this.boeckeBeiBeginn + this.reAngesagt ? 1 : 0 + this.kontraAngesagt ? 1 : 0) - 3;
+    if (verteilteReKontraBoecke > 0) {
+      this.spieltag.undoBoecke(verteilteReKontraBoecke);
+    }
+    if (this.herzGehtRum) {
+      this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
+    }
+    if (this.reAngesagt && this.kontraAngesagt) {
+      this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
+    }
+    if (this.ergebnis === 0) {
+      this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
+    }
+    return this;
+  }
+
+
+  public start(): Runde {
+    this.boeckeBeiBeginn = this.boecke;
+    this.isGestartet = true;
+    return this;
+  }
+
+  public beenden(): Runde {
     if (!this.isGespielteRunde()) {
       this.doBoecke();
     }
     this.isBeendet = true;
+    return this;
   }
 
   public isAktuelleRunde() {
@@ -72,12 +117,13 @@ export class Runde {
     return this.isBeendet && !this.geber;
   }
 
-  public addBock() {
+  public addBock(): Runde {
     if (this.boecke < MAX_BOECKE) {
       this.boecke++;
     } else {
       this.spieltag.bock();
     }
+    return this;
   }
 
   private doBoecke() {

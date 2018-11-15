@@ -117,6 +117,25 @@ export class Spieltag {
     return this;
   }
 
+  public undoBoecke(anzahlBoecke: number): Spieltag {
+    const nochNichtGespielteRunden = this.runden.slice(this.runden.indexOf(this.aktuelleRunde));
+    const indexLetzteRundeMitBoecken = _.findLastIndex(nochNichtGespielteRunden, r => r.boecke > 0);
+    const indexErsteBetroffeneRunde = _.max([anzahlBoecke - 1 - indexLetzteRundeMitBoecken, 0]);
+    const betroffeneRunden = nochNichtGespielteRunden.slice(indexErsteBetroffeneRunde, indexLetzteRundeMitBoecken + 1);
+    _.times(anzahlBoecke, i => {
+      let runde = _.findLast(betroffeneRunden, r => r.boecke === 2);
+      if (!runde) runde = _.findLast(betroffeneRunden, r => r.boecke === 1);
+      if (runde) runde.boecke--;
+    });
+    return this;
+  }
+
+  public undoLetzteRunde(): Spieltag {
+    this.aktuelleRunde.reset();
+    this.aktuelleRunde = this.getVorherigeRunde(this.aktuelleRunde).undoBoecke().reset().start();
+    return this;
+  }
+
   public getAktiveSpieler() {
     return this.spieler.filter(s => s.isAktiv);
   }

@@ -266,31 +266,14 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   private initMenu() {
-    this.menuItems = [
-      {
-        label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
-        items: [
-          {
-            label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
-            icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()
-          },
-          {
-            label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
-            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")
-          },
-          {
-            label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
-            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")
-          }
-        ]
-      },
+    this.menuItems = [      
       {
         label: "Spieltag", id: MenuItemId.Spieltag, icon: "pi pi-fw pi-calendar",
         items: [
           {
-            label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
-            icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
-          },
+            label: "Undo letzte Runde", id: MenuItemId.UndoLetzteRunde,
+            icon: "pi pi-fw pi-trash", command: _ => this.undoLetzteRunde()
+          },          
           {
             label: "Spieler steigt ein", id: MenuItemId.SpielerRein,
             icon: "pi pi-fw pi-user-plus", command: _ => this.spielerSteigtEin()
@@ -306,18 +289,45 @@ export class RundeComponent implements OnInit, OnDestroy {
           {
             label: "Aktuelle Sitzreihenfolge", id: MenuItemId.Sitzreihenfolge,
             icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
+          },
+          {
+            label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
+            icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
           }
         ]
       },
       {
+        label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
+        items: [         
+          {
+            label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
+            icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()
+          },
+          {
+            label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
+            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")
+          },
+          {
+            label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
+            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")
+          },
+        ]
+      },
+      {
         label: "Charts", id: MenuItemId.Charts,
-        icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+        icon: "pi pi-fw pi-chart-bar", command: _ => this.toCharts()
       },
       {
         label: "Settings", id: MenuItemId.Settings,
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
     ];
+  }
+
+  private undoLetzteRunde() {
+    this.displayMenu = false;   
+    this.spieltagService.undoLetzteRunde();
+    this.messageService.add({ severity: "info", summary: "Undo erfolgt", detail: "Die letzte Runde wurde rückgängig gemacht!" });
   }
 
   private menuItemById(id: MenuItemId): MenuItem {
@@ -411,6 +421,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
 enum MenuItemId {
   Runde = "Runde",
+  UndoLetzteRunde = "UndoLetzteRunde",
   BerechnungPruefen = "BerechnungPruefen",
   ErgebnisKorrigieren = "ErgebnisKorrigieren",
   BoeckeKorrigieren = "BoeckeKorrigieren",

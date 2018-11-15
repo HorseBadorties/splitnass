@@ -179,7 +179,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     this.menuItems = [
       {
         label: "Charts", id: MenuItemId.Charts,
-        icon: "pi pi-fw pi-info", command: _ => this.toCharts()
+        icon: "pi pi-fw pi-chart-bar", command: _ => this.toCharts()
       },
       {
         label: "Settings", id: MenuItemId.Settings,
