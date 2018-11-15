@@ -84,17 +84,18 @@
 <p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" [toggleable]="true">
   <p-header><span>Gespielt</span></p-header>
   <div class="p-grid p-dir-col">
-    <div class="p-col">
+    <div class="p-col" style="white-space: nowrap;"> 
       <p-checkbox class="p-col fontsize" [(ngModel)]="runde.armut" label="Armut" binary="true"></p-checkbox>
       <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
+      <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
     </div>
     <div class="p-col">
-      <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name">
-        <ng-template let-item pTemplate="selectedItem">
-          <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-        </ng-template>
-      </p-dropdown>
       <span style="white-space: nowrap;">
+        <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name">
+          <ng-template let-item pTemplate="selectedItem">
+            <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+          </ng-template>
+        </p-dropdown>
         <span class="pad-left-1 fontsize">Extrapunkte </span>
         <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true" [ngStyle]="{'font-weight': runde.extrapunkte !== 0 ? 'bold' : 'normal'}"
           class="ui-inputtext">
@@ -108,9 +109,6 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template>
       </p-dropdown>
-      <span style="white-space: nowrap;">
-        <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
-      </span>
     </div>
   </div>
 </p-panel>
