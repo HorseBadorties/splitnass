@@ -151,6 +151,11 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   private setAktuelleRunde(r: Runde) {
     this.runde = r;    
+    this.menuItemById(MenuItemId.UndoLetzteRunde).disabled = this.spieltag.aktuelleRunde.nr === 1;
+    this.menuItemById(MenuItemId.SpielerRein).disabled = this.spieltag.getAktiveSpieler().length >= 6;
+    this.menuItemById(MenuItemId.SpielerRaus).disabled = this.spieltag.getAktiveSpieler().length === 4;
+    this.menuItemById(MenuItemId.ErgebnisKorrigieren).disabled = !r.isBeendet;
+    this.menuItemById(MenuItemId.BoeckeKorrigieren).disabled = r.isBeendet;
   }
 
   rundeAbrechnen() {
