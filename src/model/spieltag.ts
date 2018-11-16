@@ -118,13 +118,9 @@ export class Spieltag {
   }
 
   public undoBoecke(anzahlBoecke: number): Spieltag {
-    const nochNichtGespielteRunden = this.runden.slice(this.runden.indexOf(this.aktuelleRunde));
-    const indexLetzteRundeMitBoecken = _.findLastIndex(nochNichtGespielteRunden, r => r.boecke > 0);
-    const indexErsteBetroffeneRunde = _.max([anzahlBoecke - 1 - indexLetzteRundeMitBoecken, 0]);
-    const betroffeneRunden = nochNichtGespielteRunden.slice(indexErsteBetroffeneRunde, indexLetzteRundeMitBoecken + 1);
     _.times(anzahlBoecke, i => {
-      let runde = _.findLast(betroffeneRunden, r => r.boecke === 2);
-      if (!runde) runde = _.findLast(betroffeneRunden, r => r.boecke === 1);
+      let runde = _.findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
+      if (!runde) runde = _.findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
       if (runde) runde.boecke--;
     });
     return this;
@@ -253,4 +249,7 @@ export class Spieltag {
   }
 
 }
+
+const spieler = Spieler.all.slice(0, 4);
+const spieltag = new Spieltag().start(4, spieler, spieler[0]).boecke().startNaechsteRunde().undoBoecke(4);
 
