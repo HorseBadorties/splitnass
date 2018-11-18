@@ -28,7 +28,11 @@ export class WebsocketServer {
     socket.on("lastSpieltag", callback => {
       if (this.aktSpieltag) {
         console.log(`returning last spieltag`);
-        callback(this.aktSpieltag);
+        try {
+          callback(this.aktSpieltag);
+        } catch (error) {
+          console.error(error);
+        }
       }
     });
   }
