@@ -51,11 +51,10 @@ export class SocketService {
 
 
   private requestLastSpieltag() {
-    this.socket.on("lastSpieltag", (data: string) => {
+    this.socket.emit("lastSpieltag", (data: string) => {
       console.log(`sending last spieltag`);
       this.nextSpieltag(data);
     });
-    this.socket.emit("lastSpieltag", "");
   }
 
   private nextSpieltag(data: string) {

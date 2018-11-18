@@ -25,11 +25,10 @@ export class WebsocketServer {
       this.websocket.compress(true).emit("spieltag", data);
       this.splitnassServer.spieltagUpdate(this.aktSpieltag);
     });
-    socket.on("lastSpieltag", _ => {
+    socket.on("lastSpieltag", callback => {
       if (this.aktSpieltag) {
-        console.log(`sending last spieltag`);
-        socket.compress(true).emit("lastSpieltag", this.aktSpieltag);
-        // setTimeout(() => socket.compress(true).emit("lastSpieltag", this.aktSpieltag), 3000);
+        console.log(`returning last spieltag`);
+        callback(this.aktSpieltag);
       }
     });
   }
