@@ -28,6 +28,7 @@ export class SpieltagService {
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);
     }
+    this.listSpieltage().then(list => console.log(list));
   }
 
   private offlineStatusChanded(offline: boolean) {
@@ -42,8 +43,8 @@ export class SpieltagService {
     }
   }
 
-  public startSpieltag(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
-    this.sendSpieltag(new Spieltag().start(anzahlRunden, spieler, geber));
+  public startSpieltag(name: string, anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
+    this.sendSpieltag(new Spieltag(name).start(anzahlRunden, spieler, geber));
   }
 
   public rundeAbgerechnet(runde: Runde) {
@@ -67,6 +68,10 @@ export class SpieltagService {
 
   public undoLetzteRunde() {
     this.sendSpieltag(this.aktuellerSpieltag.undoLetzteRunde());
+  }
+
+  public listSpieltage() {
+    return this.socketService.listSpieltage();
   }
   
 

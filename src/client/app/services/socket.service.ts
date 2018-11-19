@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject  } from "rxjs";
+import { BehaviorSubject, Observable  } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
@@ -15,7 +15,6 @@ export class SocketService {
   public lastSpieltag: Spieltag;
   public spieltag = new BehaviorSubject(undefined);
 
-
   constructor() {
     this.initSocket();
   }
@@ -23,6 +22,11 @@ export class SocketService {
   public sendSpieltag(spieltag: Spieltag): void {
     const data = Spieltag.toJSON(spieltag);
     this.socket.compress(true).emit("spieltag", data);
+  }
+
+  public listSpieltage() {
+    this.socket.emit("listSpieltage");
+    return this.socket.on("listSpieltage");
   }
 
   private initSocket(): void {

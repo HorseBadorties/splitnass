@@ -35,6 +35,12 @@ export class WebsocketServer {
         }
       }
     });
+    socket.on("listSpieltage", () => {
+      this.splitnassServer.listSpieltage().then(list => {
+        console.log(`sending list of spieltage`);
+        socket.emit("listSpieltage", list);
+      });
+    });
   }
 
 }

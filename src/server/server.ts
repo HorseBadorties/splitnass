@@ -64,6 +64,10 @@ export class SplitnassServer {
     }
   }
 
+  public listSpieltage(): Promise<any> {
+    return this.db.listSpieltage();
+  }
+
 }
 
 const splitnassServer = new SplitnassServer();

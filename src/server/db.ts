@@ -48,5 +48,9 @@ export class DB {
         });
     }
   }
+
+  public listSpieltage(): Promise<any> {
+    return this.dbCollection.find({}, {name: 1, beginn: 1}).sort({ beginn: -1 }).toArray();
+  }
 }
 
