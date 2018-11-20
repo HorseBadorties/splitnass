@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable  } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
@@ -12,8 +12,7 @@ const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 })
 export class SocketService {
   private socket;
-  public lastSpieltag: Spieltag;
-  public spieltag = new BehaviorSubject(undefined);
+  public spieltag = new BehaviorSubject<Spieltag>(undefined);
 
   constructor() {
     this.initSocket();
@@ -21,12 +20,17 @@ export class SocketService {
 
   public sendSpieltag(spieltag: Spieltag): void {
     const data = Spieltag.toJSON(spieltag);
-    this.socket.compress(true).emit("spieltag", data);
+    this.socket.compress(true).emit("spieltagUpdated", data, spieltag.beginn);
   }
 
-  public listSpieltage() {
+  public listSpieltage(resultCallback) {
+    this.socket.on("listSpieltage", resultCallback);
     this.socket.emit("listSpieltage");
-    return this.socket.on("listSpieltage");
+  }
+
+  public joinSpieltag(beginn: Date, resultCallback) {
+    this.socket.on("joinSpieltag", resultCallback);
+    this.socket.emit("joinSpieltag", beginn);
   }
 
   private initSocket(): void {
@@ -38,7 +42,7 @@ export class SocketService {
 
   private onConnect(url: string) {
     console.log(`connected to ${url}`);
-    this.socket.on("spieltag", (data: string) => {
+    this.socket.on("spieltagJoined", (data: string) => {
       console.log(`sending spieltag`);
       this.nextSpieltag(data);
     });
@@ -62,8 +66,7 @@ export class SocketService {
   }
 
   private nextSpieltag(data: string) {
-    this.lastSpieltag = Spieltag.fromJSON(data);
-    this.spieltag.next(this.lastSpieltag);
+    this.spieltag.next(Spieltag.fromJSON(data));
   }
 
 }

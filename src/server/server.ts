@@ -64,8 +64,12 @@ export class SplitnassServer {
     }
   }
 
-  public listSpieltage(): Promise<any> {
+  public listSpieltage(): Promise<Array<Object>> {
     return this.db.listSpieltage();
+  }
+
+  public getSpieltag(beginn: Date): Promise<Object> {
+    return this.db.getSpieltag(beginn);
   }
 
 }

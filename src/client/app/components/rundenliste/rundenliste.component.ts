@@ -12,6 +12,7 @@ import { SettingsService } from "../../services/settings.service";
 import { DialogService } from "../../dialogs/dialog.service";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { MenuItem } from "primeng/api";
+import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
 
 /** Hack: align header */
 ScrollableView.prototype.ngAfterViewChecked = function () {
@@ -67,6 +68,18 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.settingsService.adminMode) {
       setTimeout(() => this.router.navigate(["runde"], {skipLocationChange: false}), 50);
     }
+  }
+
+  spieltagAuswahl() {
+    this.displayMenu = false;
+    this.spieltagService.listSpieltage().subscribe(list => {
+      const data: any = {
+        spieltage: list, 
+        message: "Welcher Spieltag soll angezeigt werden?"
+      };
+      this.dialogService.open(SpieltagauswahlComponent, data);
+    });
+    
   }
   
   getSpieltagInfo() {
@@ -177,6 +190,10 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         label: "Settings", id: MenuItemId.Settings,
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
+      },
+      {
+        label: "Spieltag wechseln", id: MenuItemId.Settings,
+        icon: "pi pi-fw pi-info", command: _ => this.spieltagAuswahl()
       },
     ];
   }

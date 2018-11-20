@@ -4,13 +4,14 @@ import * as socketIo from "socket.io";
 import { SplitnassServer } from "./server";
 
 export class WebsocketServer {
-  private websocket: socketIo.Server;
+  private io: socketIo.Server;
   public aktSpieltag: string;
+  private rooms = new Map<string, string>();
 
   constructor(private splitnassServer: SplitnassServer) {
-    this.websocket = socketIo(splitnassServer.getHttpServer());
-    this.websocket.origins("*:*");
-    this.websocket.on("connect", socket => this.onConnect(socket));
+    this.io = socketIo(splitnassServer.getHttpServer());
+    this.io.origins("*:*");
+    this.io.on("connect", socket => this.onConnect(socket));
     console.log(`WebsocketServer started`);
   }
 
@@ -19,11 +20,10 @@ export class WebsocketServer {
     socket.on("disconnect", () => {
       console.log(`Client ${socket.client.id} disconnected`);
     });
-    socket.on("spieltag", data => {
-      console.log(`sending updated spieltag`);
-      this.aktSpieltag = data;
-      this.websocket.compress(true).emit("spieltag", data);
-      this.splitnassServer.spieltagUpdate(this.aktSpieltag);
+    socket.on("spieltagUpdated", (spieltagJSON: string, beginnJSON: string) => {
+      console.log(`updating spieltag ${beginnJSON}`);
+      this.io.compress(true).to(beginnJSON).emit("spieltagJoined", spieltagJSON);
+      this.splitnassServer.spieltagUpdate(spieltagJSON);
     });
     socket.on("lastSpieltag", callback => {
       if (this.aktSpieltag) {
@@ -39,6 +39,19 @@ export class WebsocketServer {
       this.splitnassServer.listSpieltage().then(list => {
         console.log(`sending list of spieltage`);
         socket.emit("listSpieltage", list);
+      });
+    });
+    socket.on("joinSpieltag", beginnJSON => {
+      this.splitnassServer.getSpieltag(beginnJSON).then(spieltag => {
+        if (spieltag) {
+          if (this.rooms.has(socket.client.id)) {
+            socket.leave(this.rooms.get(socket.client.id));
+          }
+          console.log(`client ${socket.client.id} joined spieltag with beginn ${beginnJSON}`);
+          socket.join(beginnJSON);
+          this.rooms.set(socket.client.id, beginnJSON);
+          socket.emit("joinSpieltag", JSON.stringify(spieltag));
+        }
       });
     });
   }

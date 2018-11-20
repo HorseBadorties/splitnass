@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, bindCallback } from "rxjs";
 import { first } from "rxjs/operators";
 import { Spieltag } from "src/model/spieltag";
 import { Spieler } from "src/model/spieler";
@@ -18,7 +18,7 @@ export class SpieltagService {
   constructor(private socketService: SocketService, private settingsService: SettingsService) {
     this.socketService.spieltag.subscribe(spieltag => {
       if (!this.settingsService.offline) {
-        this.setAktuellerSpieltag(spieltag);
+        this.setSpieltag(spieltag);
       }
     });
     this.settingsService.hideInactivePlayersStatus.subscribe(_ => {
@@ -27,19 +27,19 @@ export class SpieltagService {
     this.settingsService.offlineStatus.subscribe(offline => this.offlineStatusChanded(offline));
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);
-    }
-    this.listSpieltage().then(list => console.log(list));
+    }       
+    
   }
 
   private offlineStatusChanded(offline: boolean) {
     if (offline) {
       this.settingsService.getSavedSpieltagJSON().pipe(first()).subscribe(spieltagJSON => {
         if (spieltagJSON) {
-          this.setAktuellerSpieltag(Spieltag.fromJSON(spieltagJSON));
+          this.setSpieltag(Spieltag.fromJSON(spieltagJSON));
         }
       });
     } else {
-      this.setAktuellerSpieltag(this.socketService.lastSpieltag);
+      this.setSpieltag(this.socketService.spieltag.getValue());
     }
   }
 
@@ -70,25 +70,35 @@ export class SpieltagService {
     this.sendSpieltag(this.aktuellerSpieltag.undoLetzteRunde());
   }
 
-  public listSpieltage() {
-    return this.socketService.listSpieltage();
+  public listSpieltage(): Observable<Array<Object>> {
+    return Observable.create(observer => {
+      this.socketService.listSpieltage(list => {
+        observer.next(list);
+        observer.unsubcribe();
+      })
+    });
   }
   
-
+  public setAktuellerSpieltag(beginn: Date) {
+    this.socketService.joinSpieltag(beginn, spieltagJSON => {
+      this.setSpieltag(Spieltag.fromJSON(spieltagJSON));
+    })
+  }
+  
   private sendSpieltag(spieltag: Spieltag) {
     if (this.settingsService.offline) {
-      this.setAktuellerSpieltag(spieltag);
+      this.setSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));
     } else {
       this.socketService.sendSpieltag(spieltag);
     }
   }
 
-  private setAktuellerSpieltag(spieltag: Spieltag) {
+  private setSpieltag(spieltag: Spieltag) {
     if (spieltag) {
       this.aktuellerSpieltag = spieltag;
-      this.spieltag.next(this.aktuellerSpieltag);
+      this.spieltag.next(this.aktuellerSpieltag);     
     }
   }
-
+  
 }

@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/@types/node/index.d.ts" />
 
-import { MongoClient, MongoError, Db, Collection } from "mongodb";
+import { MongoClient, MongoError, Db, Collection, ObjectId } from "mongodb";
 import { SplitnassServer } from "./server";
 
 export class DB {
@@ -49,8 +49,12 @@ export class DB {
     }
   }
 
-  public listSpieltage(): Promise<any> {
-    return this.dbCollection.find({}, {name: 1, beginn: 1}).sort({ beginn: -1 }).toArray();
+  public listSpieltage(): Promise<Array<Object>> {
+    return this.dbCollection.find({}, {projection: {name: 1, beginn: 1}}).sort({ beginn: -1 }).toArray();
+  }
+
+  public getSpieltag(beginn: Date): Promise<Object> {
+    return this.dbCollection.find({beginn: beginn}).next();
   }
 }
 

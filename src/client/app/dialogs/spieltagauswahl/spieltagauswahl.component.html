@@ -1,0 +1,28 @@
+<p-card>
+
+<div class="p-col"></div>
+{{message}}
+<div class="p-col"></div>
+
+
+  <p-table [value]="spieltage" selectionMode="single" [(selection)]="selectedSpieltag" dataKey="beginn">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Datum</th>
+        <th>Beschreibung</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-spieltag>
+      <tr [pSelectableRow]="spieltag">
+        <td>{{spieltag.beginn}}</td>
+        <td>{{spieltag.name}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="actions">
+    <p-button label="OK" (click)="onClose()" [disabled]="!selectedSpieltag"></p-button>
+    <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+  </div>
+
+</p-card>

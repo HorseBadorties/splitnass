@@ -39,6 +39,8 @@ import { NumberpickerComponent } from './dialogs/numberpicker/numberpicker.compo
 import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.component';
 import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerauswahl.component';
 import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.component';
+import { SpieltagauswahlComponent } from './dialogs/spieltagauswahl/spieltagauswahl.component';
+
 
 @Injectable()
 export class ScollFixHammerConfig extends HammerGestureConfig {
@@ -77,6 +79,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     NumberpickerComponent,
     NeuerSpieltagComponent,
     GewinnerauswahlComponent,
+    SpieltagauswahlComponent,
     GenericDialogComponent
   ],
   imports: [
