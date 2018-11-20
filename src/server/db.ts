@@ -19,6 +19,7 @@ export class DB {
           if (_err2) throw (_err2);
           this.dbCollection = _coll;
           console.log(`successfully connected to ${DB.mongoUrl}`);
+          this.splitnassServer.dbSuccessfullyInitialized();
         });
       });
 

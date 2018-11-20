@@ -48,7 +48,7 @@ export class SplitnassServer {
     return this.httpServer;
   }
 
-  public dbSuccessfullyInitialized(spieltagJson: string) {
+  public dbSuccessfullyInitialized() {
     // start server
     this.httpServer.listen(this.port, () => {
       console.log(`Splitnass server running on port ${this.port}`);
