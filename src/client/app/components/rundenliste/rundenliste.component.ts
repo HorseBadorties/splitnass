@@ -2,7 +2,8 @@ import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, 
 import { Router } from "@angular/router";
 import { ScrollableView } from "primeng/table";
 import ResizeObserver from "resize-observer-polyfill";
-import { Subscription  } from "rxjs";
+import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 import * as _ from "lodash";
 
 import { Spieltag } from "src/model/spieltag";
@@ -72,7 +73,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   spieltagAuswahl() {
     this.displayMenu = false;
-    this.spieltagService.listSpieltage().subscribe(list => {
+    this.spieltagService.listSpieltage().pipe(take(1)).subscribe(list => {
       const data: any = {
         spieltage: list, 
         message: "Welcher Spieltag soll angezeigt werden?"

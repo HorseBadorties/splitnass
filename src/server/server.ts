@@ -49,9 +49,6 @@ export class SplitnassServer {
   }
 
   public dbSuccessfullyInitialized(spieltagJson: string) {
-    if (this.websocketServer) {
-      this.websocketServer.aktSpieltag = spieltagJson;
-    }
     // start server
     this.httpServer.listen(this.port, () => {
       console.log(`Splitnass server running on port ${this.port}`);

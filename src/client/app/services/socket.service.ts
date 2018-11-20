@@ -29,7 +29,7 @@ export class SocketService {
   }
 
   public joinSpieltag(beginn: Date, resultCallback) {
-    this.socket.on("joinSpieltag", resultCallback);
+    this.socket.on("joinedSpieltag", resultCallback);
     this.socket.emit("joinSpieltag", beginn);
   }
 
@@ -42,11 +42,10 @@ export class SocketService {
 
   private onConnect(url: string) {
     console.log(`connected to ${url}`);
-    this.socket.on("spieltagJoined", (data: string) => {
-      console.log(`sending spieltag`);
+    this.socket.on("spieltagUpdated", (data: string) => {
+      console.log(`received updated spieltag`);
       this.nextSpieltag(data);
     });
-    this.requestLastSpieltag();
   }
 
   private connectToRemoteServer() {
@@ -55,14 +54,6 @@ export class SocketService {
     }
     this.socket = socketIo(REMOTE_SERVER_URL);
     this.socket.on("connect", _ => this.onConnect(REMOTE_SERVER_URL));
-  }
-
-
-  private requestLastSpieltag() {
-    this.socket.emit("lastSpieltag", (data: string) => {
-      console.log(`sending last spieltag`);
-      this.nextSpieltag(data);
-    });
   }
 
   private nextSpieltag(data: string) {

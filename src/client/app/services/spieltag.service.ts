@@ -71,10 +71,9 @@ export class SpieltagService {
   }
 
   public listSpieltage(): Observable<Array<Object>> {
-    return Observable.create(observer => {
+    return Observable.create(subscriber => {
       this.socketService.listSpieltage(list => {
-        observer.next(list);
-        observer.unsubcribe();
+        subscriber.next(list);
       })
     });
   }

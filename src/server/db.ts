@@ -19,20 +19,9 @@ export class DB {
           if (_err2) throw (_err2);
           this.dbCollection = _coll;
           console.log(`successfully connected to ${DB.mongoUrl}`);
-          this.getLatestSpieltag();
         });
       });
 
-  }
-
-  private getLatestSpieltag() {
-    this.dbCollection.find({}).sort({ beginn: -1 }).limit(1).next((_err: MongoError, result: any) => {
-      if (_err) throw (_err);
-      if (result) {
-        console.log(`Read latest Spieltag ${result.beginn} from db`);
-      }
-      this.splitnassServer.dbSuccessfullyInitialized(result ? JSON.stringify(result) : undefined);
-    });
   }
 
   public updateSpieltag(spieltagJson: string) {
