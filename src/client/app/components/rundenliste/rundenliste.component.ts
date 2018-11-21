@@ -112,7 +112,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.selectedRunde) {
+    if (!this.spieltag) {
+      setTimeout(() => this.spieltagAuswahl(), 2000);
+    } else if (this.selectedRunde) {
       this.scrollToRunde(this.selectedRunde);
     }
    }
