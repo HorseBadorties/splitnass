@@ -1,7 +1,5 @@
 import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
-import { ScrollableView } from "primeng/table";
-import ResizeObserver from "resize-observer-polyfill";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import * as _ from "lodash";
@@ -14,16 +12,6 @@ import { DialogService } from "../../dialogs/dialog.service";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { MenuItem } from "primeng/api";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
-
-/** Hack: align header */
-ScrollableView.prototype.ngAfterViewChecked = function () {
-  if (!this.initialized && this.el.nativeElement.offsetParent) {
-    this.initialized = true;
-    new ResizeObserver(entries => {
-        this.alignScrollBar();
-    }).observe(this.scrollBodyViewChild.nativeElement);
-  }
-};
 
 @Component({
   selector: "app-rundenliste",
@@ -112,9 +100,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (!this.spieltag) {
-      setTimeout(() => this.spieltagAuswahl(), 2000);
-    } else if (this.selectedRunde) {
+    if (this.selectedRunde) {
       this.scrollToRunde(this.selectedRunde);
     }
    }
@@ -196,7 +182,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: "Spieltag wechseln", id: MenuItemId.Settings,
-        icon: "pi pi-fw pi-info", command: _ => this.spieltagAuswahl()
+        icon: "pi pi-fw pi-calendar-times", command: _ => this.spieltagAuswahl()
       },
     ];
   }

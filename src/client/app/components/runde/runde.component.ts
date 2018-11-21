@@ -16,6 +16,8 @@ import { SpielerauswahlComponent } from "../../dialogs/spielerauswahl/spieleraus
 import { NeuerSpieltagComponent } from "../../dialogs/neuer-spieltag/neuer-spieltag.component";
 import { GewinnerauswahlComponent } from "../../dialogs/gewinnerauswahl/gewinnerauswahl.component";
 import { GenericDialogComponent, Type } from "../../dialogs/generic-dialog/generic-dialog.component";
+import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
+import { take } from "rxjs/operators";
 
 
 @Component({
@@ -113,7 +115,17 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.dialogService.open(NeuerSpieltagComponent, {});    
   }
 
-  
+  spieltagAuswahl() {
+    this.displayMenu = false;
+    this.spieltagService.listSpieltage().pipe(take(1)).subscribe(list => {
+      const data: any = {
+        spieltage: list, 
+        message: "Welcher Spieltag soll angezeigt werden?"
+      };
+      this.dialogService.open(SpieltagauswahlComponent, data);
+    });
+    
+  }
 
   vonVorneHereinChanged(re: boolean) {
     if (re && this.runde.reVonVorneHerein && this.runde.reAngesagt === Ansage.KeineAnsage) {
@@ -149,7 +161,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setAktuelleRunde(r: Runde) {
+  private setAktuelleRunde(r: Runde) {    
     this.runde = r;    
     this.menuItemById(MenuItemId.UndoLetzteRunde).disabled = this.spieltag.aktuelleRunde.nr === 1;
     this.menuItemById(MenuItemId.SpielerRein).disabled = this.spieltag.getAktiveSpieler().length >= 6;
@@ -304,7 +316,11 @@ export class RundeComponent implements OnInit, OnDestroy {
           {
             label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
             icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
-          }
+          },
+          {
+            label: "Spieltag wechseln", id: MenuItemId.Settings,
+            icon: "pi pi-fw pi-calendar-times", command: _ => this.spieltagAuswahl()
+          },
         ]
       },
       {

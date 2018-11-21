@@ -72,6 +72,14 @@ export class SettingsService {
     return this.localStorage.getItem<string>("savedSpieltag", { schema: { type: 'string' } });
   } 
 
+  public joinedSpieltag(beginn: string) {
+    this.localStorage.setItemSubscribe("joinedSpieltag", beginn);
+  }
+
+  public getJoinedSpieltag(): Observable<string> {
+    return this.localStorage.getItem<string>("joinedSpieltag", { schema: { type: 'string' } });
+  } 
+
   constructor(private localStorage: LocalStorage) { 
     this.getBoolean("offline").pipe(first()).subscribe(value => {
         this._offline = value && value.valueOf();

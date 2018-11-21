@@ -28,7 +28,16 @@ export class SpieltagService {
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);
     }       
-    
+    this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
+      if (beginn) {
+        this.socketService.connected.subscribe(connected => {
+          if (connected) {
+            console.log(`loading last Spieltag ${beginn}`);
+            this.setAktuellerSpieltag(beginn);
+          }
+        });
+      }
+    });
   }
 
   private offlineStatusChanded(offline: boolean) {
@@ -72,15 +81,23 @@ export class SpieltagService {
 
   public listSpieltage(): Observable<Array<Object>> {
     return Observable.create(subscriber => {
-      this.socketService.listSpieltage(list => {
+      this.socketService.listSpieltage();
+      this.socketService.spieltagList.pipe(first()).subscribe(list => {
+        console.log("returning list of Spieltage");
         subscriber.next(list);
       })
     });
   }
   
-  public setAktuellerSpieltag(beginn: Date) {
-    this.socketService.joinSpieltag(beginn, spieltagJSON => {
-      this.setSpieltag(Spieltag.fromJSON(spieltagJSON));
+  public setAktuellerSpieltag(beginn: string) {
+    this.socketService.joinSpieltag(beginn);
+    this.socketService.joinedSpieltag.pipe(first()).subscribe(spieltagJSON => {
+      if (spieltagJSON) {
+        const spieltag = Spieltag.fromJSON(spieltagJSON);
+        this.setSpieltag(spieltag);
+        this.settingsService.joinedSpieltag(spieltag.beginn.toJSON());
+        console.log(`aktueller Spieltag: ${beginn}`);
+      }
     })
   }
   
