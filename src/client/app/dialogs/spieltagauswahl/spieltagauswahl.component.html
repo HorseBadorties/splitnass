@@ -1,11 +1,11 @@
-<p-card>
+<p-card class="table-width">
 
-<div class="p-col"></div>
-{{message}}
-<div class="p-col"></div>
+  <div class="p-col"></div>
+  <span>{{message}}</span>
+  <div class="p-col"></div>
 
-
-  <p-table [value]="spieltage" selectionMode="single" [(selection)]="selectedSpieltag" dataKey="beginn">
+  <p-table [value]="spieltage" selectionMode="single" [(selection)]="selectedSpieltag" 
+    dataKey="beginn" scrollHeight="200px">
     <ng-template pTemplate="header">
       <tr>
         <th>Datum</th>
@@ -14,7 +14,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-spieltag>
       <tr [pSelectableRow]="spieltag">
-        <td>{{spieltag.beginn}}</td>
+        <td>{{format(spieltag.beginn)}}</td>
         <td>{{spieltag.name}}</td>
       </tr>
     </ng-template>

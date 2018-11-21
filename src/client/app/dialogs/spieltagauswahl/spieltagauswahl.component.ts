@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { DialogConfig } from '../dialog-config';
 import { DialogRef } from '../dialog-ref';
 import { SpieltagService } from '../../services/spieltag.service';
+import { formatDate } from "../../util"
+
+const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 @Component({
   selector: 'app-spieltagauswahl',
@@ -30,4 +33,11 @@ export class SpieltagauswahlComponent {
     this.dialog.close(null);
   }
 
+  format(dateJSON: string) {
+    return formatDate(new Date(dateJSON));
+  }
+
 }
+
+const dateJSON = "2016-04-26T18:09:16Z";
+console.log(JSON.parse)

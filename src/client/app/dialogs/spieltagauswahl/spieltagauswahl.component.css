@@ -14,3 +14,26 @@
   padding-left: 0.5em;
 }
 
+.table-width {    
+  width: 500px;  
+}
+@media (max-width: 500px) { 
+  .table-width {    
+    width: 400px;  
+  }
+}
+@media (max-width: 400px) { 
+  .table-width {    
+    width: 350px;  
+  }
+}
+@media (max-width: 370px) { 
+  .table-width {    
+    width: 300px;  
+  }
+}
+@media (max-width: 300px) { 
+  .table-width {    
+    width: 280px;  
+  }
+}

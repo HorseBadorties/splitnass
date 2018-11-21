@@ -5,6 +5,7 @@ import { DialogConfig } from '../dialog-config';
 import { DialogRef } from '../dialog-ref';
 import { Spieler } from 'src/model/spieler';
 import { SpieltagService } from '../../services/spieltag.service';
+import { formatDate } from "../../util"
 
 @Component({
   selector: 'app-neuer-spieltag',
@@ -15,7 +16,7 @@ export class NeuerSpieltagComponent {
 
   moeglicheSpieler = Spieler.all.slice();
   selectedSpieler: Spieler[] = [];
-  name = `Spieltag vom ${this.formatDate(new Date())}`;
+  name = `Spieltag vom ${formatDate(new Date())}`;
   anzahlRunden = 42;
   message: string;
 
@@ -38,11 +39,6 @@ export class NeuerSpieltagComponent {
     this.dialog.close(null);
   }
 
-  private formatDate(date: Date) {
-    const yyyy = date.getFullYear();
-    const mm = date.getMonth() + 1; // getMonth() is zero-based
-    const dd  = date.getDate();
-    return _.padStart(dd.toString(), 2, "0") + "." + _.padStart(mm.toString(), 2, "0") + "." + yyyy.toString();
-  }
+  
 
 }
