@@ -95,10 +95,13 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       this.calcDisplayedColumns(spieltag);
       this.selectedRunde = spieltag.aktuelleRunde;
       this.expandedRunden = [];
-      if (spieltag.aktuelleRunde.nr > 1 && this.settingsService.autoShowRundendetails) {
-        this.expandedRunden[spieltag.getVorherigeRunde(spieltag.aktuelleRunde).nr] = 1;
+      if (spieltag.aktuelleRunde.nr > 1) {
+        const vorherigeRunde = spieltag.getVorherigeRunde(spieltag.aktuelleRunde);
+        if (this.settingsService.autoShowRundendetails) {
+          this.expandedRunden[vorherigeRunde.nr] = 1;
+        }
+        setTimeout(() => this.scrollToRunde(vorherigeRunde), 500);
       }
-      setTimeout(() => this.scrollToRunde(spieltag.aktuelleRunde), 500);
     }
   }
 
