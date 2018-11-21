@@ -42,12 +42,12 @@ export class WebsocketServer {
   }
 
   private addClientToRoom(clientSocket: socketIo.Socket, room: string) {
-    if (this.rooms.has(clientSocket.client.id)) {
+    if (this.rooms.get(clientSocket.client.id) !== room) {
       clientSocket.leave(this.rooms.get(clientSocket.client.id));
+      clientSocket.join(room);
+      this.rooms.set(clientSocket.client.id, room);
+      console.log(`client ${clientSocket.client.id} joined ${room}`);
     }
-    console.log(`client ${clientSocket.client.id} joined ${room}`);
-    clientSocket.join(room);
-    this.rooms.set(clientSocket.client.id, room);
   }
 
 }
