@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import * as _ from "lodash";
+import smoothscroll from "smoothscroll-polyfill";
 
 import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
@@ -12,6 +13,8 @@ import { DialogService } from "../../dialogs/dialog.service";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { MenuItem } from "primeng/api";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
+
+smoothscroll.polyfill();
 
 @Component({
   selector: "app-rundenliste",
