@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
@@ -12,10 +12,10 @@ const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 })
 export class SocketService {
   private socket;
-  public spieltag = new BehaviorSubject<Spieltag>(undefined);
+  public spieltag = new Subject<Spieltag>();
   public joinedSpieltag = new Subject<string>();
   public spieltagList = new Subject<Array<Spieltag>>();
-  public connected = new BehaviorSubject<boolean>(false);
+  public connected = new Subject<boolean>();
 
   constructor() {
     this.initSocket();
@@ -46,7 +46,7 @@ export class SocketService {
 
   private onConnect(url: string) {
     console.log(`connected to ${url}`);
-    this.connected.next(true);
+    this.connected.next(true);    
     this.socket.on("spieltagUpdated", (data: string) => {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);

@@ -1,18 +1,17 @@
-import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { Router } from "@angular/router";
+import { MenuItem } from "primeng/api";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
-import * as _ from "lodash";
 import smoothscroll from "smoothscroll-polyfill";
-
-import { Spieltag } from "src/model/spieltag";
 import { Runde } from "src/model/runde";
-import { SpieltagService } from "../../services/spieltag.service";
-import { SettingsService } from "../../services/settings.service";
+import { Spieltag } from "src/model/spieltag";
 import { DialogService } from "../../dialogs/dialog.service";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
-import { MenuItem } from "primeng/api";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
+import { SettingsService } from "../../services/settings.service";
+import { SpieltagService } from "../../services/spieltag.service";
+
 
 smoothscroll.polyfill();
 
@@ -37,6 +36,23 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     public settingsService: SettingsService,
     private router: Router,
     private dialogService: DialogService) {}
+
+  ngOnInit() {
+    this.initMenu();
+    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));    
+  }
+
+  ngAfterViewInit() {
+    if (this.selectedRunde) {
+      this.scrollToRunde(this.selectedRunde);
+    } 
+  }
+
+  ngOnDestroy() {
+    if (this.subscribtion) {
+      this.subscribtion.unsubscribe();
+    }
+  }
 
 
   onSwipeLeft(evt) {
@@ -78,17 +94,6 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.spieltag ? this.spieltag.name : `no Spieltag`;
   }
 
-  ngOnInit() {
-    this.initMenu();
-    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));
-  }
-
-  ngOnDestroy() {
-    if (this.subscribtion) {
-      this.subscribtion.unsubscribe();
-    }
-  }
-
   private setSpieltag(spieltag: Spieltag) {
     this.spieltag = spieltag;
     if (spieltag) {
@@ -102,14 +107,12 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         setTimeout(() => this.scrollToRunde(vorherigeRunde), 500);
       }
+    } else if (spieltag === null) {
+      this.spieltagAuswahl();
     }
   }
 
-  ngAfterViewInit() {
-    if (this.selectedRunde) {
-      this.scrollToRunde(this.selectedRunde);
-    }
-   }
+
 
   private calcDisplayedColumns(s: Spieltag) {
     const result = [new Column("nr", "Runde", "60%")];

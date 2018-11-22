@@ -24,6 +24,12 @@
 
   <div style="padding-top: 0.2em;"></div>
 
+  <div *ngIf="spieltag === undefined && !settingsService.offline">
+    <p-progressSpinner></p-progressSpinner>
+    <div style="padding-left: 0.2em;"></div>
+    <span class="verbindungsaufbau">Connecting to Split'n Ass server...</span>
+  </div>
+
   <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
     class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 

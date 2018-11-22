@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, bindCallback } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Spieltag } from "src/model/spieltag";
 import { Spieler } from "src/model/spieler";
@@ -12,7 +12,7 @@ import { Runde } from "src/model/runde";
 })
 export class SpieltagService {
 
-  public spieltag = new BehaviorSubject(undefined);
+  public spieltag = new BehaviorSubject<Spieltag>(undefined);
   private aktuellerSpieltag: Spieltag;
 
   constructor(private socketService: SocketService, private settingsService: SettingsService) {
@@ -22,18 +22,20 @@ export class SpieltagService {
       }
     });
     this.settingsService.hideInactivePlayersStatus.subscribe(_ => {
-      if (this.aktuellerSpieltag) this.spieltag.next(this.aktuellerSpieltag);
+      if (this.aktuellerSpieltag) this.setSpieltag(this.aktuellerSpieltag);
     });
     this.settingsService.offlineStatus.subscribe(offline => this.offlineStatusChanded(offline));
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);
     }       
-    this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
-      if (beginn) {
-        this.socketService.connected.subscribe(connected => {
-          if (connected) {
+    this.socketService.connected.pipe(first()).subscribe(connected => {
+      if (connected) {
+        this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
+          if (beginn) {
             console.log(`loading last Spieltag ${beginn}`);
-            this.setAktuellerSpieltag(beginn);
+            this.setAktuellerSpieltag(beginn);            
+          } else {
+            this.setSpieltag(null);
           }
         });
       }
@@ -48,35 +50,35 @@ export class SpieltagService {
         }
       });
     } else {
-      this.setSpieltag(this.socketService.spieltag.getValue());
+      this.socketService.spieltag.pipe(first()).subscribe(spieltag => this.setSpieltag(spieltag));
     }
   }
 
   public startSpieltag(name: string, anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
-    this.sendSpieltag(new Spieltag(name).start(anzahlRunden, spieler, geber));
+    this.sendSpieltagUpdate(new Spieltag(name).start(anzahlRunden, spieler, geber));
   }
 
   public rundeAbgerechnet(runde: Runde) {
     if (runde.isAktuelleRunde()) {
       this.aktuellerSpieltag.startNaechsteRunde();
     }    
-    this.sendSpieltag(this.aktuellerSpieltag);
+    this.sendSpieltagUpdate(this.aktuellerSpieltag);
   }
 
   public spielerSteigtEin(spieler: Spieler) {
-    this.sendSpieltag(this.aktuellerSpieltag.spielerSteigtEin(spieler));
+    this.sendSpieltagUpdate(this.aktuellerSpieltag.spielerSteigtEin(spieler));
   }
 
   public spielerSteigtAus(spieler: Spieler) {
-    this.sendSpieltag(this.aktuellerSpieltag.spielerSteigtAus(spieler));
+    this.sendSpieltagUpdate(this.aktuellerSpieltag.spielerSteigtAus(spieler));
   }
 
   public setztRundenanzahl(anzahl: number) {
-    this.sendSpieltag(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
+    this.sendSpieltagUpdate(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
   }
 
   public undoLetzteRunde() {
-    this.sendSpieltag(this.aktuellerSpieltag.undoLetzteRunde());
+    this.sendSpieltagUpdate(this.aktuellerSpieltag.undoLetzteRunde());
   }
 
   public listSpieltage(): Observable<Array<Object>> {
@@ -101,7 +103,7 @@ export class SpieltagService {
     })
   }
   
-  private sendSpieltag(spieltag: Spieltag) {
+  private sendSpieltagUpdate(spieltag: Spieltag) {
     if (this.settingsService.offline) {
       this.setSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));
@@ -111,10 +113,8 @@ export class SpieltagService {
   }
 
   private setSpieltag(spieltag: Spieltag) {
-    if (spieltag) {
-      this.aktuellerSpieltag = spieltag;
-      this.spieltag.next(this.aktuellerSpieltag);     
-    }
+    this.aktuellerSpieltag = spieltag;
+    this.spieltag.next(this.aktuellerSpieltag); 
   }
   
 }
