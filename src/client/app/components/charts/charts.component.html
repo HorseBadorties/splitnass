@@ -1,34 +1,32 @@
-
 <p-toolbar>
   <div class="ui-toolbar-group-left">
-    <p-button icon="pi pi-arrow-left" (click)="navigateBack()"></p-button>    
-  </div>  
+    <p-button icon="pi pi-arrow-left" (click)="navigateBack()"></p-button>
+  </div>
 </p-toolbar>
 
 <div style="padding-top: 0.2em;"></div>
 
-<div *ngIf="!spieltag && !settingsService.offline">
-  <p-progressSpinner></p-progressSpinner>
-  <div style="padding-left: 0.2em;"></div>
-  <span class="verbindungsaufbau">Connecting to Split'n Ass server...</span>
-</div>
+<div *ngIf="spieltag === undefined && !settingsService.offline">
+    <app-spinner></app-spinner>
+    <div align="center" class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
+  </div>
 
 <div *ngIf="spieltag">
-  <p-tabView>
+  <p-tabView > 
+    <p-tabPanel header="Spieltagsverlauf">
+      <div>
+        <p-chart type="line" [data]="spieltagsverlauf" [options]="optionsSpieltagsverlauf"></p-chart>
+      </div>
+    </p-tabPanel>
     <p-tabPanel header="Gewonnene Runden">
       <div>
-        <p-chart type="bar" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonneneRunden"></p-chart>  
+        <p-chart type="bar" [data]="anzahlGewonnenerRunden" [options]="optionsAnzahlGewonneneRunden"></p-chart>
       </div>
-    </p-tabPanel>    
-    <p-tabPanel header="Spieltagsverlauf">
-      <div >
-        <p-chart type="line" [data]="spieltagsverlauf" [options]="optionsSpieltagsverlauf"></p-chart>       
+    </p-tabPanel>
+    <p-tabPanel header="Gespielte Solos">
+      <div>
+        <p-chart type="bar" [data]="anzahlSolos" [options]="optionsAnzahlGewonneneRunden"></p-chart>
       </div>
-    </p-tabPanel>    
-      <p-tabPanel header="Gespielte Solos">
-        <div >
-          <p-chart type="bar" [data]="anzahlSolos" [options]="optionsAnzahlGewonneneRunden"></p-chart>  
-        </div>
-      </p-tabPanel>    
+    </p-tabPanel>
   </p-tabView>
 </div>

@@ -17,7 +17,6 @@ import { ToolbarModule } from "primeng/toolbar";
 import { MessageModule } from "primeng/message";
 import { PanelModule } from "primeng/panel";
 import { PickListModule } from "primeng/picklist";
-import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { SidebarModule } from "primeng/sidebar";
 import { PanelMenuModule } from "primeng/panelmenu";
 import { InputTextModule } from "primeng/inputtext";
@@ -40,6 +39,7 @@ import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.
 import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerauswahl.component';
 import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.component';
 import { SpieltagauswahlComponent } from './dialogs/spieltagauswahl/spieltagauswahl.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 
 @Injectable()
@@ -80,7 +80,8 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     NeuerSpieltagComponent,
     GewinnerauswahlComponent,
     SpieltagauswahlComponent,
-    GenericDialogComponent
+    GenericDialogComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +102,6 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     MessageModule,
     PanelModule,
     PickListModule,
-    ProgressSpinnerModule,
     SidebarModule,
     PanelMenuModule,
     InputTextModule,

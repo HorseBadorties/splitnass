@@ -31,8 +31,9 @@ body {
 }
 
 .verbindungsaufbau {
+  padding: 2em;
   font-family: 'Lucida Console', Monaco, monospace;
-  font-size: 14px; 
+  font-size: 12px; 
 }
 
 .elevation {
@@ -56,4 +57,5 @@ body {
   flex-direction: column;
   flex: 1 1 0;
 }
+
 
