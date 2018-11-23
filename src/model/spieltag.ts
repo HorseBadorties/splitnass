@@ -10,7 +10,6 @@ export class Spieltag {
     const parsedJson = JSON.parse(jsonString);
     result.name = parsedJson.name;
     result.beginn = parsedJson.beginn ? new Date(parsedJson.beginn) : undefined;
-    result.ende = parsedJson.ende ? new Date(parsedJson.ende) : undefined;
     result.spieler = [];
     parsedJson.spieler.forEach(s => {
       const spieler = Spieler.get(s.id);
@@ -37,7 +36,6 @@ export class Spieltag {
   constructor(
     public name?: string,
     public beginn?: Date,
-    public ende?: Date,
     public runden: Array<Runde> = [],
     public aktuelleRunde?: Runde,
     public spieler: Array<Spieler> = []) { }
