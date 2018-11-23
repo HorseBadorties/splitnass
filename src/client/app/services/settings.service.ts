@@ -9,7 +9,7 @@ import { first } from "rxjs/operators";
 export class SettingsService {
 
   private _offline = false;
-  private _animateRoutes = false;
+  private _animateRoutes = true;
   private _adminMode = false;
   private _autoShowRundendetails = true;
   private _hideInactivePlayers = true;
