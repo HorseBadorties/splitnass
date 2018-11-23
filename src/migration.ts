@@ -20,7 +20,7 @@ export function runMigration(callback: (s: Spieltag) => void) {
         const newRunde = new Runde(spieltag, runde.id);
         spieltag.runden.push(newRunde);
         newRunde.isGestartet = true;
-        newRunde.isBeendet = runde.ende;
+        newRunde.isBeendet = runde.ende ? true : false;
         newRunde.spieler = [];
         runde.spieler.forEach(object => newRunde.spieler.push(Spieler.get(object.id)));
         newRunde.geber = runde.geber ? Spieler.get(runde.geber.id) : undefined;
