@@ -43,13 +43,22 @@ import {
       // ], { optional: true }),
     ])
   ];
-
+  
+  const fadeIn = [        
+    group([
+      query(':leave', [
+        animate(400, style({opacity: 0}))
+      ], { optional: true }),
+      query(':enter', [
+        animate(400, style({opacity: 1}))
+      ], { optional: true })
+    ])
+  ];
+    
   // Routable animations
-  export const fadeInAnimation =
-    trigger('routeAnimations', [      
-      // transition('* => *', slideInOut),
-      transition('Rundenliste => Runde', swipeRight),
-      transition('* => Rundenliste', swipeLeft),      
+  export const routingAnimation =
+    trigger('routeAnimations', [            
+      transition('* => *', fadeIn)
     ]);
 
   
