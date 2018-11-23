@@ -6,6 +6,8 @@ import * as path from "path";
 
 import { DB } from "./db";
 import { WebsocketServer } from "./websocket.server";
+import * as m from "../migration";
+import { Spieltag } from "../model/spieltag";
 
 export class SplitnassServer {
 
@@ -49,6 +51,11 @@ export class SplitnassServer {
   }
 
   public dbSuccessfullyInitialized() {
+    // do migration
+    m.runMigration(spieltag => {
+      this.spieltagUpdate(Spieltag.toJSON(spieltag));
+      console.log(`migrated ${spieltag.name}`);
+    });
     // start server
     this.httpServer.listen(this.port, () => {
       console.log(`Splitnass server running on port ${this.port}`);

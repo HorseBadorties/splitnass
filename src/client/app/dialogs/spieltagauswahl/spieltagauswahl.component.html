@@ -5,7 +5,7 @@
   <div class="p-col"></div>
 
   <p-table [value]="spieltage" selectionMode="single" [(selection)]="selectedSpieltag" 
-    dataKey="beginn" scrollHeight="200px">
+    dataKey="beginn" [scrollable]="true" scrollHeight="200px">
     <ng-template pTemplate="header">
       <tr>
         <th>Datum</th>
