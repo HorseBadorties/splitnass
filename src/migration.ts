@@ -44,6 +44,12 @@ export function runMigration(callback: (s: Spieltag) => void) {
         } else {
           newRunde.gespielt = -runde.kontra;
         }
+        if (newRunde.isBeendet) {
+          newRunde.berechneErgebnis();
+          if (newRunde.ergebnis !== runde.ergebnis) {
+            console.log(`Ergebnisse sind unterschiedlich: Runde ${newRunde.nr} - war ${runde.ergebnis}, ist ${newRunde.ergebnis}`);
+          }
+        }
         newRunde.ergebnis = runde.ergebnis;
       }
     });
