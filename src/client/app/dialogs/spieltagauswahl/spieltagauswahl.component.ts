@@ -24,7 +24,7 @@ export class SpieltagauswahlComponent {
   
   onClose() {
     if (this.selectedSpieltag) {
-      this.spieltagService.setAktuellerSpieltag(this.selectedSpieltag["beginn"])
+      this.spieltagService.setAktuellerSpieltag(this.selectedSpieltag["beginn"]);
     }
     this.dialog.close(this.selectedSpieltag);
   }
