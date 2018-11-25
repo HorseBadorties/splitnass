@@ -48,7 +48,8 @@ export class SocketService {
       this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
       this.socket.on("connect_error", _ => this.connectToRemoteServer());
       this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
-      this.socket.on("message", message => this.messages.next(message));
+      
+      
   }
 
   private onConnect(url: string) {
@@ -58,6 +59,7 @@ export class SocketService {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);
     });
+    this.socket.on("message", message => this.messages.next(message));
   }
 
   private connectToRemoteServer() {
