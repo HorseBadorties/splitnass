@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import * as _ from "lodash";
 
@@ -92,8 +92,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   constructor(
     public spieltagService: SpieltagService, 
     public settingsService: SettingsService, 
-    private route: ActivatedRoute,
-    private router: Router) { }
+    private location: Location) { }
 
   ngOnInit() {
     this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));
@@ -106,7 +105,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   navigateBack() {
-    this.router.navigate(['../'], { relativeTo: this.route, skipLocationChange: false });
+    this.location.back();
   }
 
   private calcData(spieltag: Spieltag) {  
