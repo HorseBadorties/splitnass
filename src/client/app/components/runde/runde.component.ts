@@ -27,7 +27,8 @@ import { take } from "rxjs/operators";
   providers: [MessageService]
 })
 export class RundeComponent implements OnInit, OnDestroy {
-  spieltagServiceSubscribtion: Subscription;
+  spieltagSubscribtion: Subscription;
+  messagesSubscribtion: Subscription;
   spieltag: Spieltag;
   runde: Runde;
   displayMenu = false;
@@ -261,7 +262,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMenu();
-    this.spieltagServiceSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => {
+    this.spieltagSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => {
       this.spieltag = spieltag;
       if (spieltag) {
         this.setAktuelleRunde(spieltag.aktuelleRunde);
@@ -269,11 +270,20 @@ export class RundeComponent implements OnInit, OnDestroy {
         this.spieltagAuswahl();      
       }
     });
+    this.messagesSubscribtion = this.spieltagService.messages.subscribe(message => {
+      this.messageService.add(message);
+      if (message.summary === "Keine Änderungsrechte") {
+        this.runde = this.spieltag.aktuelleRunde;
+      }
+    });
   }
 
   ngOnDestroy() {
-    if (this.spieltagServiceSubscribtion) {
-      this.spieltagServiceSubscribtion.unsubscribe();
+    if (this.spieltagSubscribtion) {
+      this.spieltagSubscribtion.unsubscribe();
+    }
+    if (this.messagesSubscribtion) {
+      this.messagesSubscribtion.unsubscribe();
     }
   }
 

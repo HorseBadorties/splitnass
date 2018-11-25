@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
+import { Message } from "primeng/api";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
@@ -16,6 +17,7 @@ export class SocketService {
   public joinedSpieltag = new Subject<string>();
   public spieltagList = new Subject<Array<Spieltag>>();
   public connected = new Subject<boolean>();
+  public messages = new Subject<Message>();
 
   constructor() {
     this.initSocket();
@@ -37,11 +39,16 @@ export class SocketService {
     this.socket.emit("joinSpieltag", beginn);
   }
 
+  public sendMessage(message: Message) {
+    this.socket.emit("message", message);
+  }
+
   private initSocket(): void {
       this.socket = socketIo(LOCAL_SERVER_URL);
       this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
       this.socket.on("connect_error", _ => this.connectToRemoteServer());
       this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
+      this.socket.on("message", message => this.messages.next(message));
   }
 
   private onConnect(url: string) {

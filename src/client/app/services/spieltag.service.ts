@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { first } from "rxjs/operators";
+import { Message } from "primeng/api";
 import { Spieltag } from "src/model/spieltag";
 import { Spieler } from "src/model/spieler";
 import { SocketService } from "./socket.service";
@@ -13,6 +14,7 @@ import { Runde } from "src/model/runde";
 export class SpieltagService {
 
   public spieltag = new BehaviorSubject<Spieltag>(undefined);
+  public messages = new Subject<Message>();
   private aktuellerSpieltag: Spieltag;
 
   constructor(private socketService: SocketService, private settingsService: SettingsService) {
@@ -21,6 +23,7 @@ export class SpieltagService {
         this.setSpieltag(spieltag);
       }
     });
+    this.socketService.messages.subscribe(message => this.messages.next(message));
     this.settingsService.hideInactivePlayersStatus.subscribe(_ => {
       if (this.aktuellerSpieltag) this.setSpieltag(this.aktuellerSpieltag);
     });
@@ -99,8 +102,14 @@ export class SpieltagService {
         this.setSpieltag(spieltag);
         this.settingsService.joinedSpieltag(spieltag.beginn.toJSON());
         console.log(`aktueller Spieltag: ${beginn}`);
+      } else {
+        this.setSpieltag(null);
       }
     })
+  }
+
+  public sendMessage(message: Message) {
+    this.socketService.sendMessage(message);
   }
   
   private sendSpieltagUpdate(spieltag: Spieltag) {

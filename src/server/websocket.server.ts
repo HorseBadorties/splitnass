@@ -31,9 +31,11 @@ export class WebsocketServer {
       } else {
         // client was trying to update the Spieltag but is not an admin
         console.log(`spieltag ${beginnJSON} not updated because ${socket.client.id} is not the admin`);
-        socket.emit("notAnAdmin");
+        socket.emit("message", { severity: "error", summary: "Keine Änderungsrechte",
+          detail: "Der Spieltag wird von jemand anderem gesteuert!" });
       }
     });
+    socket.on("message", message => socket.broadcast.emit("message", message));
     socket.on("listSpieltage", () => {
       this.splitnassServer.listSpieltage().then(list => {
         console.log(`sending list of spieltage`);
@@ -45,6 +47,8 @@ export class WebsocketServer {
         if (spieltag) {
           this.addClientToRoom(socket, beginnJSON);
           socket.emit("joinedSpieltag", JSON.stringify(spieltag));
+        } else {
+          socket.emit("joinedSpieltag", undefined);
         }
       });
     });
