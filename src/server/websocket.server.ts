@@ -31,7 +31,7 @@ export class WebsocketServer {
       } else {
         // client was trying to update the Spieltag but is not an admin
         console.log(`spieltag ${beginnJSON} not updated because ${socket.client.id} is not the admin`);
-        socket.emit("message", { severity: "error", summary: "Keine Änderungsrechte",
+        socket.emit("message", { severity: "error", summary: "No permission",
           detail: "Der Spieltag wird von jemand anderem gesteuert!" });
       }
     });

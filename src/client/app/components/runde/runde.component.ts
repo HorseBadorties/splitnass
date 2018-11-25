@@ -272,7 +272,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     });
     this.messagesSubscribtion = this.spieltagService.messages.subscribe(message => {
       this.messageService.add(message);
-      if (message.summary === "Keine Änderungsrechte") {
+      if (message.summary === "No permission") {
         // Reload Spieltag and dismiss all changes
         this.spieltagService.setAktuellerSpieltag(this.spieltag.beginn.toISOString())
       }
