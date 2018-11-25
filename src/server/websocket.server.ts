@@ -33,6 +33,7 @@ export class WebsocketServer {
         console.log(`spieltag ${beginnJSON} not updated because ${socket.client.id} is not the admin`);
         socket.emit("message", { severity: "error", summary: "No permission",
           detail: "Der Spieltag wird von jemand anderem gesteuert!" });
+          console.log(`message send to ${socket.client.id} that he lacks update permissions`);
       }
     });
     socket.on("message", message => socket.broadcast.emit("message", message));
