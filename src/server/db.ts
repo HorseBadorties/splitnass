@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/@types/node/index.d.ts" />
 
-import { MongoClient, MongoError, Db, Collection, ObjectId } from "mongodb";
+import { MongoClient, MongoError, Db, Collection } from "mongodb";
 import { SplitnassServer } from "./server";
 
 export class DB {

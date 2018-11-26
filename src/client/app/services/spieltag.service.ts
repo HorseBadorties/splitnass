@@ -109,7 +109,9 @@ export class SpieltagService {
   }
 
   public sendMessage(message: Message) {
-    this.socketService.sendMessage(message);
+    if (!this.settingsService.offline) {
+      this.socketService.sendMessage(message);
+    }
   }
   
   private sendSpieltagUpdate(spieltag: Spieltag) {
