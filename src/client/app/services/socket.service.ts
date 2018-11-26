@@ -14,6 +14,7 @@ const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 export class SocketService {
   private socket;
   public spieltag = new Subject<Spieltag>();
+  private _joinedSpieltagBeginn: string;
   public joinedSpieltag = new Subject<string>();
   public spieltagList = new Subject<Array<Spieltag>>();
   public connected = new Subject<boolean>();
@@ -35,7 +36,10 @@ export class SocketService {
   }
 
   public joinSpieltag(beginn: string) {
-    this.socket.on("joinedSpieltag", s => this.joinedSpieltag.next(s));
+    this.socket.on("joinedSpieltag", s => {
+      this._joinedSpieltagBeginn = beginn;
+      this.joinedSpieltag.next(s);
+    });
     this.socket.emit("joinSpieltag", beginn);
   }
 
@@ -54,12 +58,17 @@ export class SocketService {
 
   private onConnect(url: string) {
     console.log(`connected to ${url}`);
+    this.socket.on("disconnect", reason => console.log(`got disconnected due to ${reason}`));
     this.connected.next(true);    
     this.socket.on("spieltagUpdated", (data: string) => {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);
     });
     this.socket.on("message", message => this.messages.next(message));
+    // re-join Spieltag after a disconnect/reconnect
+    if (this._joinedSpieltagBeginn) {
+      this.joinSpieltag(this._joinedSpieltagBeginn);
+    }
   }
 
   private connectToRemoteServer() {
