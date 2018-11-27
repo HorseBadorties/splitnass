@@ -16,7 +16,7 @@ export class WebsocketServer {
   }
 
   private onConnect(socket: socketIo.Socket) {
-    console.log(`Client ${socket.client.id} connected`);
+    console.log(`Client ${socket.client.id} connected using ${socket.conn.transport.name}`);
     socket.on("disconnect", () => {
       this.rooms.delete(socket.client.id);
       this.removeAsAdmin(socket);

@@ -9,7 +9,8 @@ import { WebsocketServer } from "./websocket.server";
 
 export class SplitnassServer {
 
-  public port = process.env.PORT || 4200;
+  // uberspace port 63085
+  public port = process.env.PORT || 63085; //4200;
   private app: express.Application;
   private httpServer: HttpServer;
   private websocketServer: WebsocketServer;

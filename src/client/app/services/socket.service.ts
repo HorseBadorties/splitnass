@@ -5,8 +5,9 @@ import { Message } from "primeng/api";
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
 
-const LOCAL_SERVER_URL = `http://localhost:${4200}`;
-const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
+const LOCAL_SERVER_URL = `http://localhost:${63085}`;
+//const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
+const REMOTE_SERVER_URL = `http://schruv.deneb.uberspace.de:63085`;
 
 @Injectable({
   providedIn: "root"
@@ -31,12 +32,16 @@ export class SocketService {
   }
 
   public listSpieltage() {
-    this.socket.on("listSpieltage", list => this.spieltagList.next(list));
+    this.socket.on("listSpieltage", list => {
+      this.socket.off("listSpieltage");
+      this.spieltagList.next(list);
+    });
     this.socket.emit("listSpieltage");
   }
 
   public joinSpieltag(beginn: string) {
     this.socket.on("joinedSpieltag", s => {
+      this.socket.off("joinedSpieltag");
       this._joinedSpieltagBeginn = beginn;
       this.joinedSpieltag.next(s);
     });
@@ -48,7 +53,9 @@ export class SocketService {
   }
 
   private initSocket(): void {
-      this.socket = socketIo(LOCAL_SERVER_URL);
+      this.socket = socketIo(LOCAL_SERVER_URL, {
+        transports: ['websocket']
+      });
       this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
       this.socket.on("connect_error", _ => this.connectToRemoteServer());
       this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
@@ -57,13 +64,18 @@ export class SocketService {
   }
 
   private onConnect(url: string) {
-    console.log(`connected to ${url}`);
+    console.log(`connected to ${url} using ${this.socket.io.engine.transport.name}`);
+    // unregister bogus listeners
+    this.socket.off("disconnect");
+    this.socket.off("spieltagUpdated");
+    this.socket.off("message");
+    // register new listeners
     this.socket.on("disconnect", reason => console.log(`got disconnected due to ${reason}`));
     this.connected.next(true);    
     this.socket.on("spieltagUpdated", (data: string) => {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);
-    });
+    });    
     this.socket.on("message", message => this.messages.next(message));
     // re-join Spieltag after a disconnect/reconnect
     if (this._joinedSpieltagBeginn) {
@@ -75,7 +87,9 @@ export class SocketService {
     if (this.socket) {
       this.socket.close();
     }
-    this.socket = socketIo(REMOTE_SERVER_URL);
+    this.socket = socketIo(REMOTE_SERVER_URL, {
+      transports: ['websocket']
+    });
     this.socket.on("connect", _ => this.onConnect(REMOTE_SERVER_URL));
   }
 
