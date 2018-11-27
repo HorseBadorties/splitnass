@@ -8,6 +8,7 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build",
+    "serve": "ng serve",
     "test": "jest",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -32,6 +33,7 @@
     "@angular/service-worker": "^7.1.0",
     "@ngx-pwa/local-storage": "^7.1.0",
     "@types/lodash": "^4.14.118",
+    "@types/ws": "^6.0.1",
     "chart.js": "^2.7.3",
     "core-js": "^2.5.4",
     "express": "^4.16.4",
@@ -47,6 +49,7 @@
     "socket.io": "^2.1.1",
     "ts-node": "^5.0.1",
     "typescript": "^3.1.6",
+    "ws": "^6.1.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
