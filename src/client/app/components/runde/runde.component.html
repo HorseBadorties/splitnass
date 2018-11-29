@@ -21,7 +21,7 @@
         </p-button>
       </span>
       <span class="box"> </span>
-      <span *ngIf="settingsService.offline" class="attention">Offline-Modus</span>
+      <span class="attention">{{onlineStatus}}</span>
     </div>
     <div class="ui-toolbar-group-right">
       <button pButton type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></button>
@@ -30,7 +30,7 @@
 
   <div style="padding-top: 0.2em;"></div>
 
-  <div *ngIf="spieltag === undefined && !settingsService.offline">
+  <div *ngIf="spieltag === undefined">
     <app-spinner></app-spinner>
     <div align="center" class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
   </div>

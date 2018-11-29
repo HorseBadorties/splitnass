@@ -22,7 +22,9 @@ smoothscroll.polyfill();
 })
 export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  subscribtion: Subscription;
+  spieltagSubscribtion: Subscription;
+  statusSubscribtion: Subscription;
+  onlineStatus = "";
   spieltag: Spieltag;
   selectedRunde: Runde;
   expandedRunden = [];
@@ -39,7 +41,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.initMenu();
-    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));    
+    this.spieltagSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));
+    this.statusSubscribtion = this.spieltagService.online.subscribe(online => this.onlineStatus = online ? "" : "offline");
   }
 
   ngAfterViewInit() {
@@ -49,8 +52,11 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscribtion) {
-      this.subscribtion.unsubscribe();
+    if (this.spieltagSubscribtion) {
+      this.spieltagSubscribtion.unsubscribe();
+    }
+    if (this.statusSubscribtion) {
+      this.statusSubscribtion.unsubscribe();
     }
   }
 

@@ -28,9 +28,11 @@ import { take } from "rxjs/operators";
 })
 export class RundeComponent implements OnInit, OnDestroy {
   spieltagSubscribtion: Subscription;
+  statusSubscribtion: Subscription;
   messagesSubscribtion: Subscription;
   spieltag: Spieltag;
   runde: Runde;
+  onlineStatus = "";
   displayMenu = false;
   menuItems: MenuItem[];
   moeglicheReAnsagen: SelectItem[];
@@ -270,6 +272,7 @@ export class RundeComponent implements OnInit, OnDestroy {
         this.spieltagAuswahl();      
       }
     });
+    this.statusSubscribtion = this.spieltagService.online.subscribe(online => this.onlineStatus = online ? "" : "offline");
     this.messagesSubscribtion = this.spieltagService.messages.subscribe(message => {
       this.messageService.add(message);
       if (message.summary === "No permission") {
@@ -282,6 +285,9 @@ export class RundeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.spieltagSubscribtion) {
       this.spieltagSubscribtion.unsubscribe();
+    }
+    if (this.statusSubscribtion) {
+      this.statusSubscribtion.unsubscribe();
     }
     if (this.messagesSubscribtion) {
       this.messagesSubscribtion.unsubscribe();

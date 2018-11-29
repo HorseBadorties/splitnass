@@ -15,7 +15,9 @@ export class SpieltagService {
 
   public spieltag = new BehaviorSubject<Spieltag>(undefined);
   public messages = new Subject<Message>();
+  public online = new Subject<boolean>();
   private aktuellerSpieltag: Spieltag;
+  private socketIsOnline = false;  
 
   constructor(private socketService: SocketService, private settingsService: SettingsService) {
     this.socketService.spieltag.subscribe(spieltag => {
@@ -27,35 +29,26 @@ export class SpieltagService {
     this.settingsService.hideInactivePlayersStatus.subscribe(_ => {
       if (this.aktuellerSpieltag) this.setSpieltag(this.aktuellerSpieltag);
     });
-    this.settingsService.offlineStatus.subscribe(offline => this.offlineStatusChanded(offline));
-    if (this.settingsService.offline) {
-      this.offlineStatusChanded(this.settingsService.offline);
-    }       
-    this.socketService.connected./*pipe(first()).*/subscribe(connected => {
-      if (connected) {
-        this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
-          if (beginn) {
-            console.log(`*** we are online ***`);
-            console.log(`loading last Spieltag ${beginn}`);
-            this.setAktuellerSpieltag(beginn);            
-          } else {
-            console.log(`*** we are offline ***`);
-            // this.setSpieltag(null);
-          }
-        });
-      }
+    this.settingsService.offlineStatus.subscribe(_ => this.onOnlineStatusChanged());
+    this.socketService.connected.subscribe(connected => {
+      this.socketIsOnline = connected;
+      this.onOnlineStatusChanged();
     });
   }
-
-  private offlineStatusChanded(offline: boolean) {
-    if (offline) {
-      this.settingsService.getSavedSpieltagJSON().pipe(first()).subscribe(spieltagJSON => {
-        if (spieltagJSON) {
-          this.setSpieltag(Spieltag.fromJSON(spieltagJSON));
+  
+  private onOnlineStatusChanged() {
+    const online = this.socketIsOnline && !this.settingsService.offline;
+    this.online.next(online);
+    if (online) {      
+      console.log(`*** we are online ***`);
+      console.log(`loading last Spieltag`);
+      this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
+        if (beginn) {
+          this.setAktuellerSpieltag(beginn);            
         }
       });
     } else {
-      this.socketService.spieltag.pipe(first()).subscribe(spieltag => this.setSpieltag(spieltag));
+      console.log(`*** we are offline ***`);
     }
   }
 
