@@ -31,14 +31,16 @@ export class SpieltagService {
     if (this.settingsService.offline) {
       this.offlineStatusChanded(this.settingsService.offline);
     }       
-    this.socketService.connected.pipe(first()).subscribe(connected => {
+    this.socketService.connected./*pipe(first()).*/subscribe(connected => {
       if (connected) {
         this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
           if (beginn) {
+            console.log(`*** we are online ***`);
             console.log(`loading last Spieltag ${beginn}`);
             this.setAktuellerSpieltag(beginn);            
           } else {
-            this.setSpieltag(null);
+            console.log(`*** we are offline ***`);
+            // this.setSpieltag(null);
           }
         });
       }
