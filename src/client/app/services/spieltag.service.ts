@@ -119,6 +119,8 @@ export class SpieltagService {
       this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
         if (beginn) {
           this.setAktuellerSpieltag(beginn);            
+        } else {
+          this.setSpieltag(null);
         }
       });
     } else {
