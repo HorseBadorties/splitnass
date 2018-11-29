@@ -35,23 +35,7 @@ export class SpieltagService {
       this.onOnlineStatusChanged();
     });
   }
-  
-  private onOnlineStatusChanged() {
-    const online = this.socketIsOnline && !this.settingsService.offline;
-    this.online.next(online);
-    if (online) {      
-      console.log(`*** we are online ***`);
-      console.log(`loading last Spieltag`);
-      this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
-        if (beginn) {
-          this.setAktuellerSpieltag(beginn);            
-        }
-      });
-    } else {
-      console.log(`*** we are offline ***`);
-    }
-  }
-
+ 
   public startSpieltag(name: string, anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
     this.sendSpieltagUpdate(new Spieltag(name).start(anzahlRunden, spieler, geber));
   }
@@ -104,13 +88,13 @@ export class SpieltagService {
   }
 
   public sendMessage(message: Message) {
-    if (!this.settingsService.offline) {
+    if (this.weAreOnline()) {
       this.socketService.sendMessage(message);
     }
   }
   
   private sendSpieltagUpdate(spieltag: Spieltag) {
-    if (this.settingsService.offline) {
+    if (this.weAreOnline()) {
       this.setSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));
     } else {
@@ -123,4 +107,23 @@ export class SpieltagService {
     this.spieltag.next(this.aktuellerSpieltag); 
   }
   
+  private weAreOnline() {
+    return !this.settingsService.offline && this.socketIsOnline;
+  }
+
+  private onOnlineStatusChanged() {
+    this.online.next(this.weAreOnline());
+    if (this.weAreOnline()) {      
+      console.log(`*** we are online ***`);
+      console.log(`loading last Spieltag`);
+      this.settingsService.getJoinedSpieltag().pipe(first()).subscribe(beginn => {
+        if (beginn) {
+          this.setAktuellerSpieltag(beginn);            
+        }
+      });
+    } else {
+      console.log(`*** we are offline ***`);
+    }
+  }
+
 }
