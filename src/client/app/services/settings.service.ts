@@ -8,11 +8,11 @@ import { first } from "rxjs/operators";
 })
 export class SettingsService {
 
-  private _offline = false;
-  private _animateRoutes = true;
-  private _adminMode = false;
-  private _autoShowRundendetails = true;
-  private _hideInactivePlayers = true;
+  private _offline: boolean;
+  private _animateRoutes: boolean;
+  private _adminMode: boolean;
+  private _autoShowRundendetails: boolean;
+  private _hideInactivePlayers: boolean;
 
   public offlineStatus = new BehaviorSubject(undefined);
   public hideInactivePlayersStatus = new BehaviorSubject(undefined);
@@ -86,13 +86,13 @@ export class SettingsService {
         this.offlineStatus.next(this._offline);
       });
     this.getBoolean("animateRoutes").pipe(first())
-      .subscribe(value => this._animateRoutes = value && value.valueOf())
+      .subscribe(value => this._animateRoutes = value ? value.valueOf() : true)
     this.getBoolean("adminMode").pipe(first())
-      .subscribe(value => this._adminMode = value && value.valueOf())
+      .subscribe(value => this._adminMode = value ? value.valueOf() : false)
     this.getBoolean("autoShowRundendetails").pipe(first())
-      .subscribe(value => this._autoShowRundendetails = value && value.valueOf())
+      .subscribe(value => this._autoShowRundendetails = value ? value.valueOf() : true)
     this.getBoolean("hideInactivePlayers").pipe(first())
-      .subscribe(value => this._hideInactivePlayers = value && value.valueOf())
+      .subscribe(value => this._hideInactivePlayers = value ? value.valueOf() : true)
   }
 
   private setBoolean(name: string, value: boolean) {
