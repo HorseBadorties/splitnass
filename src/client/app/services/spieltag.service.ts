@@ -94,7 +94,7 @@ export class SpieltagService {
   }
   
   private sendSpieltagUpdate(spieltag: Spieltag) {
-    if (this.weAreOnline()) {
+    if (!this.weAreOnline()) {
       this.setSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));
     } else {
