@@ -6,9 +6,8 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<div *ngIf="spieltag === undefined && !settingsService.offline">
+<div *ngIf="spieltag === undefined">
     <app-spinner></app-spinner>
-    <div align="center" class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
   </div>
 
 <div *ngIf="spieltag">

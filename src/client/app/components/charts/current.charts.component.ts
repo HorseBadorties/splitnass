@@ -7,24 +7,14 @@ import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
-import { SettingsService } from '../../services/settings.service';
+import { playerColors } from './colors';
 
 @Component({
-  selector: 'app-charts',
-  templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  selector: 'app-current-charts',
+  templateUrl: './current.charts.component.html',
+  styleUrls: ['./current.charts.component.css']
 })
-export class ChartsComponent implements OnInit, OnDestroy {
-
-  colors = [
-    'rgb(255, 99, 132)', // red
-	  'rgb(153, 102, 255)', // purple
-	  'rgb(255, 205, 86)', // yellow
-	  'rgb(75, 192, 192)', // green
-	  'rgb(54, 162, 235)', // blue
-    'rgb(255, 159, 64)', // orange
-    'rgb(201, 203, 207)' // grey
-  ];
+export class CurrentChartsComponent implements OnInit, OnDestroy {
   
   subscribtion: Subscription;
   spieltag: Spieltag;
@@ -91,7 +81,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   constructor(
     public spieltagService: SpieltagService, 
-    public settingsService: SettingsService, 
     private location: Location) { }
 
   ngOnInit() {
@@ -124,7 +113,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
       dataset["fill"] = false;      
       datasetsSpieltagsverlauf.push(dataset);
     });
-    _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = this.colors[index]);
+    _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
     newSpieltagsverlaufData["datasets"] = datasetsSpieltagsverlauf;
     this.spieltagsverlauf = newSpieltagsverlaufData;
 
@@ -133,7 +122,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     newAnzahlGewonnenerRundenData["labels"] = spieltag.spieler.map(s => s.name);
     const dataset = {"label": ""};
     dataset["data"] = spieltag.spieler.map(s => this.countAnzahlGewonnenerRunden(s));
-    dataset["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
+    dataset["backgroundColor"] = playerColors.slice(0, spieltag.spieler.length);
     newAnzahlGewonnenerRundenData["datasets"] = [dataset];
     this.anzahlGewonnenerRunden = newAnzahlGewonnenerRundenData;
 
@@ -142,7 +131,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     newAnzahlSolos["labels"] = spieltag.spieler.map(s => s.name);
     const datasetSolos = {"label": ""};
     datasetSolos["data"] = spieltag.spieler.map(s => this.countAnzahlGespielteSolos(s));
-    datasetSolos["backgroundColor"] = this.colors.slice(0, spieltag.spieler.length);
+    datasetSolos["backgroundColor"] = playerColors.slice(0, spieltag.spieler.length);
     newAnzahlSolos["datasets"] = [datasetSolos];
     this.anzahlSolos = newAnzahlSolos;
   }

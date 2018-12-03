@@ -3,12 +3,14 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { RundenlisteComponent } from "./components/rundenliste/rundenliste.component";
 import { RundeComponent } from "./components/runde/runde.component";
-import { ChartsComponent } from "./components/charts/charts.component";
+import { CurrentChartsComponent } from "./components/charts/current.charts.component";
+import { GlobalChartsComponent } from "./components/charts/global-charts.component";
 
 const routes: Routes = [
   { path: "rundenliste", component: RundenlisteComponent, data: {animation: 'Rundenliste'} },
   { path: "runde", component: RundeComponent, data: {animation: 'Runde'} },
-  { path: "charts", component: ChartsComponent, data: {animation: 'Charts'} },
+  { path: "currentcharts", component: CurrentChartsComponent, data: {animation: 'Charts'} },
+  { path: "globalcharts", component: GlobalChartsComponent, data: {animation: 'Charts'} },
   { path: "**", component: RundenlisteComponent }
 ];
 

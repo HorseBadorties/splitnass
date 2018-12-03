@@ -171,6 +171,8 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.menuItemById(MenuItemId.SpielerRaus).disabled = this.spieltag.getAktiveSpieler().length === 4;
     this.menuItemById(MenuItemId.ErgebnisKorrigieren).disabled = !r.isBeendet;
     this.menuItemById(MenuItemId.BoeckeKorrigieren).disabled = r.isBeendet;
+    this.menuItemById(MenuItemId.CurrentCharts).disabled = !this.spieltag;
+    this.menuItemById(MenuItemId.GlobalCharts).disabled = this.settingsService.offline;
   }
 
   rundeAbrechnen() {
@@ -360,8 +362,17 @@ export class RundeComponent implements OnInit, OnDestroy {
         ]
       },
       {
-        label: "Charts", id: MenuItemId.Charts,
-        icon: "pi pi-fw pi-chart-bar", command: _ => this.toCharts()
+        label: "Charts", id: MenuItemId.Charts, icon: "pi pi-fw pi-chart-bar",
+        items: [
+          {
+            label: "Aktueller Spieltag", id: MenuItemId.CurrentCharts,
+            icon: "pi pi-fw pi-calendar", command: _ => this.toCurrentCharts()
+          },
+          {
+            label: "All-Time", id: MenuItemId.GlobalCharts,
+            icon: "pi pi-fw pi-globe", command: _ =>  this.toGlobalCharts()
+          },
+        ]
       },
       {
         label: "Settings", id: MenuItemId.Settings,
@@ -395,9 +406,14 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.dialogService.open(SettingsComponent, {});
   }
 
-  toCharts() {
+  toCurrentCharts() {
     this.displayMenu = false;
-    this.router.navigate(["charts"], { skipLocationChange: false });
+    this.router.navigate(["currentcharts"], { skipLocationChange: false });
+  }
+
+  toGlobalCharts() {
+    this.displayMenu = false;
+    this.router.navigate(["globalcharts"], { skipLocationChange: false });
   }
 
 
@@ -483,6 +499,8 @@ enum MenuItemId {
   Sitzreihenfolge = "Sitzreihenfolge",
 
   Settings = "Settings",
-  Charts = "Statistik"
+  Charts = "Statistik",
+  GlobalCharts = "GlobalCharts",
+  CurrentCharts = "CurrentCharts"
 }
 

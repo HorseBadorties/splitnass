@@ -1,0 +1,41 @@
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+    <p-button icon="pi pi-arrow-left" (click)="navigateBack()"></p-button>
+  </div>
+</p-toolbar>
+
+<div style="padding-top: 0.2em;"></div>
+
+<div *ngIf="spieltage === undefined">
+    <app-spinner></app-spinner>    
+  </div>
+
+<div *ngIf="spieltage">
+  <p-tabView > 
+    <p-tabPanel header="Ewige Doko-Tabelle">
+      <div>
+        <p-chart type="line" [data]="punkte" [options]="optionsPunkte"></p-chart>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Gewonnene Spieltage">
+      <div>
+        <p-chart type="bar" [data]="gewonneneSpieltage" [options]="optionsGewonneneSpieltage"></p-chart>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Solo-Verteilung">
+      <div>
+        <p-chart type="doughnut" [data]="solos" [options]="optionsSolos"></p-chart>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Anzahl Runden und Böcke">
+      <div>
+        <p-chart type="line" [data]="rundenProSpieltag" [options]="optionsRundenProSpieltag"></p-chart>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Punkte pro Spieltag">
+      <div>
+        <p-chart type="line" [data]="punkteProSpieltag" [options]="optionsPunkteProSpieltag"></p-chart>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>

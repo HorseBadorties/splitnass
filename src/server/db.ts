@@ -7,7 +7,7 @@ export class DB {
   // public static readonly mongoUrl: string = "mongodb://localhost:27017/splitnass";
   public static readonly mongoUrl: string = "mongodb://client:client@localhost:31664/splitnass"; //uberspace port 31664
   // public static readonly mongoUrl: string = "mongodb://admin:admin123@ds243931.mlab.com:43931/splitnass";
-  
+
   private db: Db;
   private dbCollection: Collection;
 
@@ -41,7 +41,7 @@ export class DB {
   }
 
   public listSpieltage(): Promise<Array<Object>> {
-    return this.dbCollection.find({}, {projection: {name: 1, beginn: 1}}).sort({ beginn: -1 }).toArray();
+    return this.dbCollection.find({}/*, {projection: {name: 1, beginn: 1}}*/).sort({ beginn: -1 }).toArray();
   }
 
   public getSpieltag(beginn: Date): Promise<Object> {

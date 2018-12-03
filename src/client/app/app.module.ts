@@ -30,7 +30,7 @@ import { RundenlisteComponent } from "./components/rundenliste/rundenliste.compo
 import { AppRoutingModule } from "./app-routing.module";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ChartsComponent } from './components/charts/charts.component';
+import { CurrentChartsComponent } from './components/charts/current.charts.component';
 import { SettingsComponent } from './dialogs/settings/settings.component';
 import { DialogModule as CustomDialogModule } from './dialogs/dialog.module';
 import { SpielerauswahlComponent } from './dialogs/spielerauswahl/spielerauswahl.component';
@@ -40,6 +40,7 @@ import { GewinnerauswahlComponent } from './dialogs/gewinnerauswahl/gewinnerausw
 import { GenericDialogComponent } from './dialogs/generic-dialog/generic-dialog.component';
 import { SpieltagauswahlComponent } from './dialogs/spieltagauswahl/spieltagauswahl.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { GlobalChartsComponent } from './components/charts/global-charts.component';
 
 
 @Injectable()
@@ -73,7 +74,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     AppComponent,
     RundeComponent,
     RundenlisteComponent,
-    ChartsComponent,
+    CurrentChartsComponent,
     SettingsComponent,
     SpielerauswahlComponent,
     NumberpickerComponent,
@@ -81,7 +82,8 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     GewinnerauswahlComponent,
     SpieltagauswahlComponent,
     GenericDialogComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    GlobalChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -119,7 +121,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ChartsComponent]
+  entryComponents: [CurrentChartsComponent]
 })
 export class AppModule { }
 
