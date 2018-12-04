@@ -169,7 +169,6 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.menuItemById(MenuItemId.UndoLetzteRunde).disabled = this.spieltag.aktuelleRunde.nr === 1;
     this.menuItemById(MenuItemId.SpielerRein).disabled = this.spieltag.getAktiveSpieler().length >= 6;
     this.menuItemById(MenuItemId.SpielerRaus).disabled = this.spieltag.getAktiveSpieler().length === 4;
-    this.menuItemById(MenuItemId.ErgebnisKorrigieren).disabled = !r.isBeendet;
     this.menuItemById(MenuItemId.BoeckeKorrigieren).disabled = r.isBeendet;
     this.menuItemById(MenuItemId.CurrentCharts).disabled = !this.spieltag;
     this.menuItemById(MenuItemId.GlobalCharts).disabled = this.settingsService.offline;
@@ -309,6 +308,24 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.dialogService.open(GenericDialogComponent, data);
   }
 
+  private boeckeKorrigieren() {
+    this.displayMenu = false;
+    const data: any = {
+      min: 0,
+      max: 2, 
+      value: this.runde.boecke, 
+      message: "Wieviele Böcke sollen für diese Runde notiert werden?"
+    };
+    this.dialogService.open(NumberpickerComponent, data).afterClosed.subscribe(result => {
+      if (result) {
+        this.runde.boecke = result;
+        this.spieltagService.sendSpieltagUpdate();
+        this.messageService.add({ severity: "success", summary: "", 
+          detail: `Runde ${this.runde.nr} hat jetzt ${result === 1 ? "Bock" : "Böcke"}!`}); 
+      }
+    });  
+  }
+
   private initMenu() {
     this.menuItems = [      
       {
@@ -350,14 +367,10 @@ export class RundeComponent implements OnInit, OnDestroy {
           {
             label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
             icon: "pi pi-fw pi-check", command: _ => this.berechnungPruefen()
-          },
-          {
-            label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
-            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")
-          },
+          },          
           {
             label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
-            icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")
+            icon: "pi pi-fw pi-pencil", command: _ => this.boeckeKorrigieren()
           },
         ]
       },
@@ -489,7 +502,6 @@ enum MenuItemId {
   Runde = "Runde",
   UndoLetzteRunde = "UndoLetzteRunde",
   BerechnungPruefen = "BerechnungPruefen",
-  ErgebnisKorrigieren = "ErgebnisKorrigieren",
   BoeckeKorrigieren = "BoeckeKorrigieren",
 
   Spieltag = "Spieltag",

@@ -37,30 +37,34 @@ export class SpieltagService {
   }
  
   public startSpieltag(name: string, anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
-    this.sendSpieltagUpdate(new Spieltag(name).start(anzahlRunden, spieler, geber));
+    this.sendSpieltagUpdateFor(new Spieltag(name).start(anzahlRunden, spieler, geber));
   }
 
   public rundeAbgerechnet(runde: Runde) {
     if (runde.isAktuelleRunde()) {
       this.aktuellerSpieltag.startNaechsteRunde();
     }    
-    this.sendSpieltagUpdate(this.aktuellerSpieltag);
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag);
   }
 
   public spielerSteigtEin(spieler: Spieler) {
-    this.sendSpieltagUpdate(this.aktuellerSpieltag.spielerSteigtEin(spieler));
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag.spielerSteigtEin(spieler));
   }
 
   public spielerSteigtAus(spieler: Spieler) {
-    this.sendSpieltagUpdate(this.aktuellerSpieltag.spielerSteigtAus(spieler));
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag.spielerSteigtAus(spieler));
   }
 
   public setztRundenanzahl(anzahl: number) {
-    this.sendSpieltagUpdate(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag.setzeRundenanzahl(anzahl));
   }
 
   public undoLetzteRunde() {
-    this.sendSpieltagUpdate(this.aktuellerSpieltag.undoLetzteRunde());
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag.undoLetzteRunde());
+  }
+
+  public sendSpieltagUpdate() {
+    this.sendSpieltagUpdateFor(this.aktuellerSpieltag);
   }
 
   public listSpieltage(): Observable<Array<Object>> {
@@ -93,7 +97,7 @@ export class SpieltagService {
     }
   }
   
-  private sendSpieltagUpdate(spieltag: Spieltag) {
+  private sendSpieltagUpdateFor(spieltag: Spieltag) {
     if (!this.weAreOnline()) {
       this.setSpieltag(spieltag);
       this.settingsService.saveSpieltagJSON(Spieltag.toJSON(spieltag));
