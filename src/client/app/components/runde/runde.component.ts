@@ -469,6 +469,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     const result = [];
     this.spieltag.spieler
       .filter(s => this.settingsService.hideInactivePlayers ? s.isAktiv : true)
+      .sort((s1, s2) => this.spieltag.getPunktestand(this.runde, s2) - this.spieltag.getPunktestand(this.runde, s1))
       .forEach(s => result.push({
       name: s.name, 
       punkte: this.spieltag.getPunktestand(this.runde, s),
