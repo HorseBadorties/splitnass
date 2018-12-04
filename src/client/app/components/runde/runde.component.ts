@@ -317,11 +317,11 @@ export class RundeComponent implements OnInit, OnDestroy {
       message: "Wieviele Böcke sollen für diese Runde notiert werden?"
     };
     this.dialogService.open(NumberpickerComponent, data).afterClosed.subscribe(result => {
-      if (result) {
+      if (result !== undefined && result !== null) {
         this.runde.boecke = result;
         this.spieltagService.sendSpieltagUpdate();
         this.messageService.add({ severity: "success", summary: "", 
-          detail: `Runde ${this.runde.nr} hat jetzt ${result === 1 ? "Bock" : "Böcke"}!`}); 
+          detail: `Runde ${this.runde.nr} hat jetzt ${result} ${result === 1 ? "Bock" : "Böcke"}!`}); 
       }
     });  
   }

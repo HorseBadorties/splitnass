@@ -9,7 +9,7 @@ import { DialogRef } from '../dialog-ref';
 })
 export class NumberpickerComponent {
 
-  min = 1;
+  min = 0;
   max = 999;
   value: number;
   message: string;
