@@ -27,15 +27,10 @@
         <p-chart type="doughnut" [data]="solos" [options]="optionsSolos"></p-chart>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="Anzahl Runden und Böcke">
+    <p-tabPanel header="Punkte / Runden / Böcke">
       <div>
-        <p-chart type="line" [data]="rundenProSpieltag" [options]="optionsRundenProSpieltag"></p-chart>
+        <p-chart type="line" [data]="punkteRundenBoecke" [options]="optionsPunkteRundenBoecke"></p-chart>
       </div>
-    </p-tabPanel>
-    <p-tabPanel header="Punkte pro Spieltag">
-      <div>
-        <p-chart type="line" [data]="punkteProSpieltag" [options]="optionsPunkteProSpieltag"></p-chart>
-      </div>
-    </p-tabPanel>
+    </p-tabPanel>    
   </p-tabView>
 </div>

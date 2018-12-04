@@ -73,9 +73,14 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogService.open(SettingsComponent, {});
   }
 
-  toCharts() {
+  toCurrentCharts() {
     this.displayMenu = false;
-    this.router.navigate(["charts"], { skipLocationChange: false });
+    this.router.navigate(["currentcharts"], { skipLocationChange: false });
+  }
+
+  toGlobalCharts() {
+    this.displayMenu = false;
+    this.router.navigate(["globalcharts"], { skipLocationChange: false });
   }
 
   toRunde() {
@@ -188,8 +193,17 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   private initMenu() {
     this.menuItems = [
       {
-        label: "Charts", id: MenuItemId.Charts,
-        icon: "pi pi-fw pi-chart-bar", command: _ => this.toCharts()
+        label: "Charts", id: MenuItemId.Charts, icon: "pi pi-fw pi-chart-bar",
+        items: [
+          {
+            label: "Aktueller Spieltag", id: MenuItemId.CurrentCharts,
+            icon: "pi pi-fw pi-calendar", command: _ => this.toCurrentCharts()
+          },
+          {
+            label: "All-Time", id: MenuItemId.GlobalCharts,
+            icon: "pi pi-fw pi-globe", command: _ =>  this.toGlobalCharts()
+          },
+        ]
       },
       {
         label: "Settings", id: MenuItemId.Settings,
@@ -206,7 +220,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
 enum MenuItemId {
   Settings = "Settings",
-  Charts = "Charts"
+  Charts = "Charts",
+  CurrentCharts = "CurrentCharts",
+  GlobalCharts = "GlobalCharts"
 }
 
 export class Column {

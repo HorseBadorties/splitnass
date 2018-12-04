@@ -23,8 +23,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   punkte: any;
   gewonneneSpieltage: any;
   solos: any;
-  rundenProSpieltag: any;
-  punkteProSpieltag: any;
+  punkteRundenBoecke: any;
 
   constructor(
     public spieltagService: SpieltagService, 
@@ -111,7 +110,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     }    
   };
 
-  optionsRundenProSpieltag = {
+  optionsPunkteRundenBoecke = {
     title: {
       display: false
     },
@@ -124,33 +123,6 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     },
     scales: {
       xAxes: [{
-        ticks: {
-          fontColor: 'white'
-        }
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: false
-        },
-        ticks: {
-          fontColor: 'white'
-        }
-      }]
-    }
-  }
-
-  optionsPunkteProSpieltag = {
-    title: {
-      display: false
-    },
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        scaleLabel: {
-          display: false
-        },
         ticks: {
           fontColor: 'white'
         }
@@ -207,28 +179,21 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     newSolos["datasets"] = [datasetSolos];
     this.solos = newSolos;
 
-    // Runden und Böcke pro Spieltag
-    const newRunden = {};
-    newRunden["labels"] =  _data.map(spieltag => formatDate(spieltag.beginn));
+    // Punkte, Runden und Böcke pro Spieltag
+    const _punkteRundenBoecke = {};
+    _punkteRundenBoecke["labels"] =  _data.map(spieltag => formatDate(spieltag.beginn));
     const datasetRunden = {"label": "Anzahl Runden"};
     datasetRunden["data"] =  _data.map(s => s.aktuelleRunde.nr - 1);
     datasetRunden["borderColor"] = playerColors[0];
     const datasetBoecke = {"label": "Anzahl Böcke"};
     datasetBoecke["data"] =  _data.map(s => this.countBoecke(s));
-    datasetBoecke["borderColor"] = playerColors[1];
-    newRunden["datasets"] = [datasetRunden, datasetBoecke];
-    this.rundenProSpieltag = newRunden;
-
-    // Punkte pro Spieltag
-    const newPunkteProSpieltag = {};
-    newPunkteProSpieltag["labels"] =  _data.map(spieltag => formatDate(spieltag.beginn));
-    const datasetPunkte = {};
+    datasetBoecke["borderColor"] = playerColors[1];    
+    const datasetPunkte = {"label": "Punkte"};
     datasetPunkte["data"] =  _data.map(s => this.maxPunktestand(s.aktuelleRunde));
     datasetPunkte["borderColor"] = playerColors[2];
-    newPunkteProSpieltag["datasets"] = [datasetPunkte];
-    this.punkteProSpieltag = newPunkteProSpieltag;
-
-    
+    _punkteRundenBoecke["datasets"] = [datasetRunden, datasetBoecke, datasetPunkte];
+    this.punkteRundenBoecke = _punkteRundenBoecke;
+   
     this.spieltage = _data;
   }
 
