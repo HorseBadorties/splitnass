@@ -5,7 +5,7 @@ import * as _ from "lodash";
 
 import { Spieltag } from 'src/model/spieltag';
 import { SpieltagService } from '../../services/spieltag.service';
-import { playerColors } from './colors';
+import { playerColors, fontColor } from './colors';
 import { Spieler } from 'src/model/spieler';
 import { formatDate } from '../../util';
 import { Runde } from 'src/model/runde';
@@ -55,23 +55,23 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
       display: true,
       position: 'top',
       labels: {
-        fontColor: 'white'
+        fontColor: fontColor
       }
     },
     scales: {
       xAxes: [{
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }],
       yAxes: [{
         scaleLabel: {
           display: true,
           labelString: 'Punkte',
-          fontColor: 'white'
+          fontColor: fontColor
         },
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }]
     }
@@ -87,14 +87,14 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     scales: {
       xAxes: [{
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }],
       yAxes: [{
         ticks: {
           min: 0,
           stepSize: 1,
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }]
     }
@@ -105,7 +105,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
       display: true,
       position: 'left',
       labels: {
-        fontColor: 'white'
+        fontColor: fontColor
       }
     }    
   };
@@ -118,13 +118,13 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
       display: true,
       position: 'top',
       labels: {
-        fontColor: 'white'
+        fontColor: fontColor
       }
     },
     scales: {
       xAxes: [{
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }],
       yAxes: [{
@@ -132,7 +132,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
           display: false
         },
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }]
     }

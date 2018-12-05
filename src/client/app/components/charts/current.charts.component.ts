@@ -7,7 +7,7 @@ import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
-import { playerColors } from './colors';
+import { playerColors, fontColor } from './colors';
 
 @Component({
   selector: 'app-current-charts',
@@ -30,7 +30,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
       display: true,
       position: 'top',
       labels: {
-        fontColor: 'white'
+        fontColor: fontColor
       }
     },
     scales: {
@@ -38,20 +38,20 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
         scaleLabel: {
           display: true,
           labelString: 'Runde',
-          fontColor: 'white'
+          fontColor: fontColor
         },
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }],
       yAxes: [{
         scaleLabel: {
           display: true,
           labelString: 'Punkte',
-          fontColor: 'white'
+          fontColor: fontColor
         },
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }]
     }
@@ -66,14 +66,14 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     scales: {
       xAxes: [{
         ticks: {
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }],
       yAxes: [{
         ticks: {
           min: 0,
           stepSize: 1,
-          fontColor: 'white'
+          fontColor: fontColor
         }
       }]
     }
