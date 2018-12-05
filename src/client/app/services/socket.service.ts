@@ -6,8 +6,8 @@ import * as socketIo from "socket.io-client";
 import { Spieltag } from "src/model/spieltag";
 
 const LOCAL_SERVER_URL = `http://localhost:${63085}`;
-const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
-// const REMOTE_SERVER_URL = `http://schruv.deneb.uberspace.de:63085`;
+//const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
+const REMOTE_SERVER_URL = `http://schruv.deneb.uberspace.de:63085`;
 
 @Injectable({
   providedIn: "root"
