@@ -13,16 +13,24 @@
 <div *ngIf="spieltage">
   <p-tabView > 
     <p-tabPanel header="Ewige Doko-Tabelle">
-      <p-chart type="line" [data]="punkte" [options]="optionsPunkte"></p-chart>
+      <div>
+        <p-chart type="line" [data]="punkte" [options]="optionsPunkte"></p-chart>
+      </div>
     </p-tabPanel>
     <p-tabPanel header="Gewonnene Spieltage">
-      <p-chart type="bar" [data]="gewonneneSpieltage" [options]="optionsGewonneneSpieltage"></p-chart>
+      <div>
+        <p-chart type="bar" [data]="gewonneneSpieltage" [options]="optionsGewonneneSpieltage"></p-chart>
+      </div>
     </p-tabPanel>
     <p-tabPanel header="Solo-Verteilung">
-      <p-chart type="doughnut" [data]="solos" [options]="optionsSolos"></p-chart>
+      <div>
+        <p-chart type="doughnut" [data]="solos" [options]="optionsSolos"></p-chart>
+      </div>
     </p-tabPanel>
     <p-tabPanel header="Punkte / Runden / Böcke">
-      <p-chart type="line" [data]="punkteRundenBoecke" [options]="optionsPunkteRundenBoecke"></p-chart>
+      <div>
+        <p-chart type="line" [data]="punkteRundenBoecke" [options]="optionsPunkteRundenBoecke"></p-chart>
+      </div>
     </p-tabPanel>    
   </p-tabView>
 </div>
