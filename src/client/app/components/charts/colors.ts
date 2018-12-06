@@ -8,4 +8,4 @@ export const playerColors = [
   'rgb(201, 203, 207)' // grey
 ];
 
-export const fontColor = "black";
+export const fontColor = "white";
