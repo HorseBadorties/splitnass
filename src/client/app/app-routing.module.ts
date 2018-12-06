@@ -5,12 +5,14 @@ import { RundenlisteComponent } from "./components/rundenliste/rundenliste.compo
 import { RundeComponent } from "./components/runde/runde.component";
 import { CurrentChartsComponent } from "./components/charts/current.charts.component";
 import { GlobalChartsComponent } from "./components/charts/global-charts.component";
+import { CardsComponent } from "./components/cards/cards.component"
 
 const routes: Routes = [
   { path: "rundenliste", component: RundenlisteComponent, data: {animation: 'Rundenliste'} },
   { path: "runde", component: RundeComponent, data: {animation: 'Runde'} },
   { path: "currentcharts", component: CurrentChartsComponent, data: {animation: 'Charts'} },
   { path: "globalcharts", component: GlobalChartsComponent, data: {animation: 'Charts'} },
+  { path: "cards", component: CardsComponent },
   { path: "**", component: RundenlisteComponent }
 ];
 
