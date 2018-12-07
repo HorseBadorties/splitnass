@@ -48,6 +48,7 @@ export class CardsComponent implements OnInit, AfterViewInit {
         card.setSide('front');
 
         function onClick(evt) {  
+          evt.stopPropagation();
           evt.preventDefault();  
           self.deck.queue(next => {
             card.$el.style.zIndex = 10;
