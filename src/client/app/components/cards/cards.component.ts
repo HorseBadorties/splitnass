@@ -44,9 +44,11 @@ export class CardsComponent implements OnInit, AfterViewInit {
       self.sort(self.deck);
       self.deck.cards.forEach((card, i) => {          
         card.$el.addEventListener('click', onClick);
+        card.$el.addEventListener('touchstart', onClick);
         card.setSide('front');
 
-        function onClick() {    
+        function onClick(evt) {  
+          evt.preventDefault();  
           self.deck.queue(next => {
             card.$el.style.zIndex = 10;
             card.animateTo({
