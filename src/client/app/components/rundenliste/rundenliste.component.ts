@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, ViewEncapsulation } from "@angular/core";
 import { Router } from "@angular/router";
 import { MenuItem } from "primeng/api";
 import { Subscription } from "rxjs";
@@ -16,6 +16,7 @@ import { SpieltagService } from "../../services/spieltag.service";
 smoothscroll.polyfill();
 
 @Component({
+  // encapsulation: ViewEncapsulation.None,
   selector: "app-rundenliste",
   templateUrl: "./rundenliste.component.html",
   styleUrls: ["./rundenliste.component.css"]

@@ -22,7 +22,7 @@ export class SettingsComponent {
       this.themes = this.themeService.getThemes().map(theme => {
         return {label: theme.name, value: theme.name};
       });
-      this.selectedTheme = this.themeService.currentTheme.name;
+      this.selectedTheme = this.themeService.currentThemeName;
     }
 
   onClose() {
@@ -30,7 +30,7 @@ export class SettingsComponent {
   }
 
   themeChanged() {
-    if (this.selectedTheme && this.themeService.currentTheme.name !== this.selectedTheme) {
+    if (this.selectedTheme && this.selectedTheme !== this.themeService.currentThemeName) {
       this.themeService.setTheme(this.selectedTheme);
     } 
   }

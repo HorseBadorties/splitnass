@@ -9,7 +9,7 @@ import { SettingsService } from './settings.service';
 })
 export class ThemeService {
   themes: Themes = new Themes();
-  currentTheme: Theme;
+  currentThemeName: string = "Rhea";
 
   constructor(private settingsService: SettingsService) { }
 
@@ -20,7 +20,7 @@ export class ThemeService {
   setTheme(themeName: string) {
     const newTheme = this.getThemes().find(th => th.name === themeName);
     if (newTheme) {
-      this.currentTheme = newTheme;
+      this.currentThemeName = newTheme.name;
       var d = document.getElementById('theme-css')
       d.setAttribute('href', newTheme.path); 
       this.settingsService.setTheme(themeName);     

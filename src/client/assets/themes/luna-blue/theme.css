@@ -3413,3 +3413,7 @@ body .ui-fluid .ui-inplace.ui-inplace-closable .ui-inplace-content > :first-chil
 }
 
 /* Add your customizations of theme here */
+
+.info-color {
+  color: white;
+}
