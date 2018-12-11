@@ -7,7 +7,8 @@ import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
 import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
-import { playerColors, fontColor } from './colors';
+import { playerColors } from './colors';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-current-charts',
@@ -21,50 +22,76 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
   spieltagsverlauf: any;
   anzahlGewonnenerRunden: any;
   anzahlSolos: any;
+  fontColor: string = "white";
+  optionsSpieltagsverlauf;
+  optionsAnzahlGewonneneRunden;
 
-  optionsSpieltagsverlauf = {
-    title: {
-      display: false
-    },
-    legend: {
-      display: true,
-      position: 'top'
-    },
-    scales: {
-      xAxes: [{
-        scaleLabel: {
+  private setOptions() {
+      this.optionsSpieltagsverlauf = {
+        title: {
+          display: false
+        },
+        legend: {
           display: true,
-          labelString: 'Runde'
+          position: 'top',
+          labels: {
+            fontColor: this.fontColor
+          }
+        },
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Runde',
+              fontColor: this.fontColor
+            },
+            ticks: {
+              fontColor: this.fontColor
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Punkte',
+              fontColor: this.fontColor
+            },
+            ticks: {
+              fontColor: this.fontColor
+            }
+          }]
         }
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Punkte'
+      };
+      this.optionsAnzahlGewonneneRunden = {
+        legend: {
+          display: false
+        },
+        title: {
+          display: false      
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: this.fontColor
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              min: 0,
+              stepSize: 1,
+              fontColor: this.fontColor
+            }
+          }]
         }
-      }]
+      };
     }
-  };
-  optionsAnzahlGewonneneRunden = {
-    legend: {
-      display: false
-    },
-    title: {
-      display: false      
-    },
-    scales: {      
-      yAxes: [{
-        ticks: {
-          min: 0,
-          stepSize: 1
-        }
-      }]
-    }
-  };
 
   constructor(
     public spieltagService: SpieltagService, 
-    private location: Location) { }
+    private themeService: ThemeService, 
+    private location: Location) { 
+      this.fontColor = this.themeService.isDarkTheme() ? "white" : "black";
+      this.setOptions();
+    }
 
   ngOnInit() {
     this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));

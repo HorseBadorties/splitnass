@@ -5,11 +5,12 @@ import * as _ from "lodash";
 
 import { Spieltag } from 'src/model/spieltag';
 import { SpieltagService } from '../../services/spieltag.service';
-import { playerColors, fontColor } from './colors';
+import { playerColors } from './colors';
 import { Spieler } from 'src/model/spieler';
 import { formatDate } from '../../util';
 import { Runde } from 'src/model/runde';
 import { Solo } from 'src/model/solo';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-global-charts',
@@ -24,10 +25,20 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   gewonneneSpieltage: any;
   solos: any;
   punkteRundenBoecke: any;
+  fontColor: string = "white";
+  optionsPunkte;
+  optionsGewonneneSpieltage;
+  optionsSolos;
+  optionsPunkteRundenBoecke;
 
   constructor(
     public spieltagService: SpieltagService, 
-    private location: Location) { }
+    private themeService: ThemeService, 
+    private location: Location) { 
+      this.fontColor = this.themeService.isDarkTheme() ? "white" : "black";
+      this.setOptions();
+
+    }
 
   ngOnInit() {
     this.subscribtion = this.spieltagService.listSpieltage().subscribe(_spieltage => {
@@ -47,62 +58,96 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  optionsPunkte = {
-    title: {
-      display: false
-    },
-    legend: {
-      display: true,
-      position: 'top',
-    },
-    scales: {
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Punkte',
+  private setOptions() {
+    this.optionsPunkte = {
+      title: {
+        display: false
+      },
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          fontColor: this.fontColor
         }
-      }]
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            fontColor: this.fontColor
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Punkte',
+            fontColor: this.fontColor
+          },
+          ticks: {
+            fontColor: this.fontColor
+          }
+        }]
+      }
     }
-  }
 
-  optionsGewonneneSpieltage = {
-    legend: {
-      display: false
-    },
-    title: {
-      display: false      
-    },
-    scales: {      
-      yAxes: [{
-        ticks: {
-          min: 0,
-          stepSize: 1
+    this.optionsGewonneneSpieltage = {
+      legend: {
+        display: false
+      },
+      title: {
+        display: false      
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            fontColor: this.fontColor
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            min: 0,
+            stepSize: 1,
+            fontColor: this.fontColor
+          }
+        }]
+      }
+    };
+
+    this.optionsSolos = {
+      legend: {
+        display: true,
+        position: 'left',
+        labels: {
+          fontColor: this.fontColor
         }
-      }]
-    }
-  };
+      }    
+    };
 
-  optionsSolos = {
-    legend: {
-      display: true,
-      position: 'left'
-    }    
-  };
-
-  optionsPunkteRundenBoecke = {
-    title: {
-      display: false
-    },
-    legend: {
-      display: true,
-      position: 'top'
-    },
-    scales: {      
-      yAxes: [{
-        scaleLabel: {
-          display: false
+    this.optionsPunkteRundenBoecke = {
+      title: {
+        display: false
+      },
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          fontColor: this.fontColor
         }
-      }]
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            fontColor: this.fontColor
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: false
+          },
+          ticks: {
+            fontColor: this.fontColor
+          }
+        }]
+      }
     }
   }
 
