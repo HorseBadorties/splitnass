@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: 'app-generic-dialog',
@@ -13,10 +13,12 @@ export class GenericDialogComponent {
   header: string;
   message: string;
 
-  constructor(public config: DialogConfig, public dialog: DialogRef) { 
-    if (config["type"]) this.type = config["type"];    
-    this.message = config["message"];
-    this.header = config["header"];
+  constructor(public config: DynamicDialogConfig, public dialog: DynamicDialogRef) { 
+    if (config.data) {
+      if (config.data["type"]) this.type = config.data["type"];    
+      this.message = config.data["message"];
+      this.header = config.data["header"];
+    }
   }
 
   onClose() {

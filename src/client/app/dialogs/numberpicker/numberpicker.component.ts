@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: 'app-numberpicker',
@@ -14,11 +14,11 @@ export class NumberpickerComponent {
   value: number;
   message: string;
 
-  constructor(public config: DialogConfig, public dialog: DialogRef) { 
-    if (config["min"]) this.min = config["min"];
-    if (config["max"]) this.max = config["max"];
-    this.value = config["value"];
-    this.message = config["message"];
+  constructor(public config: DynamicDialogConfig, public dialog: DynamicDialogRef) { 
+    if (config.data["min"]) this.min = config.data["min"];
+    if (config.data["max"]) this.max = config.data["max"];
+    this.value = config.data["value"];
+    this.message = config.data["message"];
   }
 
   onClose() {

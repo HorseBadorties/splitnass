@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import * as _ from "lodash";
 
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 import { Spieler } from 'src/model/spieler';
 import { SpieltagService } from '../../services/spieltag.service';
 import { formatDate } from "../../util"
@@ -18,10 +18,9 @@ export class NeuerSpieltagComponent {
   selectedSpieler: Spieler[] = [];
   name = `Spieltag vom ${formatDate(new Date())}`;
   anzahlRunden = 42;
-  message: string;
 
-  constructor(public spieltagService: SpieltagService, public config: DialogConfig, public dialog: DialogRef) { 
-    this.message = config["message"];
+  constructor(public spieltagService: SpieltagService, public config: DynamicDialogConfig, public dialog: DynamicDialogRef) { 
+    
   }
   
   canConfirm() {

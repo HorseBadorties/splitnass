@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 import { SettingsService } from '../../services/settings.service';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { SelectItem } from 'primeng/api';
@@ -15,8 +15,8 @@ export class SettingsComponent {
   themes: SelectItem[];
   selectedTheme: string;
 
-  constructor(public config: DialogConfig, 
-    public dialog: DialogRef,
+  constructor(public config: DynamicDialogConfig, 
+    public dialog: DynamicDialogRef,
     public settingsService: SettingsService, 
     public themeService: ThemeService) { 
       this.themes = this.themeService.getThemes().map(theme => {

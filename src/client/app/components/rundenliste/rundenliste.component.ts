@@ -6,7 +6,7 @@ import { take } from "rxjs/operators";
 import smoothscroll from "smoothscroll-polyfill";
 import { Runde } from "src/model/runde";
 import { Spieltag } from "src/model/spieltag";
-import { DialogService } from "../../dialogs/dialog.service";
+import { DialogService } from "primeng/api";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
 import { SettingsService } from "../../services/settings.service";
@@ -19,7 +19,8 @@ smoothscroll.polyfill();
   // encapsulation: ViewEncapsulation.None,
   selector: "app-rundenliste",
   templateUrl: "./rundenliste.component.html",
-  styleUrls: ["./rundenliste.component.css"]
+  styleUrls: ["./rundenliste.component.css"],
+  providers: [DialogService]
 })
 export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -71,7 +72,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   
   openSettings() {
     this.displayMenu = false;
-    this.dialogService.open(SettingsComponent, {});
+    this.dialogService.open(SettingsComponent, { showHeader: false });
   }
 
   toCurrentCharts() {
@@ -93,11 +94,14 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   spieltagAuswahl() {
     this.displayMenu = false;
     this.spieltagService.listSpieltage().pipe(take(1)).subscribe(list => {
-      const data: any = {
-        spieltage: list, 
-        message: "Welcher Spieltag soll angezeigt werden?"
+      const config: any = {
+        showHeader: false,
+        data: {
+          spieltage: list, 
+          message: "Welcher Spieltag soll angezeigt werden?"
+        }
       };
-      this.dialogService.open(SpieltagauswahlComponent, data);
+      this.dialogService.open(SpieltagauswahlComponent, config);
     });
     
   }

@@ -16,6 +16,7 @@
 
 .anzahl {
   white-space: pre;
+  padding-right: 1.5em;
 }
 
 .ergebnis {

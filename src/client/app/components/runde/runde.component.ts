@@ -7,7 +7,7 @@ import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
-import { DialogService } from "../../dialogs/dialog.service";
+import { DialogService } from "primeng/api";
 import { SettingsService } from "../../services/settings.service";
 import { SpieltagService } from "../../services/spieltag.service";
 import { NumberpickerComponent } from "../../dialogs/numberpicker/numberpicker.component";
@@ -24,7 +24,7 @@ import { take } from "rxjs/operators";
   selector: "app-runde",
   templateUrl: "./runde.component.html",
   styleUrls: ["./runde.component.css"],
-  providers: [MessageService]
+  providers: [MessageService, DialogService]
 })
 export class RundeComponent implements OnInit, OnDestroy {
   spieltagSubscribtion: Subscription;
@@ -66,8 +66,11 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   spielerSteigtAus() {
     this.displayMenu = false;
-    const data: any = {spieler: this.spieltag.spieler.filter(s => s.isAktiv), message: "Wer steigt aus?"};
-    this.dialogService.open(SpielerauswahlComponent, data).afterClosed.subscribe(result => {
+    const config: any = {
+      showHeader: false,
+      data: {spieler: this.spieltag.spieler.filter(s => s.isAktiv), message: "Wer steigt aus?"}
+    };
+    this.dialogService.open(SpielerauswahlComponent, config).onClose.subscribe(result => {
       if (result) {
         const inaktiverSpieler = result as Spieler;
         this.spieltagService.spielerSteigtAus(inaktiverSpieler);
@@ -79,8 +82,11 @@ export class RundeComponent implements OnInit, OnDestroy {
   spielerSteigtEin() {
     this.displayMenu = false;
     const moeglicheSpieler = _.difference(Spieler.all.slice(), this.spieltag.spieler.filter(s => s.isAktiv));
-    const data: any = {spieler: moeglicheSpieler, message: "Wer steigt ein?"};
-    this.dialogService.open(SpielerauswahlComponent, data).afterClosed.subscribe(result => {
+    const config: any = {
+      showHeader: false,
+      data: {spieler: moeglicheSpieler, message: "Wer steigt ein?"}
+    };
+    this.dialogService.open(SpielerauswahlComponent, config).onClose.subscribe(result => {
       if (result) {
         const neuerSpieler = result as Spieler;
         this.spieltagService.spielerSteigtEin(neuerSpieler);    
@@ -93,12 +99,15 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   setzeRundenanzahl() {
     this.displayMenu = false;
-    const data: any = {
-      min: this.spieltag.aktuelleRunde.nr, 
-      value: this.spieltag.runden.length, 
-      message: "Wieviele Runden sollen gespielt werden?"
+    const config: any = {
+      showHeader: false,
+      data: {
+        min: this.spieltag.aktuelleRunde.nr, 
+        value: this.spieltag.runden.length, 
+        message: "Wieviele Runden sollen gespielt werden?"
+      }
     };
-    this.dialogService.open(NumberpickerComponent, data).afterClosed.subscribe(result => {
+    this.dialogService.open(NumberpickerComponent, config).onClose.subscribe(result => {
       if (result) {
         this.spieltagService.setztRundenanzahl(result);
         this.messageService.add({ severity: "success", summary: "", 
@@ -109,23 +118,29 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   zeigeSitzreihenfolge() {
     this.displayMenu = false; 
-    const data: any = {header: "Sitzreihenfolge", message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()};
-    this.dialogService.open(GenericDialogComponent, data);
+    const config: any = {
+      showHeader: false,
+      data: {header: "Sitzreihenfolge", message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()}
+    };
+    this.dialogService.open(GenericDialogComponent, config);
   }
 
   newSpieltag() {
     this.displayMenu = false;
-    this.dialogService.open(NeuerSpieltagComponent, {});    
+    this.dialogService.open(NeuerSpieltagComponent, {showHeader: false});    
   }
 
   spieltagAuswahl() {
     this.displayMenu = false;
     this.spieltagService.listSpieltage().pipe(take(1)).subscribe(list => {
-      const data: any = {
-        spieltage: list, 
-        message: "Welcher Spieltag soll angezeigt werden?"
+      const config: any = {
+        showHeader: false,
+        data: {
+          spieltage: list, 
+          message: "Welcher Spieltag soll angezeigt werden?"
+        }
       };
-      this.dialogService.open(SpieltagauswahlComponent, data);
+      this.dialogService.open(SpieltagauswahlComponent, config);
     });
     
   }
@@ -189,13 +204,16 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   openGewinnerDialog() {
-    const data: any = {
-      spieler: this.runde.spieler,
-      gewinner: this.runde.gewinner,
-      ergebnis: this.runde.ergebnis,
-      anzahlGewinner: this.runde.solo === Solo.KEIN_SOLO ? 2 : this.runde.reGewinnt ? 1 : 3
+    const config: any = {
+      showHeader: false,
+      data: {
+        spieler: this.runde.spieler,
+        gewinner: this.runde.gewinner,
+        ergebnis: this.runde.ergebnis,
+        anzahlGewinner: this.runde.solo === Solo.KEIN_SOLO ? 2 : this.runde.reGewinnt ? 1 : 3
+      }
     };
-    this.dialogService.open(GewinnerauswahlComponent, data).afterClosed.subscribe(result => { 
+    this.dialogService.open(GewinnerauswahlComponent, config).onClose.subscribe(result => { 
       if (result) {
         this.runde.gewinner = result as Array<Spieler>;
         this.spieltagService.rundeAbgerechnet(this.runde);
@@ -211,12 +229,15 @@ export class RundeComponent implements OnInit, OnDestroy {
   }
 
   private doIfConfirmed(header: string, message: string, action: () => void) {
-    const data: any = {
-      header: header,
-      message: message,
-      type: Type.CONFIRMATION      
+    const config: any = {
+      showHeader: false,
+      data: {
+        header: header,
+        message: message,
+        type: Type.CONFIRMATION      
+      }
     };
-    this.dialogService.open(GenericDialogComponent, data).afterClosed.subscribe(result => { 
+    this.dialogService.open(GenericDialogComponent, config).onClose.subscribe(result => { 
       if (result === "Yes") {
         action();
       }
@@ -297,26 +318,32 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   private berechnungPruefen() {
     this.displayMenu = false;   
-    const data: any = {
-      header: "Berechnetes Ergebnis", 
-      message: "Kein Ergebnis"
+    const config: any = {
+      showHeader: false,
+      data: {
+        header: "Berechnetes Ergebnis", 
+        message: "Kein Ergebnis"
+      }
     };
     if (this.runde.gespielt) {
       this.runde.berechneErgebnis();
-      data.message = this.runde.ergebnisEvents.map(e => e["event"]).join("<br>");
+      config.data.message = this.runde.ergebnisEvents.map(e => e["event"]).join("<br>");
     }
-    this.dialogService.open(GenericDialogComponent, data);
+    this.dialogService.open(GenericDialogComponent, config);
   }
 
   private boeckeKorrigieren() {
     this.displayMenu = false;
-    const data: any = {
-      min: 0,
-      max: 2, 
-      value: this.runde.boecke, 
-      message: "Wieviele Böcke sollen für diese Runde notiert werden?"
+    const config: any = {
+      showHeader: false,
+      data:  {
+        min: 0,
+        max: 2, 
+        value: this.runde.boecke, 
+        message: "Wieviele Böcke sollen für diese Runde notiert werden?"
+      }
     };
-    this.dialogService.open(NumberpickerComponent, data).afterClosed.subscribe(result => {
+    this.dialogService.open(NumberpickerComponent, config).onClose.subscribe(result => {
       if (result !== undefined && result !== null) {
         this.runde.boecke = result;
         this.spieltagService.sendSpieltagUpdate();
@@ -416,7 +443,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   openSettings() {
     this.displayMenu = false;
-    this.dialogService.open(SettingsComponent, {});
+    this.dialogService.open(SettingsComponent, {showHeader: false});
   }
 
   toCurrentCharts() {

@@ -23,6 +23,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { ChartModule } from "primeng/chart";
 import { TabViewModule } from "primeng/tabview";
 import { CardModule } from "primeng/card";
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./components/runde/runde.component";
@@ -32,7 +33,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CurrentChartsComponent } from './components/charts/current.charts.component';
 import { SettingsComponent } from './dialogs/settings/settings.component';
-import { DialogModule as CustomDialogModule } from './dialogs/dialog.module';
+
 import { SpielerauswahlComponent } from './dialogs/spielerauswahl/spielerauswahl.component';
 import { NumberpickerComponent } from './dialogs/numberpicker/numberpicker.component';
 import { NeuerSpieltagComponent } from './dialogs/neuer-spieltag/neuer-spieltag.component';
@@ -113,7 +114,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     TabViewModule,
     AppRoutingModule,
     CardModule,
-    CustomDialogModule,
+    DynamicDialogModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
@@ -123,7 +124,15 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CurrentChartsComponent]
+  entryComponents: [
+    GenericDialogComponent,
+    GewinnerauswahlComponent,
+    NeuerSpieltagComponent,
+    NumberpickerComponent,
+    SettingsComponent,
+    SpielerauswahlComponent,
+    SpieltagauswahlComponent
+]
 })
 export class AppModule { }
 

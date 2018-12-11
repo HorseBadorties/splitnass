@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 import { SpieltagService } from '../../services/spieltag.service';
 import { formatDate } from "../../util"
 
@@ -17,9 +17,9 @@ export class SpieltagauswahlComponent {
   selectedSpieltag: Object;
   message: string;
 
-  constructor(public config: DialogConfig, public dialog: DialogRef, private spieltagService: SpieltagService) { 
-      this.spieltage = config["spieltage"];
-      this.message = config["message"];
+  constructor(public config: DynamicDialogConfig, public dialog: DynamicDialogRef, private spieltagService: SpieltagService) { 
+      this.spieltage = config.data["spieltage"];
+      this.message = config.data["message"];
   }
   
   onClose() {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Spieler } from 'src/model/spieler';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: 'app-spielerauswahl',
@@ -14,9 +14,9 @@ export class SpielerauswahlComponent {
   selectedSpieler: Spieler;
   message: string;
 
-  constructor(public config: DialogConfig, public dialog: DialogRef) { 
-      this.spieler = config["spieler"];
-      this.message = config["message"];
+  constructor(public config: DynamicDialogConfig, public dialog: DynamicDialogRef) { 
+      this.spieler = config.data["spieler"];
+      this.message = config.data["message"];
   }
   
   onClose() {

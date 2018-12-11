@@ -1,1 +1,0 @@
-copied from https://github.com/LukasMarx/angular-dynamic-components

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Spieler } from 'src/model/spieler';
-import { DialogConfig } from '../dialog-config';
-import { DialogRef } from '../dialog-ref';
+import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: 'app-gewinnerauswahl',
@@ -15,11 +15,11 @@ export class GewinnerauswahlComponent {
   ergebnis: number;
   anzahlGewinner: number;
 
-  constructor(public config: DialogConfig, public dialog: DialogRef) { 
-      this.spieler = config["spieler"];
-      this.selectedSpieler = config["gewinner"];
-      this.ergebnis = config["ergebnis"];
-      this.anzahlGewinner = config["anzahlGewinner"];
+  constructor(public config: DynamicDialogConfig, public dialog: DynamicDialogRef) { 
+      this.spieler = config.data["spieler"];
+      this.selectedSpieler = config.data["gewinner"];
+      this.ergebnis = config.data["ergebnis"];
+      this.anzahlGewinner = config.data["anzahlGewinner"];
   }
   
   canConfirm() {
