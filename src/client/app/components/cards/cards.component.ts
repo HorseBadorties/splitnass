@@ -139,7 +139,7 @@ export class CardsComponent implements OnInit, AfterViewInit {
   }
 
   deal() {
-    this.newDeck();
+    this.newDeck();    
   }
   
 

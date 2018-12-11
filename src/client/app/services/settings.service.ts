@@ -80,6 +80,14 @@ export class SettingsService {
     return this.localStorage.getItem<string>("joinedSpieltag", { schema: { type: 'string' } });
   } 
 
+  public setTheme(themeName: string) {
+    this.localStorage.setItemSubscribe("theme", themeName);
+  }
+
+  public getTheme(): Observable<string> {
+    return this.localStorage.getItem<string>("theme", { schema: { type: 'string' } });
+  } 
+
   constructor(private localStorage: LocalStorage) { 
     this.getBoolean("offline").pipe(first()).subscribe(value => {
         this._offline = value && value.valueOf();

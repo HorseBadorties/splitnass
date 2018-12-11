@@ -17,14 +17,14 @@
       <span *ngIf="spieltag">
         <p-button style="padding-left: 1em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
         </p-button>
-        <p-button style="padding-left: .0em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
+        <p-button style="padding-left: .2em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
         </p-button>
       </span>
       <span class="box"> </span>
       <span class="attention">{{onlineStatus}}</span>
     </div>
     <div class="ui-toolbar-group-right">
-      <button pButton type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></button>
+        <p-button type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
     </div>
   </p-toolbar>
 

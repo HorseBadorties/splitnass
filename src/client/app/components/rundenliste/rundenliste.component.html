@@ -11,15 +11,15 @@
 
   <p-toolbar (swipeleft)="onSwipeLeft($event)">
     <div class="ui-toolbar-group-left">
-      <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
+      <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()" styleClass="infoColor"></p-button>
       <span class="box"> </span>
       <span class="box"> </span>
-      <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
+      <span *ngIf="spieltag" class="spieltaginfo infoColor">{{getSpieltagInfo()}}</span>
       <span class="box"> </span>
       <span class="attention">{{onlineStatus}}</span>
     </div>
     <div class="ui-toolbar-group-right">
-      <button pButton type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></button>
+      <p-button type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
     </div>
   </p-toolbar>
 

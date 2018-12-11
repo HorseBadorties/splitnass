@@ -28,30 +28,19 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     },
     legend: {
       display: true,
-      position: 'top',
-      labels: {
-        fontColor: fontColor
-      }
+      position: 'top'
     },
     scales: {
       xAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Runde',
-          fontColor: fontColor
-        },
-        ticks: {
-          fontColor: fontColor
+          labelString: 'Runde'
         }
       }],
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Punkte',
-          fontColor: fontColor
-        },
-        ticks: {
-          fontColor: fontColor
+          labelString: 'Punkte'
         }
       }]
     }
@@ -63,17 +52,11 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     title: {
       display: false      
     },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: fontColor
-        }
-      }],
+    scales: {      
       yAxes: [{
         ticks: {
           min: 0,
-          stepSize: 1,
-          fontColor: fontColor
+          stepSize: 1
         }
       }]
     }

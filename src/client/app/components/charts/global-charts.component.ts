@@ -54,24 +54,12 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     legend: {
       display: true,
       position: 'top',
-      labels: {
-        fontColor: fontColor
-      }
     },
     scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: fontColor
-        }
-      }],
       yAxes: [{
         scaleLabel: {
           display: true,
           labelString: 'Punkte',
-          fontColor: fontColor
-        },
-        ticks: {
-          fontColor: fontColor
         }
       }]
     }
@@ -84,17 +72,11 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     title: {
       display: false      
     },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: fontColor
-        }
-      }],
+    scales: {      
       yAxes: [{
         ticks: {
           min: 0,
-          stepSize: 1,
-          fontColor: fontColor
+          stepSize: 1
         }
       }]
     }
@@ -103,10 +85,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   optionsSolos = {
     legend: {
       display: true,
-      position: 'left',
-      labels: {
-        fontColor: fontColor
-      }
+      position: 'left'
     }    
   };
 
@@ -116,23 +95,12 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     },
     legend: {
       display: true,
-      position: 'top',
-      labels: {
-        fontColor: fontColor
-      }
+      position: 'top'
     },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: fontColor
-        }
-      }],
+    scales: {      
       yAxes: [{
         scaleLabel: {
           display: false
-        },
-        ticks: {
-          fontColor: fontColor
         }
       }]
     }

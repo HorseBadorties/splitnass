@@ -42,7 +42,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.initMenu();
     this.spieltagSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.setSpieltag(spieltag));
-    this.statusSubscribtion = this.spieltagService.online.subscribe(online => this.onlineStatus = online ? "" : "offline");
+    this.statusSubscribtion = this.spieltagService.online.subscribe(online => this.onlineStatus = online ? "" : "offline");    
   }
 
   ngAfterViewInit() {

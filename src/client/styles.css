@@ -2,14 +2,6 @@
 @import "primeflex/primeflex.css";
 @import "primeicons/primeicons.css";
 @import "primeng/resources/primeng.min.css";
-@import "primeng/resources/themes/nova-dark/theme.css";
-@import "primeng/resources/themes/luna-green/theme.css";
-@import "primeng/resources/themes/nova-colored/theme.css";
-@import "primeng/resources/themes/luna-pink/theme.css";
-@import "primeng/resources/themes/luna-amber/theme.css";
-@import "primeng/resources/themes/nova-light/theme.css";
-/* @import "primeng/resources/themes/rhea/theme.css"; */
-@import "primeng/resources/themes/luna-blue/theme.css";
 
 body { 
     /* height: 100vh;  */
@@ -35,10 +27,6 @@ body {
   padding: 2em;
   font-family: 'Lucida Console', Monaco, monospace;
   font-size: 12px; 
-}
-
-.elevation {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .container {
