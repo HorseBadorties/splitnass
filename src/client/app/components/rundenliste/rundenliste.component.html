@@ -53,9 +53,8 @@
     <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
       <tr *ngIf="runde.isBeendet" class="ergebnis">
         <td [attr.colspan]="columns.length + 1" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
-          <div *ngFor="let s of runde.ergebnisEvents">
-            <i class="pi {{s.icon}}" style="vertical-align: middle"></i>
-            <span style="padding-left: .3em; vertical-align: middle">{{s.event}}</span>
+          <div *ngFor="let s of runde.ergebnisEvents">            
+            <span>{{s.event}}</span>
           </div>
         </td>
       </tr>

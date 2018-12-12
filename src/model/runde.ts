@@ -150,7 +150,7 @@ export class Runde {
     this.ergebnis = 0;
     this._ergebnisEvents = [];
     if (this.herzGehtRum) {
-      this._ergebnisEvents.push({"event": "Herz geht rum", "icon": "pi-info"});
+      this._ergebnisEvents.push({"event": "❤️ Herz geht rum ❤️"});
     }
     // Boecke
     let _boecke = this.boeckeBeiBeginn;
@@ -162,7 +162,7 @@ export class Runde {
     }
     if (this.gespielt === 0) {
       // Gespaltener Arsch!?
-      this._ergebnisEvents.push({"event": "Gespaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -173,13 +173,13 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "Re und Kontra haben falsche Ansagen gemacht: Gespaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "💩 Re und Kontra haben falsche Ansagen gemacht: Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "Keine 6 oder besser ohne Ansage: Gespaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "💩 Keine 6 oder besser ohne Ansage: Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -218,36 +218,35 @@ export class Runde {
       }
       _.times(this.ergebnis - tmpErgebnis, v => gespieltEvents.push(this.translateAnsage(i)));
     }
-    this._ergebnisEvents.push({"event": gespieltEvents.join(", "), "icon": null});
+    this._ergebnisEvents.push({"event": gespieltEvents.join(", ")});
     // Gegen die Alten?
     if (!this.reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich) {
-      this._ergebnisEvents.push({"event": "gegen die Alten", "icon": null});
+      this._ergebnisEvents.push({"event": "gegen die Alten"});
       this.ergebnis++;
     }
     if (this.gegenDieSau && this.solo.sauMoeglich) {
-      this._ergebnisEvents.push({"event": "gegen die Sau", "icon": null});
+      this._ergebnisEvents.push({"event": "gegen die Sau"});
       this.ergebnis++;
     }
     if (this.solo !== Solo.KEIN_SOLO) {
-      this._ergebnisEvents.push({"event": "Solo", "icon": null});
+      this._ergebnisEvents.push({"event": "Solo"});
       this.ergebnis++;
     }
     // verlorenes Solo?
     if (this.ergebnis > 0 && this.solo !== Solo.KEIN_SOLO && !this.reGewinnt) {
-      this._ergebnisEvents.push({"event": "Solo verloren", "icon": null});
+      this._ergebnisEvents.push({"event": "Solo verloren"});
       this.ergebnis++;
     }
     if (this.reVonVorneHerein) {
-      this._ergebnisEvents.push({"event": "Re von vorneherein", "icon": null});
+      this._ergebnisEvents.push({"event": "Re von vorneherein"});
       this.ergebnis++;
     }
     if (this.kontraVonVorneHerein) {
-      this._ergebnisEvents.push({"event": "Kontra von vorneherein", "icon": null});
+      this._ergebnisEvents.push({"event": "Kontra von vorneherein"});
       this.ergebnis++;
     }
     if (this.extrapunkte !== 0) {
-      this._ergebnisEvents.push({"event": `${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`
-        , "icon": null});
+      this._ergebnisEvents.push({"event": `${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`});
       this.ergebnis += this.extrapunkte;
     }
     // durch negative Extrapunkte kann die Gegenseite gewonnen haben...! (gegenDieAlten etc.)
@@ -258,13 +257,13 @@ export class Runde {
     // Böcke
     _boecke = Math.min(_boecke, MAX_BOECKE);
     if (_boecke) {
-      this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`, "icon": null});
+      this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`});
       _.times(_boecke, v => this.ergebnis *= 2);
     }
     if (this.ergebnis === 0) {
-      this._ergebnisEvents.push({"event": "Gespaltener Arsch", "icon": "pi-trash"});
+      this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
     } else {
-      this._ergebnisEvents.push({"event": `${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"}`, "icon": "pi-sign-in"});
+      this._ergebnisEvents.push({"event": `💎 ${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"} 💎`});
     }
     return this.ergebnis;
   }

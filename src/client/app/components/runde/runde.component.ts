@@ -195,7 +195,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     } else {
       this.runde.berechneErgebnis();
       if (this.runde.ergebnis === 0) {
-        this.messageService.add({ severity: "info", summary: "Gespaltener Arsch!", detail: "Böcke! :-)" });
+        this.messageService.add({ severity: "info", summary: "Böcke!", detail: "💩 Gespaltener Arsch! 💩"});
         this.spieltagService.rundeAbgerechnet(this.runde);
       } else {
         this.openGewinnerDialog();      
@@ -322,7 +322,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       showHeader: false,
       data: {
         header: "Berechnetes Ergebnis", 
-        message: "Kein Ergebnis"
+        message: "🤷‍ Kein Ergebnis 🤷‍"
       }
     };
     if (this.runde.gespielt) {
