@@ -94,13 +94,13 @@ export class SettingsService {
         this.offlineStatus.next(this._offline);
       });
     this.getBoolean("animateRoutes").pipe(first())
-      .subscribe(value => this._animateRoutes = value ? value.valueOf() : true)
+      .subscribe(value => this._animateRoutes = value !== null ? value.valueOf() : true)
     this.getBoolean("adminMode").pipe(first())
-      .subscribe(value => this._adminMode = value ? value.valueOf() : false)
+      .subscribe(value => this._adminMode = value !== null ? value.valueOf() : false)
     this.getBoolean("autoShowRundendetails").pipe(first())
-      .subscribe(value => this._autoShowRundendetails = value ? value.valueOf() : true)
+      .subscribe(value => this._autoShowRundendetails = value !== null ? value.valueOf() : true)
     this.getBoolean("hideInactivePlayers").pipe(first())
-      .subscribe(value => this._hideInactivePlayers = value ? value.valueOf() : true)
+      .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true)
   }
 
   private setBoolean(name: string, value: boolean) {
