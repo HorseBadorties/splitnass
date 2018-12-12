@@ -42,7 +42,7 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-runde let-columns="columns" let-expanded="expanded">
-      <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
+      <tr #row class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
         <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" 
           (click)="rundeClicked(runde)" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
           <span class="{{col.isActive ? '' : 'inactivePlayer'}}">{{getValueFor(runde, col.field)}}</span>
@@ -51,7 +51,7 @@
     </ng-template>
 
     <ng-template pTemplate="rowexpansion" let-runde let-columns="columns">
-      <tr *ngIf="runde.isBeendet" class="ergebnis">
+      <tr #rowDetail *ngIf="runde.isBeendet" class="ergebnis" [attr.nr]="runde.nr">
         <td [attr.colspan]="columns.length + 1" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
           <div *ngFor="let s of runde.ergebnisEvents">            
             <span>{{s.event}}</span>

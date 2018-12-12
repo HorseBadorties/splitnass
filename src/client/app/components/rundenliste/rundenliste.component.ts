@@ -33,7 +33,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: Column[];
   displayMenu = false;
   menuItems: MenuItem[];
-  @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
+  @ViewChildren("row", { read: ElementRef }) rowElement: QueryList<ElementRef>;
+  @ViewChildren("rowDetail", { read: ElementRef }) rowDetailElement: QueryList<ElementRef>;
+  private shouldPulse = false;
 
   constructor(
     public spieltagService: SpieltagService,
@@ -111,6 +113,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setSpieltag(spieltag: Spieltag) {
+    this.shouldPulse = this.spieltag !== undefined; // beim ersten Anzeigen nicht pulsieren
     this.spieltag = spieltag;
     if (spieltag) {
       this.calcDisplayedColumns(spieltag);
@@ -184,14 +187,32 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private scrollToNr(nr: string) {
-    if (this.rowsPrime) {
-      this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute("nr") === nr));
+    if (this.rowElement) {
+      const rowByNr = this.rowElement.find(r => r.nativeElement.getAttribute("nr") === nr);
+      this.scrollTo(rowByNr);
+      this.pulse(rowByNr);
     }
+    if (this.rowDetailElement) {
+      this.pulse(this.rowDetailElement.find(r => r.nativeElement.getAttribute("nr") === nr));
+    }
+  }
+
+  private pulse(el: ElementRef) {
+    if (!this.shouldPulse) return;
+    el.nativeElement.animate([
+      {opacity: 1},
+      {opacity: 0.3},        
+      {opacity: 1}
+    ], {
+      duration: 1500,
+      iterations: 1,
+      delay: 100
+    });
   }
 
   private scrollTo(row: ElementRef) {
     if (row != null) {
-      row.nativeElement.scrollIntoView({behavior: "smooth", inline: "center", block: "center"});
+      row.nativeElement.scrollIntoView({behavior: "smooth", inline: "center", block: "center"});      
     }
   }
 
