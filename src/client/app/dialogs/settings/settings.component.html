@@ -1,30 +1,30 @@
 <p-card>
  
   <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
-    <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
-      </p-checkbox>
-    </div>
-    <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
-      </p-checkbox>
-    </div>
-    <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Fensterwechsel animieren" binary="true">
-      </p-checkbox>
-    </div>
-    <div>
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.hideInactivePlayers" label="Inaktive Spieler ausblenden" binary="true">
-      </p-checkbox>
-    </div>
-    <div>
+    <div class="div-padding">
       <span class="p-col">Theme:</span>
       <p-dropdown  [options]="themes" [(ngModel)]="selectedTheme" (onChange)="themeChanged()">    
       </p-dropdown>
     </div>
+    <div class="div-padding">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+      </p-checkbox>
+    </div>
+    <div class="div-padding">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
+      </p-checkbox>
+    </div>
+    <div class="div-padding">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Fensterwechsel animieren" binary="true">
+      </p-checkbox>
+    </div>
+    <div class="div-padding">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.hideInactivePlayers" label="Inaktive Spieler ausblenden" binary="true">
+      </p-checkbox>
+    </div>
   </p-panel>
   <p-panel class="p-col" header="Rundenliste" [toggleable]="true">
-    <div>
+    <div class="div-padding">
       <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
         binary="true">
       </p-checkbox>

@@ -23,8 +23,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { ChartModule } from "primeng/chart";
 import { TabViewModule } from "primeng/tabview";
 import { CardModule } from "primeng/card";
-// 'primeng/dynamicdialog' not working right now due to https://github.com/primefaces/primeng/issues/6954
-import { DynamicDialogModule } from 'node_modules/primeng/components/dynamicdialog/dynamicdialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 
 import { AppComponent } from "./app.component";
