@@ -190,23 +190,21 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.rowElement) {
       const rowByNr = this.rowElement.find(r => r.nativeElement.getAttribute("nr") === nr);
       this.scrollTo(rowByNr);
-      this.pulse(rowByNr);
+      if (this.shouldPulse) this.pulse(rowByNr);
     }
-    if (this.rowDetailElement) {
+    if (this.shouldPulse && this.rowDetailElement) {
       this.pulse(this.rowDetailElement.find(r => r.nativeElement.getAttribute("nr") === nr));
     }
   }
 
   private pulse(el: ElementRef) {
-    if (!this.shouldPulse) return;
     el.nativeElement.animate([
       {opacity: 1},
       {opacity: 0.3},        
       {opacity: 1}
     ], {
-      duration: 1500,
-      iterations: 1,
-      delay: 100
+      duration: 2000,     
+      delay: 500
     });
   }
 
