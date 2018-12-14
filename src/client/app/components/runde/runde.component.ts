@@ -418,6 +418,13 @@ export class RundeComponent implements OnInit, OnDestroy {
         label: "Settings", id: MenuItemId.Settings,
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
+      {
+        label: "Regelbuch", id: MenuItemId.Rules,
+        icon: "pi pi-fw pi-paperclip", command: _ => {
+          this.displayMenu = false;
+          window.open("https://github.com/HorseBadorties/splitnass/wiki/Regeln", "Regeln");
+        }
+      },
     ];
   }
 
@@ -539,6 +546,7 @@ enum MenuItemId {
   Sitzreihenfolge = "Sitzreihenfolge",
 
   Settings = "Settings",
+  Rules = "Rules",
   Charts = "Statistik",
   GlobalCharts = "GlobalCharts",
   CurrentCharts = "CurrentCharts"
