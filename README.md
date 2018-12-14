@@ -2,7 +2,7 @@
 
 A web app to enter and calculate scores for the german card game [Doppelkopf](https://en.wikipedia.org/wiki/Doppelkopf).
 
-Over the years we have customized the rules and scoring rules and this app uses our customized rule set.
+Over the years we have customized the rules and scoring rules and this app uses [our customized rule set](https://github.com/HorseBadorties/splitnass/wiki/Regeln).
 
 ## What's that name??
 
