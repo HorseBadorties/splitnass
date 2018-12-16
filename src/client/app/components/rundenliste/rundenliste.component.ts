@@ -234,8 +234,15 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
       {
-        label: "Spieltag wechseln", id: MenuItemId.Settings,
+        label: "Spieltag wechseln", id: MenuItemId.NeuerSpieltag,
         icon: "pi pi-fw pi-calendar-times", command: _ => this.spieltagAuswahl()
+      },
+      {
+        label: "Regelbuch", id: MenuItemId.Rules,
+        icon: "pi pi-fw pi-paperclip", command: _ => {
+          this.displayMenu = false;
+          window.open("https://github.com/HorseBadorties/splitnass/wiki/Regeln", "Regeln");
+        }
       },
     ];
   }
@@ -244,6 +251,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
 enum MenuItemId {
   Settings = "Settings",
+  NeuerSpieltag = "NeuerSpieltag",
+  Rules = "Rules",
   Charts = "Charts",
   CurrentCharts = "CurrentCharts",
   GlobalCharts = "GlobalCharts"
