@@ -13,10 +13,14 @@ export class SettingsService {
   private _adminMode: boolean;
   private _autoShowRundendetails: boolean;
   private _hideInactivePlayers: boolean;
+  private _maxBoecke: number;
+  private _maxBoeckeAtBegin: number;
+  private _withSub: boolean;
 
   public offlineStatus = new BehaviorSubject(undefined);
   public hideInactivePlayersStatus = new BehaviorSubject(undefined);
-
+  public rulesChanged = new BehaviorSubject(undefined);
+  
   public get offline(): boolean {
     return this._offline;
   }
@@ -64,6 +68,36 @@ export class SettingsService {
     this.hideInactivePlayersStatus.next(value);
   }
 
+  public get maxBoecke(): number {
+    return this._maxBoecke;
+  }
+
+  public set maxBoecke(value: number) {
+    this._maxBoecke = value;
+    this.localStorage.setItemSubscribe("maxBoecke", value);
+    this.rulesChanged.next("maxBoecke");
+  }
+
+  public get maxBoeckeAtBegin(): number {
+    return this._maxBoeckeAtBegin;
+  }
+
+  public set maxBoeckeAtBegin(value: number) {
+    this._maxBoeckeAtBegin = value;
+    this.localStorage.setItemSubscribe("maxBoeckeAtBegin", value);
+    this.rulesChanged.next("maxBoeckeAtBegin");
+  }
+
+  public get withSub(): boolean {
+    return this._withSub;
+  }
+  
+  public set withSub(value: boolean) {
+    this._withSub = value;
+    this.setBoolean("withSub", value);
+    this.rulesChanged.next("withSub");
+  }
+
   public saveSpieltagJSON(spieltagJSON: string) {
     this.localStorage.setItemSubscribe("savedSpieltag", spieltagJSON);
   }
@@ -94,13 +128,20 @@ export class SettingsService {
         this.offlineStatus.next(this._offline);
       });
     this.getBoolean("animateRoutes").pipe(first())
-      .subscribe(value => this._animateRoutes = value !== null ? value.valueOf() : true)
+      .subscribe(value => this._animateRoutes = value !== null ? value.valueOf() : true);
     this.getBoolean("adminMode").pipe(first())
-      .subscribe(value => this._adminMode = value !== null ? value.valueOf() : false)
+      .subscribe(value => this._adminMode = value !== null ? value.valueOf() : false);
     this.getBoolean("autoShowRundendetails").pipe(first())
-      .subscribe(value => this._autoShowRundendetails = value !== null ? value.valueOf() : true)
+      .subscribe(value => this._autoShowRundendetails = value !== null ? value.valueOf() : true);
     this.getBoolean("hideInactivePlayers").pipe(first())
-      .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true)
+      .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true);
+    this.localStorage.getItem("maxBoecke").pipe(first())
+      .subscribe(value => this._maxBoecke = value !== null ? value as number : 3);     
+    this.localStorage.getItem("maxBoeckeAtBegin").pipe(first())
+      .subscribe(value => this._maxBoeckeAtBegin = value !== null ? value as number : 2);  
+    this.getBoolean("withSub").pipe(first())
+      .subscribe(value => this._withSub = value !== null ? value.valueOf() : false);   
+       
   }
 
   private setBoolean(name: string, value: boolean) {

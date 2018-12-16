@@ -30,6 +30,21 @@
       </p-checkbox>
     </div>
   </p-panel>
+  <p-panel class="p-col" header="Regeln" [toggleable]="true">
+    <div class="div-padding">
+      <span class="p-col">Maximale Anzahl vorzutragender Böcke:</span>
+      <p-spinner size="2" [(ngModel)]="settingsService.maxBoeckeAtBegin" [min]="0" [max]="2"></p-spinner>
+    </div>
+    <div class="div-padding">
+      <span class="p-col">Maximale Anzahl Böcke:</span>
+      <p-spinner size="2" [(ngModel)]="settingsService.maxBoecke" [min]="0" [max]="3"></p-spinner>
+    </div>
+    <div class="div-padding">
+      <p-checkbox class="p-col" [(ngModel)]="settingsService.withSub" label='mit "Sub"?' binary="true">
+      </p-checkbox>
+    </div>
+  </p-panel>
+  
 
   <div class="actions">
       <p-button label="OK" (click)="onClose()"></p-button>

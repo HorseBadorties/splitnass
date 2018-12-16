@@ -75,6 +75,11 @@
           </ng-template>
         </p-dropdown>
       </div>
+      <div class="p-col" *ngIf="spieltag.rules.withSub">
+        <p-checkbox class="p-col fontsize" [(ngModel)]="runde.subAngesagt" label="Sub angesagt"
+          binary="true" [disabled]="!runde.reAngesagt || !runde.kontraAngesagt">
+        </p-checkbox>
+      </div>
     </div>
   </p-panel>
 

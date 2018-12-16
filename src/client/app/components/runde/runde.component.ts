@@ -161,6 +161,9 @@ export class RundeComponent implements OnInit, OnDestroy {
     if (!re && this.runde.kontraVonVorneHerein && this.runde.kontraAngesagt === Ansage.KeineAnsage) {
       this.runde.kontraVonVorneHerein = false;
     }
+    if (!this.runde.reAngesagt || !this.runde.kontraAngesagt) {
+      this.runde.subAngesagt = false;
+    }
   }
 
   isNochNichtGespielteRunde() {
@@ -194,7 +197,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       this.confirmGespaltenerArsch();
     } else {
       this.runde.berechneErgebnis();
-      if (this.runde.ergebnis === 0) {
+      if (this.runde.isGespaltenerArsch()) {
         this.messageService.add({ severity: "info", summary: "Böcke!", detail: "💩 Gespaltener Arsch! 💩"});
         this.spieltagService.rundeAbgerechnet(this.runde);
       } else {

@@ -4,8 +4,6 @@ import { Solo } from "./solo";
 import { Spieler } from "./spieler";
 import { Spieltag } from "./spieltag";
 
-export const MAX_BOECKE = 3;
-
 export class Runde {
 
   public static fromJsonObject(jsonObject: any, spieltag: Spieltag): Runde {
@@ -33,6 +31,7 @@ export class Runde {
     public reAngesagt = Ansage.KeineAnsage,
     public kontraVonVorneHerein = false,
     public kontraAngesagt = Ansage.KeineAnsage,
+    public subAngesagt = false,
     // Boecke
     public boecke = 0,
     public boeckeBeiBeginn = 0,
@@ -59,6 +58,7 @@ export class Runde {
     this.reAngesagt = Ansage.KeineAnsage;
     this.kontraVonVorneHerein = false;
     this.kontraAngesagt = Ansage.KeineAnsage;
+    this.subAngesagt = false;
     this.boecke = this.boeckeBeiBeginn;
     this.gespielt = undefined;
     this.solo = Solo.KEIN_SOLO;
@@ -74,7 +74,8 @@ export class Runde {
 
   public undoBoecke(): Runde {
     const verteilteReKontraBoecke =
-      (this.boeckeBeiBeginn + this.reAngesagt ? 1 : 0 + this.kontraAngesagt ? 1 : 0) - 3;
+      (this.boeckeBeiBeginn + (this.reAngesagt ? 1 : 0) + (this.kontraAngesagt ? 1 : 0) + (this.subAngesagt ? 1 : 0))
+      - this.spieltag.rules.maxBoecke;
     if (verteilteReKontraBoecke > 0) {
       this.spieltag.undoBoecke(verteilteReKontraBoecke);
     }
@@ -84,7 +85,7 @@ export class Runde {
     if (this.reAngesagt && this.kontraAngesagt) {
       this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
     }
-    if (this.ergebnis === 0) {
+    if (this.isGespaltenerArsch()) {
       this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
     }
     return this;
@@ -118,7 +119,7 @@ export class Runde {
   }
 
   public addBock(): Runde {
-    if (this.boecke < MAX_BOECKE) {
+    if (this.boecke < this.spieltag.rules.maxBoecke) {
       this.boecke++;
     } else {
       this.spieltag.bock();
@@ -134,13 +135,16 @@ export class Runde {
     if (this.kontraAngesagt) {
       this.addBock();
     }
+    if (this.subAngesagt) {
+      this.addBock();
+    }
     if (this.herzGehtRum) {
       this.spieltag.boecke();
     }
     if (this.reAngesagt && this.kontraAngesagt) {
       this.spieltag.boecke();
     }
-    if (this.ergebnis === 0) {
+    if (this.isGespaltenerArsch()) {
       this.spieltag.boecke();
     }
   }
@@ -160,7 +164,10 @@ export class Runde {
     if (this.kontraAngesagt) {
       _boecke++;
     }
-    if (this.gespielt === 0) {
+    if (this.subAngesagt) {
+      _boecke++;
+    }
+    if (this.gespielt === Gespielt.GespaltenerArsch) {
       // Gespaltener Arsch!?
       this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
       return this.ergebnis;
@@ -255,17 +262,21 @@ export class Runde {
       this.reGewinnt = !this.reGewinnt;
     }
     // Böcke
-    _boecke = Math.min(_boecke, MAX_BOECKE);
+    _boecke = Math.min(_boecke, this.spieltag.rules.maxBoecke);
     if (_boecke) {
       this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`});
       _.times(_boecke, v => this.ergebnis *= 2);
     }
-    if (this.ergebnis === 0) {
+    if (this.isGespaltenerArsch()) {
       this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
     } else {
       this._ergebnisEvents.push({"event": `💎 ${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"} 💎`});
     }
     return this.ergebnis;
+  }
+
+  public isGespaltenerArsch() {
+    return this.ergebnis === 0;
   }
 
   private translateAnsage(ansage: number) {

@@ -7,6 +7,7 @@ import { Spieler } from "src/model/spieler";
 import { SocketService } from "./socket.service";
 import { SettingsService } from "./settings.service";
 import { Runde } from "src/model/runde";
+import { Rules } from "src/model/rules";
 
 @Injectable({
   providedIn: "root"
@@ -30,6 +31,7 @@ export class SpieltagService {
       if (this.aktuellerSpieltag) this.setSpieltag(this.aktuellerSpieltag);
     });
     this.settingsService.offlineStatus.subscribe(_ => this.onOnlineStatusChanged());
+    this.settingsService.rulesChanged.subscribe(_ => this.onRulesChanged());
     this.socketService.connected.subscribe(connected => {
       this.socketIsOnline = connected;
       this.onOnlineStatusChanged();
@@ -108,6 +110,10 @@ export class SpieltagService {
 
   private setSpieltag(spieltag: Spieltag) {
     this.aktuellerSpieltag = spieltag;
+    if (this.aktuellerSpieltag) {
+    this.aktuellerSpieltag.rules = new Rules(this.settingsService.maxBoecke,
+      this.settingsService.maxBoeckeAtBegin, this.settingsService.withSub);
+    }
     this.spieltag.next(this.aktuellerSpieltag); 
   }
   
@@ -130,6 +136,10 @@ export class SpieltagService {
     } else {
       console.log(`*** we are offline ***`);
     }
+  }
+
+  private onRulesChanged() {
+    this.setSpieltag(this.aktuellerSpieltag);
   }
 
 }

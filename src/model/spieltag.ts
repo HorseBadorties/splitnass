@@ -1,7 +1,8 @@
 import * as _ from "lodash";
 
-import { Runde, MAX_BOECKE } from "./runde";
+import { Runde } from "./runde";
 import { Spieler } from "./spieler";
+import { Rules } from "./rules";
 
 export class Spieltag {
 
@@ -38,7 +39,8 @@ export class Spieltag {
     public beginn?: Date,
     public runden: Array<Runde> = [],
     public aktuelleRunde?: Runde,
-    public spieler: Array<Spieler> = []) { }
+    public spieler: Array<Spieler> = [],
+    public rules = new Rules()) { }
 
   public start(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler): Spieltag {
     this.beginn = new Date();
@@ -118,11 +120,13 @@ export class Spieltag {
   }
 
   public undoBoecke(anzahlBoecke: number): Spieltag {
-    _.times(anzahlBoecke, i => {
-      let runde = _.findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
-      if (!runde) runde = _.findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
-      if (runde) runde.boecke--;
-    });
+    if (this.rules.maxBoeckeAtStart > 0) {
+      _.times(anzahlBoecke, i => {
+        let runde = _.findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
+        if (!runde) runde = _.findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
+        if (runde) runde.boecke--;
+      });
+    }
     return this;
   }
 
@@ -223,7 +227,7 @@ export class Spieltag {
     if (indexOfAktuelleRunde === this.runden.length - 1) {
       return undefined;
     } else {
-      return this.runden.slice(indexOfAktuelleRunde + 1).find(r => r.boecke < MAX_BOECKE - 1);
+      return this.runden.slice(indexOfAktuelleRunde + 1).find(r => r.boecke < this.rules.maxBoeckeAtStart);
     }
   }
 
