@@ -31,6 +31,7 @@ export class RundeComponent implements OnInit, OnDestroy {
   statusSubscribtion: Subscription;
   messagesSubscribtion: Subscription;
   spieltag: Spieltag;
+  spieltagauswahlShown = false;
   runde: Runde;
   onlineStatus = "";
   displayMenu = false;
@@ -290,12 +291,15 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMenu();
-    this.spieltagSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => {
-      this.spieltag = spieltag;
-      if (spieltag) {
-        this.setAktuelleRunde(spieltag.aktuelleRunde);
-      } else if (spieltag === null) {
-        this.spieltagAuswahl();      
+    this.spieltagSubscribtion = this.spieltagService.spieltag.subscribe(sp => {
+      if (sp) {
+        this.spieltag = sp;
+      }
+      if (this.spieltag) {
+        this.setAktuelleRunde(sp.aktuelleRunde);
+      } else if (sp === null && !this.spieltagauswahlShown) {
+        this.spieltagauswahlShown = true;
+        this.spieltagAuswahl();
       }
     });
     this.statusSubscribtion = this.spieltagService.online.subscribe(online => this.onlineStatus = online ? "" : "offline");

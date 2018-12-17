@@ -27,6 +27,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   spieltagSubscribtion: Subscription;
   statusSubscribtion: Subscription;
   onlineStatus = "";
+  spieltagauswahlShown = false;
   spieltag: Spieltag;
   selectedRunde: Runde;
   expandedRunden = [];
@@ -126,7 +127,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         setTimeout(() => this.scrollToRunde(vorherigeRunde), 500);
       }
-    } else if (spieltag === null) {
+    } else if (spieltag === null && !this.spieltagauswahlShown) {
+      this.spieltagauswahlShown = true;
       this.spieltagAuswahl();
     }
   }
