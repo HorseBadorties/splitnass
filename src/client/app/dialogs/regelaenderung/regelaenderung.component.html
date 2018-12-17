@@ -1,0 +1,29 @@
+<p-card>
+  <div class="div-padding">
+    <p-spinner size="2" [(ngModel)]="rules.maxBoeckeAtBegin" [min]="0" [max]="2"></p-spinner>
+    <span class="p-col">Maximale Anzahl vorzutragender Böcke</span>
+  </div>
+  <div class="div-padding">
+    <p-spinner size="2" [(ngModel)]="rules.maxBoecke" [min]="0" [max]="3"></p-spinner>
+    <span class="p-col">Maximale Anzahl Böcke</span>
+  </div>
+  <div class="div-padding">
+    <p-checkbox class="p-col" [(ngModel)]="rules.withSub" label='mit "Sub"?' binary="true">
+    </p-checkbox>
+  </div>
+  <div class="div-padding">
+    <p-checkbox class="p-col" [(ngModel)]="rules.herzGehtRumBoecke" label='Böcke bei Herz-geht-rum?' binary="true"></p-checkbox>
+  </div>
+  <div class="div-padding">
+    <p-checkbox class="p-col" [(ngModel)]="rules.gespaltenerArschBoecke" label='Böcke bei Gespaltener Arsch?' binary="true"></p-checkbox>
+  </div>
+  <div class="div-padding">
+    <p-checkbox class="p-col" [(ngModel)]="rules.reKontraBoecke" label='Böcke bei Re-Kontra?' binary="true"></p-checkbox>
+  </div>
+
+
+  <div class="actions div-padding">
+    <p-button label="OK" (click)="onClose()"></p-button>
+    <p-button label="Cancel" (click)="onCancel()" class="left-pad"></p-button>
+  </div>
+</p-card>

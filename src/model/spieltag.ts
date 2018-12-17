@@ -22,6 +22,7 @@ export class Spieltag {
       result.runden.push(Runde.fromJsonObject(r, result));
     });
     result.aktuelleRunde = result.runden.find(r => r.nr === parsedJson.aktuelleRunde.nr);
+    result.rules = parsedJson.rules;
     return result;
   }
 
@@ -120,7 +121,7 @@ export class Spieltag {
   }
 
   public undoBoecke(anzahlBoecke: number): Spieltag {
-    if (this.rules.maxBoeckeAtStart > 0) {
+    if (this.rules.maxBoeckeAtBegin > 0) {
       _.times(anzahlBoecke, i => {
         let runde = _.findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
         if (!runde) runde = _.findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
@@ -227,7 +228,7 @@ export class Spieltag {
     if (indexOfAktuelleRunde === this.runden.length - 1) {
       return undefined;
     } else {
-      return this.runden.slice(indexOfAktuelleRunde + 1).find(r => r.boecke < this.rules.maxBoeckeAtStart);
+      return this.runden.slice(indexOfAktuelleRunde + 1).find(r => r.boecke < this.rules.maxBoeckeAtBegin);
     }
   }
 

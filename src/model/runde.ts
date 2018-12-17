@@ -73,19 +73,19 @@ export class Runde {
   }
 
   public undoBoecke(): Runde {
-    const verteilteReKontraBoecke =
+    const verteilteReKontraSubBoecke =
       (this.boeckeBeiBeginn + (this.reAngesagt ? 1 : 0) + (this.kontraAngesagt ? 1 : 0) + (this.subAngesagt ? 1 : 0))
       - this.spieltag.rules.maxBoecke;
-    if (verteilteReKontraBoecke > 0) {
-      this.spieltag.undoBoecke(verteilteReKontraBoecke);
+    if (verteilteReKontraSubBoecke > 0) {
+      this.spieltag.undoBoecke(verteilteReKontraSubBoecke);
     }
-    if (this.herzGehtRum) {
+    if (this.herzGehtRum && this.spieltag.rules.herzGehtRumBoecke) {
       this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
     }
-    if (this.reAngesagt && this.kontraAngesagt) {
+    if (this.reAngesagt && this.kontraAngesagt && this.spieltag.rules.reKontraBoecke) {
       this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
     }
-    if (this.isGespaltenerArsch()) {
+    if (this.isGespaltenerArsch() && this.spieltag.rules.gespaltenerArschBoecke) {
       this.spieltag.undoBoecke(this.spieltag.getAktiveSpieler().length);
     }
     return this;
@@ -138,13 +138,13 @@ export class Runde {
     if (this.subAngesagt) {
       this.addBock();
     }
-    if (this.herzGehtRum) {
+    if (this.herzGehtRum && this.spieltag.rules.herzGehtRumBoecke) {
       this.spieltag.boecke();
     }
-    if (this.reAngesagt && this.kontraAngesagt) {
+    if (this.reAngesagt && this.kontraAngesagt && this.spieltag.rules.reKontraBoecke) {
       this.spieltag.boecke();
     }
-    if (this.isGespaltenerArsch()) {
+    if (this.isGespaltenerArsch() && this.spieltag.rules.gespaltenerArschBoecke) {
       this.spieltag.boecke();
     }
   }

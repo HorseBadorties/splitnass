@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.left-pad {
+  padding-left: 0.5em;
+}
+
+.div-padding {
+  padding: 0.25em 0 0.25em 0;
+}

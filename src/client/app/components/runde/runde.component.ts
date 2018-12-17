@@ -18,6 +18,7 @@ import { GewinnerauswahlComponent } from "../../dialogs/gewinnerauswahl/gewinner
 import { GenericDialogComponent, Type } from "../../dialogs/generic-dialog/generic-dialog.component";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
 import { take } from "rxjs/operators";
+import { RegelaenderungComponent } from "../../dialogs/regelaenderung/regelaenderung.component";
 
 
 @Component({
@@ -127,6 +128,20 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.dialogService.open(GenericDialogComponent, config);
   }
 
+  regelnAendern() {
+    this.displayMenu = false; 
+    const config: any = {
+      showHeader: false,
+      width: '90%',
+      data: {rules: this.spieltag.rules}
+    };
+    this.dialogService.open(RegelaenderungComponent, config).onClose.subscribe(newRules => {
+      if (newRules) {
+        this.spieltag.rules = newRules;
+      }
+    });
+  }
+
   newSpieltag() {
     this.displayMenu = false;
     this.dialogService.open(NeuerSpieltagComponent, {showHeader: false});    
@@ -200,7 +215,9 @@ export class RundeComponent implements OnInit, OnDestroy {
     } else {
       this.runde.berechneErgebnis();
       if (this.runde.isGespaltenerArsch()) {
-        this.messageService.add({ severity: "info", summary: "Böcke!", detail: "💩 Gespaltener Arsch! 💩"});
+        if (this.spieltag.rules.gespaltenerArschBoecke) {
+          this.messageService.add({ severity: "info", summary: "Böcke!", detail: "💩 Gespaltener Arsch! 💩"});
+        }
         this.spieltagService.rundeAbgerechnet(this.runde);
       } else {
         this.openGewinnerDialog();      
@@ -387,6 +404,10 @@ export class RundeComponent implements OnInit, OnDestroy {
             icon: "pi pi-fw pi-users", command: _ => this.zeigeSitzreihenfolge()
           },
           {
+            label: "Regeln anzeigen/ändern", id: MenuItemId.Regeln,
+            icon: "pi pi-fw pi-list", command: _ => this.regelnAendern()
+          },
+          {
             label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
             icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
           },
@@ -427,7 +448,7 @@ export class RundeComponent implements OnInit, OnDestroy {
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
       },
       {
-        label: "Regelbuch", id: MenuItemId.Rules,
+        label: "Regelbuch", id: MenuItemId.Wiki,
         icon: "pi pi-fw pi-paperclip", command: _ => {
           this.displayMenu = false;
           window.open("https://github.com/HorseBadorties/splitnass/wiki/Regeln", "Regeln");
@@ -552,9 +573,10 @@ enum MenuItemId {
   SpielerRaus = "SpielerRaus",
   Rundenzahl = "Rundenzahl",
   Sitzreihenfolge = "Sitzreihenfolge",
+  Regeln = "Regeln",
 
   Settings = "Settings",
-  Rules = "Rules",
+  Wiki = "Wiki",
   Charts = "Statistik",
   GlobalCharts = "GlobalCharts",
   CurrentCharts = "CurrentCharts"

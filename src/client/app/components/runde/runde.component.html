@@ -91,7 +91,7 @@
       <div class="p-col" style="white-space: nowrap;">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.armut" label="Armut" binary="true"></p-checkbox>
         <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-        <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+        <p-checkbox *ngIf="spieltag.rules.herzGehtRumBoecke" class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
       </div>
       <div class="p-col">
         <span style="white-space: nowrap;">

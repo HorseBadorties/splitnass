@@ -45,6 +45,7 @@ import { SpieltagauswahlComponent } from './dialogs/spieltagauswahl/spieltagausw
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GlobalChartsComponent } from './components/charts/global-charts.component';
 import { CardsComponent } from './components/cards/cards.component';
+import { RegelaenderungComponent } from './dialogs/regelaenderung/regelaenderung.component';
 
 
 @Injectable()
@@ -88,7 +89,8 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     GenericDialogComponent,
     SpinnerComponent,
     GlobalChartsComponent,
-    CardsComponent
+    CardsComponent,
+    RegelaenderungComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +136,8 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     NumberpickerComponent,
     SettingsComponent,
     SpielerauswahlComponent,
-    SpieltagauswahlComponent
+    SpieltagauswahlComponent,
+    RegelaenderungComponent
 ]
 })
 export class AppModule { }

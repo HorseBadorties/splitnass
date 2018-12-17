@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first } from "rxjs/operators";
+import { Rules } from 'src/model/rules';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,10 @@ export class SettingsService {
   private _adminMode: boolean;
   private _autoShowRundendetails: boolean;
   private _hideInactivePlayers: boolean;
-  private _maxBoecke: number;
-  private _maxBoeckeAtBegin: number;
-  private _withSub: boolean;
+  private _rules = new Rules();
 
   public offlineStatus = new BehaviorSubject(undefined);
-  public hideInactivePlayersStatus = new BehaviorSubject(undefined);
-  public rulesChanged = new BehaviorSubject(undefined);
+  public hideInactivePlayersStatus = new BehaviorSubject(undefined);  
   
   public get offline(): boolean {
     return this._offline;
@@ -68,34 +66,13 @@ export class SettingsService {
     this.hideInactivePlayersStatus.next(value);
   }
 
-  public get maxBoecke(): number {
-    return this._maxBoecke;
+  public get rules(): Rules {
+    return this._rules;
   }
 
-  public set maxBoecke(value: number) {
-    this._maxBoecke = value;
-    this.localStorage.setItemSubscribe("maxBoecke", value);
-    this.rulesChanged.next("maxBoecke");
-  }
-
-  public get maxBoeckeAtBegin(): number {
-    return this._maxBoeckeAtBegin;
-  }
-
-  public set maxBoeckeAtBegin(value: number) {
-    this._maxBoeckeAtBegin = value;
-    this.localStorage.setItemSubscribe("maxBoeckeAtBegin", value);
-    this.rulesChanged.next("maxBoeckeAtBegin");
-  }
-
-  public get withSub(): boolean {
-    return this._withSub;
-  }
-  
-  public set withSub(value: boolean) {
-    this._withSub = value;
-    this.setBoolean("withSub", value);
-    this.rulesChanged.next("withSub");
+  public set rules(value: Rules) {
+    this._rules = value;
+    this.localStorage.setItemSubscribe("rules", value);
   }
 
   public saveSpieltagJSON(spieltagJSON: string) {
@@ -135,12 +112,8 @@ export class SettingsService {
       .subscribe(value => this._autoShowRundendetails = value !== null ? value.valueOf() : true);
     this.getBoolean("hideInactivePlayers").pipe(first())
       .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true);
-    this.localStorage.getItem("maxBoecke").pipe(first())
-      .subscribe(value => this._maxBoecke = value !== null ? value as number : 3);     
-    this.localStorage.getItem("maxBoeckeAtBegin").pipe(first())
-      .subscribe(value => this._maxBoeckeAtBegin = value !== null ? value as number : 2);  
-    this.getBoolean("withSub").pipe(first())
-      .subscribe(value => this._withSub = value !== null ? value.valueOf() : false);   
+    this.localStorage.getItem("rules").pipe(first())
+      .subscribe(value => this._rules = value !== null ? value as Rules : new Rules());     
        
   }
 
