@@ -24,6 +24,7 @@ import { ChartModule } from "primeng/chart";
 import { TabViewModule } from "primeng/tabview";
 import { CardModule } from "primeng/card";
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { AccordionModule } from 'primeng/accordion';
 
 
 import { AppComponent } from "./app.component";
@@ -116,6 +117,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     AppRoutingModule,
     CardModule,
     DynamicDialogModule,
+    AccordionModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

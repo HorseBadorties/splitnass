@@ -120,6 +120,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.displayMenu = false; 
     const config: any = {
       showHeader: false,
+      width: '90%',
       data: {header: "Sitzreihenfolge", message: this.spieltag.getAktuelleSitzreihenfolgeAsHTMLString()}
     };
     this.dialogService.open(GenericDialogComponent, config);

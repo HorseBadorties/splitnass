@@ -1,53 +1,56 @@
 <p-card>
- 
-  <p-panel class="p-col" header="Allgemeine Einstellungen" [toggleable]="true">
-    <div class="div-padding">
-      <span class="p-col">Theme:</span>
-      <p-dropdown  [options]="themes" [(ngModel)]="selectedTheme" (onChange)="themeChanged()">    
-      </p-dropdown>
-    </div>
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
-      </p-checkbox>
-    </div>
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
-      </p-checkbox>
-    </div>
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Fensterwechsel animieren" binary="true">
-      </p-checkbox>
-    </div>
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.hideInactivePlayers" label="Inaktive Spieler ausblenden" binary="true">
-      </p-checkbox>
-    </div>
-  </p-panel>
-  <p-panel class="p-col" header="Rundenliste" [toggleable]="true">
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
-        binary="true">
-      </p-checkbox>
-    </div>
-  </p-panel>
-  <p-panel class="p-col" header="Regeln" [toggleable]="true">
-    <div class="div-padding">
-      <span class="p-col">Maximale Anzahl vorzutragender Böcke:</span>
-      <p-spinner size="2" [(ngModel)]="settingsService.maxBoeckeAtBegin" [min]="0" [max]="2"></p-spinner>
-    </div>
-    <div class="div-padding">
-      <span class="p-col">Maximale Anzahl Böcke:</span>
-      <p-spinner size="2" [(ngModel)]="settingsService.maxBoecke" [min]="0" [max]="3"></p-spinner>
-    </div>
-    <div class="div-padding">
-      <p-checkbox class="p-col" [(ngModel)]="settingsService.withSub" label='mit "Sub"?' binary="true">
-      </p-checkbox>
-    </div>
-  </p-panel>
-  
+  <p-accordion>
 
-  <div class="actions">
-      <p-button label="OK" (click)="onClose()"></p-button>
+    <p-accordionTab header="Allgemeine Einstellungen">
+      <div class="div-padding">
+        <span class="p-col">Theme:</span>
+        <p-dropdown [options]="themes" [(ngModel)]="selectedTheme" (onChange)="themeChanged()">
+        </p-dropdown>
+      </div>
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.adminMode" label="Spieltag steuern" binary="true">
+        </p-checkbox>
+      </div>
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.offline" label="Offline-Modus" binary="true">
+        </p-checkbox>
+      </div>
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.animateRoutes" label="Fensterwechsel animieren" binary="true">
+        </p-checkbox>
+      </div>
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.hideInactivePlayers" label="Inaktive Spieler ausblenden"
+          binary="true">
+        </p-checkbox>
+      </div>
+    </p-accordionTab>
+    <p-accordionTab header="Rundenliste">
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.autoShowRundendetails" label="Details der letzten gespielten Runde automatisch aufklappen?"
+          binary="true">
+        </p-checkbox>
+      </div>
+    </p-accordionTab>
+    <p-accordionTab header="Regeln">
+      <div class="div-padding">
+        <p-spinner size="2" [(ngModel)]="settingsService.maxBoeckeAtBegin" [min]="0" [max]="2"></p-spinner>
+        <span class="p-col">Maximale Anzahl vorzutragender Böcke</span>
+      </div>
+      <div class="div-padding">
+        <p-spinner size="2" [(ngModel)]="settingsService.maxBoecke" [min]="0" [max]="3"></p-spinner>
+        <span class="p-col">Maximale Anzahl Böcke</span>
+      </div>
+      <div class="div-padding">
+        <p-checkbox class="p-col" [(ngModel)]="settingsService.withSub" label='mit "Sub"?' binary="true">
+        </p-checkbox>
+      </div>
+      </p-accordionTab>
+  </p-accordion>
+
+
+  <div class="actions div-padding">
+    <p-button label="OK" (click)="onClose()"></p-button>
   </div>
 
 

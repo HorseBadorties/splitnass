@@ -217,6 +217,10 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   private initMenu() {
     this.menuItems = [
       {
+        label: "Spieltag wechseln", id: MenuItemId.NeuerSpieltag,
+        icon: "pi pi-fw pi-calendar-times", command: _ => this.spieltagAuswahl()
+      },
+      {
         label: "Charts", id: MenuItemId.Charts, icon: "pi pi-fw pi-chart-bar",
         items: [
           {
@@ -232,10 +236,6 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         label: "Settings", id: MenuItemId.Settings,
         icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
-      },
-      {
-        label: "Spieltag wechseln", id: MenuItemId.NeuerSpieltag,
-        icon: "pi pi-fw pi-calendar-times", command: _ => this.spieltagAuswahl()
       },
       {
         label: "Regelbuch", id: MenuItemId.Rules,
