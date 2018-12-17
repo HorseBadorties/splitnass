@@ -22,7 +22,7 @@ export class Spieltag {
       result.runden.push(Runde.fromJsonObject(r, result));
     });
     result.aktuelleRunde = result.runden.find(r => r.nr === parsedJson.aktuelleRunde.nr);
-    result.rules = parsedJson.rules;
+    result.rules = parsedJson.rules ? parsedJson.rules : new Rules();
     return result;
   }
 
