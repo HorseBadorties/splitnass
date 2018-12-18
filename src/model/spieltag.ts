@@ -190,6 +190,24 @@ export class Spieltag {
     return result;
   }
 
+  public applyRules() {
+    const aktuelleRunde = this.aktuelleRunde;
+    this.runden.forEach(r => {
+      r.boecke = 0;
+      r.boeckeBeiBeginn = 0;
+    });
+    this.runden
+      .filter(r => r.isGespielteRunde())
+      .forEach(r => {
+        this.aktuelleRunde = r;
+        r.boeckeBeiBeginn = r.boecke;
+        r.berechneErgebnis();
+        r.isBeendet = false;
+        r.beenden();
+      });
+    this.aktuelleRunde = aktuelleRunde;
+  }
+
   private insertDummyRundeWith(spieler: Spieler, punkte: number, description: string) {
     const dummyRunde = new Runde(this, this.aktuelleRunde.nr);
     dummyRunde.spieler = [spieler];

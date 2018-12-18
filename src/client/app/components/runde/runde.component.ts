@@ -138,6 +138,8 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.dialogService.open(RegelaenderungComponent, config).onClose.subscribe(newRules => {
       if (newRules) {
         this.spieltag.rules = newRules;
+        this.spieltag.applyRules();
+        this.spieltagService.sendSpieltagUpdate();
       }
     });
   }
