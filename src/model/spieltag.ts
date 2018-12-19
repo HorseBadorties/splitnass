@@ -5,12 +5,14 @@ import { Spieler } from "./spieler";
 import { Rules } from "./rules";
 
 export class Spieltag {
+  public isBeendet = false;
 
   public static fromJSON(jsonString: string) {
     const result = new Spieltag();
     const parsedJson = JSON.parse(jsonString);
     result.name = parsedJson.name;
     result.beginn = parsedJson.beginn ? new Date(parsedJson.beginn) : undefined;
+    result.isBeendet = parsedJson.isBeendet;
     result.spieler = [];
     parsedJson.spieler.forEach(s => {
       const spieler = Spieler.get(s.id);

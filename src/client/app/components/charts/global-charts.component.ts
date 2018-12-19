@@ -153,7 +153,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
 
   private calcData(data: Array<Spieltag>) {  
     if (!data) return;  
-    const _data = _.sortBy(data, spieltag => spieltag.beginn);  
+    const _data = _.sortBy(data.filter(spieltag => spieltag.isBeendet), spieltag => spieltag.beginn);  
 
     // Punkte
     const newPunkteData = {};
@@ -178,7 +178,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     const newGewonneneSpieltageData = {};
     newGewonneneSpieltageData["labels"] = Spieler.all.map(s => s.name);
     const dataset = {"label": ""};
-    dataset["data"] = Spieler.all.map(s => this.countGewonneneSpieltage(s, data));
+    dataset["data"] = Spieler.all.map(s => this.countGewonneneSpieltage(s, _data));
     dataset["backgroundColor"] = playerColors.slice(0, Spieler.all.length);
     newGewonneneSpieltageData["datasets"] = [dataset];
     this.gewonneneSpieltage = newGewonneneSpieltageData;
@@ -187,7 +187,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     const newSolos = {};
     newSolos["labels"] = Solo.all.map(s => s.name);
     const datasetSolos = {"label": ""};
-    datasetSolos["data"] =  Solo.all.map(s => this.countSolo(s, data));
+    datasetSolos["data"] =  Solo.all.map(s => this.countSolo(s, _data));
     datasetSolos["backgroundColor"] = playerColors.slice(0, Solo.all.length);
     newSolos["datasets"] = [datasetSolos];
     this.solos = newSolos;

@@ -144,6 +144,15 @@ export class RundeComponent implements OnInit, OnDestroy {
     });
   }
 
+  spieltagBeenden() {
+    this.displayMenu = false; 
+    this.doIfConfirmed("Spieltag beenden", `Soll der Spieltag beendet werden? <br>
+      Eingaben/Änderungen sind danach nicht mehr möglich.`, () => {
+      this.spieltag.isBeendet = true;
+      this.spieltagService.sendSpieltagUpdate();
+    });
+  }
+
   newSpieltag() {
     this.displayMenu = false;
     this.dialogService.open(NeuerSpieltagComponent, {showHeader: false});    
@@ -203,12 +212,22 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   private setAktuelleRunde(r: Runde) {    
     this.runde = r;    
-    this.menuItemById(MenuItemId.UndoLetzteRunde).disabled = this.spieltag.aktuelleRunde.nr === 1;
-    this.menuItemById(MenuItemId.SpielerRein).disabled = this.spieltag.getAktiveSpieler().length >= 6;
-    this.menuItemById(MenuItemId.SpielerRaus).disabled = this.spieltag.getAktiveSpieler().length === 4;
-    this.menuItemById(MenuItemId.BoeckeKorrigieren).disabled = r.isBeendet;
-    this.menuItemById(MenuItemId.CurrentCharts).disabled = !this.spieltag;
-    this.menuItemById(MenuItemId.GlobalCharts).disabled = this.settingsService.offline;
+    this.menuItemById(MenuItemId.UndoLetzteRunde).disabled = 
+      this.spieltag.isBeendet || this.spieltag.aktuelleRunde.nr === 1;
+    this.menuItemById(MenuItemId.SpielerRein).disabled = 
+      this.spieltag.isBeendet || this.spieltag.getAktiveSpieler().length >= 6;
+    this.menuItemById(MenuItemId.SpielerRaus).disabled = 
+      this.spieltag.isBeendet || this.spieltag.getAktiveSpieler().length === 4;
+    this.menuItemById(MenuItemId.Rundenzahl).disabled = 
+      this.spieltag.isBeendet;
+    this.menuItemById(MenuItemId.SpieltagBeenden).disabled = 
+      this.spieltag.isBeendet;
+    this.menuItemById(MenuItemId.BoeckeKorrigieren).disabled = 
+      this.spieltag.isBeendet || r.isBeendet;
+    this.menuItemById(MenuItemId.CurrentCharts).disabled = 
+      !this.spieltag;
+    this.menuItemById(MenuItemId.GlobalCharts).disabled = 
+      this.settingsService.offline;
   }
 
   rundeAbrechnen() {
@@ -410,6 +429,10 @@ export class RundeComponent implements OnInit, OnDestroy {
             icon: "pi pi-fw pi-list", command: _ => this.regelnAendern()
           },
           {
+            label: "Spieltag beenden", id: MenuItemId.SpieltagBeenden,
+            icon: "pi pi-fw pi-lock", command: _ => this.spieltagBeenden()
+          },
+          {
             label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
             icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()
           },
@@ -576,6 +599,7 @@ enum MenuItemId {
   Rundenzahl = "Rundenzahl",
   Sitzreihenfolge = "Sitzreihenfolge",
   Regeln = "Regeln",
+  SpieltagBeenden = "SpieltagBeenden",
 
   Settings = "Settings",
   Wiki = "Wiki",

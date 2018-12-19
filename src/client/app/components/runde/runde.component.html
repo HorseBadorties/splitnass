@@ -55,10 +55,10 @@
     <div class="p-grid p-dir-col">
       <div class="p-col">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.reVonVorneHerein" label="von vorneherein" binary="true"
-          (onChange)="vonVorneHereinChanged(true)">
+          (onChange)="vonVorneHereinChanged(true)" [disabled]="spieltag.isBeendet">
         </p-checkbox>
         <p-dropdown class="p-col" [options]="moeglicheReAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.reAngesagt"
-          (onChange)="angesagtChanged(true)">
+          (onChange)="angesagtChanged(true)" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
             <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
           </ng-template>
@@ -66,10 +66,10 @@
       </div>
       <div class="p-col">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.kontraVonVorneHerein" label="von vorneherein" binary="true"
-          (onChange)="vonVorneHereinChanged(false)">
+          (onChange)="vonVorneHereinChanged(false)" [disabled]="spieltag.isBeendet">
         </p-checkbox>
         <p-dropdown class="p-col" [options]="moeglicheKontraAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.kontraAngesagt"
-          (onChange)="angesagtChanged(false)">
+          (onChange)="angesagtChanged(false)" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
             <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
           </ng-template>
@@ -77,7 +77,7 @@
       </div>
       <div class="p-col" *ngIf="spieltag.rules.withSub">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.subAngesagt" label="Sub angesagt"
-          binary="true" [disabled]="!runde.reAngesagt || !runde.kontraAngesagt">
+          binary="true" [disabled]="spieltag.isBeendet || !runde.reAngesagt || !runde.kontraAngesagt">
         </p-checkbox>
       </div>
     </div>
@@ -89,13 +89,19 @@
     <p-header><span>Gespielt</span></p-header>
     <div class="p-grid p-dir-col">
       <div class="p-col" style="white-space: nowrap;">
-        <p-checkbox class="p-col fontsize" [(ngModel)]="runde.armut" label="Armut" binary="true"></p-checkbox>
-        <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-        <p-checkbox *ngIf="spieltag.rules.herzGehtRumBoecke" class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+        <p-checkbox class="p-col fontsize" [(ngModel)]="runde.armut" 
+          label="Armut" binary="true" [disabled]="spieltag.isBeendet">
+        </p-checkbox>
+        <p-checkbox class="pad-left-1 fontsize" [(ngModel)]="runde.gegenDieSau" 
+          label="gegen die Sau" binary="true" [disabled]="spieltag.isBeendet">
+        </p-checkbox>
+        <p-checkbox *ngIf="spieltag.rules.herzGehtRumBoecke" class="pad-left-1 fontsize" [(ngModel)]="runde.herzGehtRum" 
+          label="Herz geht rum" binary="true"[disabled]="spieltag.isBeendet">
+        </p-checkbox>
       </div>
       <div class="p-col">
         <span style="white-space: nowrap;">
-          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name">
+          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name" [disabled]="spieltag.isBeendet">
             <ng-template let-item pTemplate="selectedItem">
               <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
             </ng-template>
@@ -103,12 +109,12 @@
           <span class="pad-left-1 fontsize">Extrapunkte </span>
           <input type="text" pInputText [(ngModel)]="runde.extrapunkte" disabled="true" [ngStyle]="{'font-weight': runde.extrapunkte !== 0 ? 'bold' : 'normal'}"
             class="ui-inputtext">
-          <p-button icon="pi pi-caret-down" (click)="runde.extrapunkte = runde.extrapunkte - 1"></p-button>
-          <p-button icon="pi pi-caret-up" (click)="runde.extrapunkte = runde.extrapunkte + 1"></p-button>
+          <p-button icon="pi pi-caret-down" (click)="runde.extrapunkte = runde.extrapunkte - 1" [disabled]="spieltag.isBeendet"></p-button>
+          <p-button icon="pi pi-caret-up" (click)="runde.extrapunkte = runde.extrapunkte + 1" [disabled]="spieltag.isBeendet"></p-button>
         </span>
       </div>
       <div class="p-col">
-        <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="runde.gespielt">
+        <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="runde.gespielt" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
             <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
           </ng-template>
@@ -118,7 +124,7 @@
   </p-panel>
 
 
-  <p-button *ngIf="spieltag && !isNochNichtGespielteRunde()" class="pad-half" [disabled]="runde.gespielt === undefined"
+  <p-button *ngIf="spieltag && !spieltag.isBeendet && !isNochNichtGespielteRunde()" class="pad-half" [disabled]="runde.gespielt === undefined"
     label="{{runde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" styleClass="{{runde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
     (onClick)="rundeAbrechnen()">
   </p-button>
