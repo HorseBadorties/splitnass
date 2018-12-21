@@ -70,7 +70,7 @@ class Themes {
     themeArray.push(new Theme("Luna Green", basePath + "luna-green" + endPath, true));
     themeArray.push(new Theme("Luna Amber", basePath + "luna-amber" + endPath, true));
     themeArray.push(new Theme("Luna Pink", basePath + "luna-pink" + endPath, true));
-    themeArray.push(new Theme("Nova Dark", basePath + "nova-dark" + endPath, true));
+    themeArray.push(new Theme("Nova Dark", basePath + "nova-dark" + endPath, false));
     themeArray.push(new Theme("Nova Light", basePath + "nova-light" + endPath, false));
     themeArray.push(new Theme("Nova Colored", basePath + "nova-colored" + endPath, false));
 
