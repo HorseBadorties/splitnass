@@ -6,7 +6,7 @@ Over the years we have customized the rules and scoring rules and this app uses 
 
 ## What's that name??
 
-The name SplitnAss refers to one of the typical scoring rules we use: `Gespaltener Arsch` - the literal english translation being `split ass/arse`.  ;-)
+The name SplitnAss (Split'n Ass) refers to one of the typical scoring rules we use: `Gespaltener Arsch` - the literal english translation being `split ass/arse`.  ;-)
 
 ## Software stack used
 
