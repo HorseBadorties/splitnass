@@ -60,6 +60,11 @@ export class Spieltag {
     return this;
   }
 
+  public end() {
+    this.isBeendet = true;
+    _.remove(this.runden, r => !r.isGestartet);
+  }
+
   public startNaechsteRunde(): Spieltag {
     this.aktuelleRunde.beenden();
     const naechsteRunde = this.getNaechsteRunde(this.aktuelleRunde);

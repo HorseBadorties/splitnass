@@ -148,7 +148,7 @@ export class RundeComponent implements OnInit, OnDestroy {
     this.displayMenu = false; 
     this.doIfConfirmed("Spieltag beenden", `Soll der Spieltag beendet werden? <br>
       Eingaben/Änderungen sind danach nicht mehr möglich.`, () => {
-      this.spieltag.isBeendet = true;
+      this.spieltag.end();
       this.spieltagService.sendSpieltagUpdate();
     });
   }
