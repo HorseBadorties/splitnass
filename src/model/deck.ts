@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 
 import { Card, Suit, Rank } from "./card";
-import { Subscriber } from "rxjs";
 
 export class Deck {
 
@@ -61,9 +60,31 @@ export class Deck {
         this.playedCards.push(card);
         return card;
     }
+
+    public cardsOf(suit: Suit): Array<Card> {
+        return this.cards.filter(c => c.suit === suit);
+    }
+
+    public trumps(): Array<Card> {
+        return this.cards.filter(c => c.isTrump());
+    }
 }
 
 new Deck(Deck.doppelkopfDeck()).shuffle().deal().forEach(aHand => {
     console.log(aHand.cards.map(c => c.toString()).join(", "));
+
+    const aceOfSuit = suit => {
+        const suits = aHand.cardsOf(suit);
+        const aces = suits.filter(c => c.rank === Rank.ACE);
+        if (aces.length > 0) {
+            return aces[0];
+        } else return null;
+    };
+
+    if (aceOfSuit(Suit.CLUBS)) console.log(aceOfSuit(Suit.CLUBS).toString());
+    else if (aceOfSuit(Suit.SPADES)) console.log(aceOfSuit(Suit.SPADES).toString());
+    else if (aceOfSuit(Suit.HEARTS)) console.log(aceOfSuit(Suit.HEARTS).toString());
+    else console.log(aHand.trumps()[0].toString());
+
 });
 
