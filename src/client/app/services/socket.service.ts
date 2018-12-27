@@ -53,26 +53,36 @@ export class SocketService {
   }
 
   private initSocket(): void {
-      this.socket = socketIo(LOCAL_SERVER_URL);
-      this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
-      this.socket.on("connect_error", _ => this.connectToRemoteServer());
-      this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
+    this.socket = socketIo(LOCAL_SERVER_URL);
+    this.registerListener();
+    this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
+    this.socket.on("connect_error", _ => this.connectToRemoteServer());
+    this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
   }
 
-  private onConnect(url: string) {
-    console.log(`connected to ${url} using ${this.socket.io.engine.transport.name}`);
-    // unregister bogus listeners due to https://github.com/socketio/socket.io/issues/3259
-    this.socket.off("disconnect");
-    this.socket.off("spieltagUpdated");
-    this.socket.off("message");
-    // register new listeners
+  private registerListener() {
     this.socket.on("disconnect", reason => this.onDisconnect(reason));
-    this.connected.next(true);    
     this.socket.on("spieltagUpdated", (data: string) => {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);
     });    
     this.socket.on("message", message => this.messages.next(message));
+  }
+
+  private onConnect(url: string) {
+    console.log(`connected to ${url} using ${this.socket.io.engine.transport.name}`);
+    // unregister bogus listeners due to https://github.com/socketio/socket.io/issues/3259
+    // this.socket.off("disconnect");
+    // this.socket.off("spieltagUpdated");
+    // this.socket.off("message");
+    // register new listeners
+    // this.socket.on("disconnect", reason => this.onDisconnect(reason));
+    this.connected.next(true);    
+    // this.socket.on("spieltagUpdated", (data: string) => {
+    //   console.log(`received updated spieltag`);
+    //   this.nextSpieltag(data);
+    // });    
+    // this.socket.on("message", message => this.messages.next(message));
     // re-join Spieltag after a disconnect/reconnect
     if (this._joinedSpieltagBeginn) {
       this.joinSpieltag(this._joinedSpieltagBeginn);
@@ -89,6 +99,7 @@ export class SocketService {
       this.socket.close();
     }
     this.socket = socketIo(REMOTE_SERVER_URL);
+    this.registerListener();
     this.socket.on("connect", _ => this.onConnect(REMOTE_SERVER_URL));
   }
 
