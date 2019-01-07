@@ -1,4 +1,4 @@
-import { Deck } from "./deck";
+import { Deck } from "./hand";
 
 export class Card {
 
@@ -30,11 +30,6 @@ export class Card {
         }
     }
 
-    private static isTenOfHearts(card: Card) {
-        return card.rank === Rank.TEN && card.suit === Suit.HEARTS;
-    }
-
-
     constructor(public rank: Rank, public suit: Suit) {}
 
     public toString(): string {
@@ -45,7 +40,11 @@ export class Card {
         return this.rank === Rank.QUEEN
             || this.rank === Rank.JACK
             || this.suit === Suit.DIAMONDS
-            || Card.isTenOfHearts(this);
+            || this.is(Rank.TEN, Suit.HEARTS);
+    }
+
+    public is(rank: Rank, suit: Suit) {
+      return this.rank === rank && this.suit === suit;
     }
 
     public sortValue(deck: Deck): number {
@@ -64,14 +63,12 @@ export class Card {
                 case Rank.TEN: return 2;
                 case Rank.KING: return 1;
         }};
-        const isAceOfDiamonds = _card =>
-            _card.rank === Rank.ACE && _card.suit === Suit.DIAMONDS;
         const isSau = _card =>
-            isAceOfDiamonds(_card) && deck.cards.filter(c => isAceOfDiamonds(c)).length === 2;
+            _card.is(Rank.ACE, Suit.DIAMONDS) && deck.cards.filter(c => c.is(Rank.ACE, Suit.DIAMONDS)).length === 2;
         const valueOf = rankAndSuit =>
             Card.of(rankAndSuit).sortValue(deck);
         const trumpValue = () => {
-            if (Card.isTenOfHearts(this)) return  valueOf("Q♣") + 1;
+            if (this.is(Rank.TEN, Suit.HEARTS)) return valueOf("Q♣") + 1;
             if (this.rank === Rank.QUEEN) return 2000 + suitValue();
             if (this.rank === Rank.JACK) return 1000 + suitValue();
             return 100 + rankValue() ;
@@ -97,6 +94,3 @@ export enum Suit {
     CLUBS = "♣",
     DIAMONDS = "♦︎"
 }
-
-
-
