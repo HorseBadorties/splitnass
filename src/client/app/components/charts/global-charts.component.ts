@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
 import * as _ from "lodash";
+import { Chart } from 'chart.js';
 
 import { Spieltag } from 'src/model/spieltag';
 import { SpieltagService } from '../../services/spieltag.service';
@@ -26,6 +27,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   solos: any;
   punkteRundenBoecke: any;
   fontColor: string = "white";
+  fontSize: number = 12;
   optionsPunkte;
   optionsGewonneneSpieltage;
   optionsSolos;
@@ -36,6 +38,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     private themeService: ThemeService, 
     private location: Location) { 
       this.fontColor = this.themeService.isDarkTheme() ? "white" : "black";
+      this.fontSize = window.matchMedia("(max-width: 600px)").matches || window.matchMedia("(max-height: 600px)").matches ? 12 : 16;
       this.setOptions();
 
     }
@@ -59,6 +62,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   }
 
   private setOptions() {
+    Chart.defaults.global.elements.point.radius = 0;
     this.optionsPunkte = {
       title: {
         display: false
@@ -67,23 +71,28 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
         display: true,
         position: 'top',
         labels: {
-          fontColor: this.fontColor
+          fontColor: this.fontColor,
+          fontSize: this.fontSize, 
+          padding: 14
         }
       },
       scales: {
         xAxes: [{
           ticks: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           }
         }],
         yAxes: [{
           scaleLabel: {
             display: true,
             labelString: 'Punkte',
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           },
           ticks: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           }
         }]
       }
@@ -91,7 +100,12 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
 
     this.optionsGewonneneSpieltage = {
       legend: {
-        display: false
+        display: false,
+        labels: {
+          fontColor: this.fontColor,
+          fontSize: this.fontSize, 
+          padding: 14
+        }
       },
       title: {
         display: false      
@@ -99,14 +113,16 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
       scales: {
         xAxes: [{
           ticks: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           }
         }],
         yAxes: [{
           ticks: {
             min: 0,
             stepSize: 1,
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           }
         }]
       }
@@ -117,7 +133,9 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
         display: true,
         position: 'left',
         labels: {
-          fontColor: this.fontColor
+          fontColor: this.fontColor,
+          fontSize: this.fontSize, 
+          padding: 14
         }
       }    
     };
@@ -125,18 +143,22 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
     this.optionsPunkteRundenBoecke = {
       title: {
         display: false
+        
       },
       legend: {
         display: true,
         position: 'top',
         labels: {
-          fontColor: this.fontColor
+          fontColor: this.fontColor,
+          fontSize: this.fontSize, 
+          padding: 14
         }
       },
       scales: {
         xAxes: [{
           ticks: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            // fontSize: this.fontSize, 
           }
         }],
         yAxes: [{
@@ -144,7 +166,8 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
             display: false
           },
           ticks: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
           }
         }]
       }
@@ -168,6 +191,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
         return punkte;
       });
       dataset["fill"] = false;      
+      dataset["borderWidth"] = 12;
       datasetsPunkte.push(dataset);
     });
     _.forEach(datasetsPunkte, (value, index) => value["borderColor"] = playerColors[index]);

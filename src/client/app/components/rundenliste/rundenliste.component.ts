@@ -108,10 +108,6 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     
   }
-  
-  getSpieltagInfo() {
-    return this.spieltag ? this.spieltag.name : `no Spieltag`;
-  }
 
   private setSpieltag(spieltag: Spieltag) {
     this.shouldPulse = this.spieltag !== undefined; // beim ersten Anzeigen nicht pulsieren

@@ -13,6 +13,11 @@ body {
   padding-right: 1em;
 }
 
+.spieltaginfo {  
+  font-size:20px; 
+  vertical-align: middle; 
+}
+
 .attention {
   color: rgb(255, 159, 64);
   /* font-size: 20px;  */

@@ -14,7 +14,7 @@
       <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
       <span class="box"> </span>
       <span class="box"> </span>
-      <span *ngIf="spieltag" class="spieltaginfo info-color">{{getSpieltagInfo()}}</span>
+      <span *ngIf="spieltag" class="spieltaginfo info-color">{{spieltag.name}}</span>
       <span class="box"> </span>
       <span class="attention">{{onlineStatus}}</span>
     </div>

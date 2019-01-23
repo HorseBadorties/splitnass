@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import * as _ from "lodash";
+import { Chart } from 'chart.js';
 
 import { SpieltagService } from '../../services/spieltag.service';
 import { Spieltag } from 'src/model/spieltag';
@@ -23,10 +24,12 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
   anzahlGewonnenerRunden: any;
   anzahlSolos: any;
   fontColor: string = "white";
+  fontSize: number = 12;
   optionsSpieltagsverlauf;
   optionsAnzahlGewonneneRunden;
 
   private setOptions() {
+      Chart.defaults.global.elements.point.radius = 0;
       this.optionsSpieltagsverlauf = {
         title: {
           display: false
@@ -35,7 +38,9 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
           display: true,
           position: 'top',
           labels: {
-            fontColor: this.fontColor
+            fontColor: this.fontColor,
+            fontSize: this.fontSize, 
+            padding: 14
           }
         },
         scales: {
@@ -43,20 +48,24 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
             scaleLabel: {
               display: true,
               labelString: 'Runde',
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              fontSize: this.fontSize
             },
             ticks: {
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              // fontSize: this.fontSize
             }
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Punkte',
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              fontSize: this.fontSize
             },
             ticks: {
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              fontSize: this.fontSize
             }
           }]
         }
@@ -71,14 +80,16 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
         scales: {
           xAxes: [{
             ticks: {
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              fontSize: this.fontSize
             }
           }],
           yAxes: [{
             ticks: {
               min: 0,
               stepSize: 1,
-              fontColor: this.fontColor
+              fontColor: this.fontColor,
+              fontSize: this.fontSize
             }
           }]
         }
@@ -90,6 +101,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     private themeService: ThemeService, 
     private location: Location) { 
       this.fontColor = this.themeService.isDarkTheme() ? "white" : "black";
+      this.fontSize = window.matchMedia("(max-width: 600px)").matches ? 12 : 16;
       this.setOptions();
     }
 
@@ -121,6 +133,8 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
       dataset["label"] = s.name;      
       dataset["data"] = gespielteRunden.map(r => spieltag.getPunktestand(r, s));      
       dataset["fill"] = false;      
+      dataset["borderWidth"] = 12;      
+      // dataset["pointStyle"] = "";      
       datasetsSpieltagsverlauf.push(dataset);
     });
     _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
