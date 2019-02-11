@@ -15,9 +15,11 @@ export class SettingsService {
   private _autoShowRundendetails: boolean;
   private _hideInactivePlayers: boolean;
   private _rules = new Rules();
+  private _chartsFontSize = 12;
 
   public offlineStatus = new BehaviorSubject(undefined);
   public hideInactivePlayersStatus = new BehaviorSubject(undefined);  
+  public chartsFontSizeStatus = new BehaviorSubject(this._chartsFontSize);  
   
   public get offline(): boolean {
     return this._offline;
@@ -99,6 +101,16 @@ export class SettingsService {
     return this.localStorage.getItem<string>("theme", { schema: { type: 'string' } });
   } 
 
+  public get chartsFontSize(): number {
+    return this._chartsFontSize;
+  }
+  
+  public set chartsFontSize(value: number) {
+    this._chartsFontSize = value;    
+    this.setNumber("chartsFontSize", value);
+    this.chartsFontSizeStatus.next(value);
+  }
+
   constructor(private localStorage: LocalStorage) { 
     this.getBoolean("offline").pipe(first()).subscribe(value => {
         this._offline = value && value.valueOf();
@@ -113,7 +125,9 @@ export class SettingsService {
     this.getBoolean("hideInactivePlayers").pipe(first())
       .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true);
     this.localStorage.getItem("rules").pipe(first())
-      .subscribe(value => this._rules = value !== null ? value as Rules : new Rules());     
+      .subscribe(value => this._rules = value !== null ? value as Rules : new Rules());  
+    this.getNumber("chartsFontSize").pipe(first())
+      .subscribe(value => this._chartsFontSize = value !== null ? value.valueOf() : 12);     
        
   }
 
@@ -123,6 +137,14 @@ export class SettingsService {
 
   private getBoolean(name: string): Observable<Boolean> {
     return this.localStorage.getItem<boolean>(name, { schema: { type: 'boolean' } });
+  }
+
+  private setNumber(name: string, value: number) {
+    this.localStorage.setItemSubscribe(name, value);
+  }
+
+  private getNumber(name: string): Observable<Number> {
+    return this.localStorage.getItem<number>(name, { schema: { type: 'number' } });
   }
 
 }

@@ -31,6 +31,13 @@
       </p-checkbox>
     </div>
   </p-panel>
+  <p-panel header="Charts" [toggleable]="true">
+    <div class="div-padding">
+      <span class="p-col">Schriftgröße:</span>
+      <p-spinner size="3" [(ngModel)]="settingsService.chartsFontSize">
+      </p-spinner>
+    </div>
+  </p-panel>
 
   <div class="actions div-padding">
     <p-button label="OK" (click)="onClose()"></p-button>

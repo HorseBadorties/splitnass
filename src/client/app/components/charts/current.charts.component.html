@@ -1,9 +1,16 @@
+<p-sidebar [(visible)]="displayMenu" position="right">
+  <p-panelMenu [model]="menuItems"></p-panelMenu>
+</p-sidebar>
+
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-arrow-left" (click)="navigateBack()"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
     <span *ngIf="spieltag" class="spieltaginfo info-color">{{spieltag.name}}</span>
+  </div>
+  <div class="ui-toolbar-group-right">
+    <p-button type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
   </div>
 </p-toolbar>
 

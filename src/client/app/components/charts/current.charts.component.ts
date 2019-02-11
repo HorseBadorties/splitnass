@@ -10,23 +10,29 @@ import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
 import { playerColors } from './colors';
 import { ThemeService } from '../../services/theme.service';
+import { DialogService } from "primeng/api";
+import { SettingsComponent } from "../../dialogs/settings/settings.component";
+import { SettingsService } from '../../services/settings.service';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-current-charts',
   templateUrl: './current.charts.component.html',
-  styleUrls: ['./current.charts.component.css']
+  styleUrls: ['./current.charts.component.css'],
+  providers: [DialogService]
 })
 export class CurrentChartsComponent implements OnInit, OnDestroy {
   
-  subscribtion: Subscription;
+  spieltagServiceSubscribtion: Subscription;
+  settingsServiceSubscribtion: Subscription;
   spieltag: Spieltag;
   spieltagsverlauf: any;
   anzahlGewonnenerRunden: any;
   anzahlSolos: any;
-  fontColor: string = "white";
-  fontSize: number = 12;
   optionsSpieltagsverlauf;
   optionsAnzahlGewonneneRunden;
+  displayMenu = false;
+  menuItems: MenuItem[];
 
   private setOptions() {
       Chart.defaults.global.elements.point.radius = 0;
@@ -38,9 +44,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
           display: true,
           position: 'top',
           labels: {
-            fontColor: this.fontColor,
-            fontSize: this.fontSize, 
-            padding: 14
+            padding: 24
           }
         },
         scales: {
@@ -48,24 +52,18 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
             scaleLabel: {
               display: true,
               labelString: 'Runde',
-              fontColor: this.fontColor,
-              fontSize: this.fontSize
             },
             ticks: {
-              fontColor: this.fontColor,
-              // fontSize: this.fontSize
+              display: true
             }
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Punkte',
-              fontColor: this.fontColor,
-              fontSize: this.fontSize
             },
             ticks: {
-              fontColor: this.fontColor,
-              fontSize: this.fontSize
+              display: true
             }
           }]
         }
@@ -80,38 +78,64 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
         scales: {
           xAxes: [{
             ticks: {
-              fontColor: this.fontColor,
-              fontSize: this.fontSize
+              display: true
             }
           }],
           yAxes: [{
             ticks: {
               min: 0,
               stepSize: 1,
-              fontColor: this.fontColor,
-              fontSize: this.fontSize
+              display: true
             }
           }]
         }
       };
     }
 
+    private initMenu() {
+      this.menuItems = [        
+        {
+          label: "Settings", id: MenuItemId.Settings,
+          icon: "pi pi-fw pi-cog", command: _ => this.openSettings()
+        },
+        {
+          label: "Regelbuch", id: MenuItemId.Rules,
+          icon: "pi pi-fw pi-paperclip", command: _ => {
+            this.displayMenu = false;
+            window.open("https://github.com/HorseBadorties/splitnass/wiki/Regeln", "Regeln");
+          }
+        },
+      ];
+    }
+  
+
+
+  openSettings() {
+    this.displayMenu = false;
+    this.dialogService.open(SettingsComponent, { showHeader: false });
+  }
+
   constructor(
     public spieltagService: SpieltagService, 
     private themeService: ThemeService, 
-    private location: Location) { 
-      this.fontColor = this.themeService.isDarkTheme() ? "white" : "black";
-      this.fontSize = window.matchMedia("(max-width: 600px)").matches ? 12 : 16;
+    private settingsService: SettingsService,
+    private location: Location,
+    private dialogService: DialogService) {       
       this.setOptions();
     }
 
   ngOnInit() {
-    this.subscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));
+    this.initMenu();
+    this.spieltagServiceSubscribtion = this.spieltagService.spieltag.subscribe(spieltag => this.calcData(spieltag));
+    this.settingsServiceSubscribtion = this.settingsService.chartsFontSizeStatus.subscribe(value => this.calcData(this.spieltag));
   }
 
   ngOnDestroy() {
-    if (this.subscribtion) {
-      this.subscribtion.unsubscribe();
+    if (this.spieltagServiceSubscribtion) {
+      this.spieltagServiceSubscribtion.unsubscribe();
+    }
+    if (this.settingsServiceSubscribtion) {
+      this.settingsServiceSubscribtion.unsubscribe();
     }
   }
 
@@ -121,6 +145,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
 
   private calcData(spieltag: Spieltag) {  
     if (!spieltag) return;
+    this.updateFont(this.settingsService.chartsFontSize);
     this.spieltag = spieltag;
     const gespielteRunden = spieltag.runden.filter(r => r.isBeendet);
 
@@ -130,7 +155,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     const datasetsSpieltagsverlauf = [];
     spieltag.spieler.forEach(s => {
       const dataset = {};     
-      dataset["label"] = s.name;      
+      dataset["label"] = `${s.name}: ${spieltag.getPunktestand(spieltag.aktuelleRunde, s)}`;      
       dataset["data"] = gespielteRunden.map(r => spieltag.getPunktestand(r, s));      
       dataset["fill"] = false;      
       dataset["borderWidth"] = 12;      
@@ -139,6 +164,12 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     });
     _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
     newSpieltagsverlaufData["datasets"] = datasetsSpieltagsverlauf;
+    const letzteRunde = this.spieltag.getVorherigeRunde(this.spieltag.aktuelleRunde);    
+    let rundenLabel = 'Ergebnis der letzten Runde: ';
+    if (letzteRunde) {
+      rundenLabel += letzteRunde.isGespaltenerArsch() ? '💩 Gespaltener Arsch 💩' : `${letzteRunde.ergebnis} Punkte für ${letzteRunde.gewinner.map(s => s.name).join(' und ')}`
+    }
+    this.optionsSpieltagsverlauf.scales.xAxes[0].scaleLabel.labelString = rundenLabel;
     this.spieltagsverlauf = newSpieltagsverlaufData;
 
     // Anzahl gewonnene Runden
@@ -164,6 +195,25 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     return this.spieltag.runden.filter(r => r.gewinner.includes(spieler)).length;
   }
 
+  private updateFont(size: number) {
+    let color = this.themeService.isDarkTheme() ? "white" : "black";    
+    this.optionsSpieltagsverlauf.legend.labels.padding = size;
+    this.setFont(this.optionsSpieltagsverlauf.legend.labels, color, size);
+    this.setFont(this.optionsSpieltagsverlauf.scales.xAxes[0].scaleLabel, color, size);
+    this.setFont(this.optionsSpieltagsverlauf.scales.xAxes[0].ticks, color, size);
+    this.optionsSpieltagsverlauf.scales.xAxes[0].ticks.fontSize = 12;
+    this.setFont(this.optionsSpieltagsverlauf.scales.yAxes[0].scaleLabel, color, size);
+    this.setFont(this.optionsSpieltagsverlauf.scales.yAxes[0].ticks, color, size);
+
+    this.setFont(this.optionsAnzahlGewonneneRunden.scales.xAxes[0].ticks, color, size);
+    this.setFont(this.optionsAnzahlGewonneneRunden.scales.yAxes[0].ticks, color, size);
+  }
+
+  private setFont(object: any, color: string, size: number) {
+    object.fontColor = color;
+    object.fontSize = size;
+  }
+
   private countAnzahlGespielteSolos(spieler: Spieler) {
     return this.spieltag.runden.filter(r => {
       if (r.spieler.includes(spieler) && r.solo !== Solo.KEIN_SOLO) {
@@ -173,4 +223,9 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
   }
 
 
+}
+
+enum MenuItemId {
+  Settings = "Settings",  
+  Rules = "Rules",  
 }
