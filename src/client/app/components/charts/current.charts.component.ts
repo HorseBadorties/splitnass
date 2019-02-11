@@ -165,8 +165,9 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
     _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
     newSpieltagsverlaufData["datasets"] = datasetsSpieltagsverlauf;
     const letzteRunde = this.spieltag.getVorherigeRunde(this.spieltag.aktuelleRunde);    
-    let rundenLabel = 'Ergebnis der letzten Runde: ';
+    let rundenLabel = 'Runden';
     if (letzteRunde) {
+      rundenLabel = `Ergebnis der ${letzteRunde.nr}. Runde: `;
       rundenLabel += letzteRunde.isGespaltenerArsch() ? '💩 Gespaltener Arsch 💩' : `${letzteRunde.ergebnis} Punkte für ${letzteRunde.gewinner.map(s => s.name).join(' und ')}`
     }
     this.optionsSpieltagsverlauf.scales.xAxes[0].scaleLabel.labelString = rundenLabel;
