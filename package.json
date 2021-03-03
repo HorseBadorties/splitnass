@@ -30,7 +30,7 @@
     "@angular/pwa": "^0.11.4",
     "@angular/router": "^8.2.14",
     "@angular/service-worker": "^8.2.14",
-    "@ngx-pwa/local-storage": "^7.4.1",
+    "@ngx-pwa/local-storage": "^9.0.3",
     "@types/lodash": "^4.14.120",
     "@types/ws": "^6.0.1",
     "chart.js": "^2.7.3",
