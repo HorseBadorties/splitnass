@@ -74,11 +74,11 @@ export class SettingsService {
 
   public set rules(value: Rules) {
     this._rules = value;
-    this.localStorage.setItemSubscribe("rules", value);
+    this.localStorage.setItem("rules", value);
   }
 
   public saveSpieltagJSON(spieltagJSON: string) {
-    this.localStorage.setItemSubscribe("savedSpieltag", spieltagJSON);
+    this.localStorage.setItem("savedSpieltag", spieltagJSON);
   }
 
   public getSavedSpieltagJSON(): Observable<string> {
@@ -86,7 +86,7 @@ export class SettingsService {
   } 
 
   public joinedSpieltag(beginn: string) {
-    this.localStorage.setItemSubscribe("joinedSpieltag", beginn);
+    this.localStorage.setItem("joinedSpieltag", beginn);
   }
 
   public getJoinedSpieltag(): Observable<string> {
@@ -94,7 +94,7 @@ export class SettingsService {
   } 
 
   public setTheme(themeName: string) {
-    this.localStorage.setItemSubscribe("theme", themeName);
+    this.localStorage.setItem("theme", themeName);
   }
 
   public getTheme(): Observable<string> {
@@ -132,7 +132,7 @@ export class SettingsService {
   }
 
   private setBoolean(name: string, value: boolean) {
-    this.localStorage.setItemSubscribe(name, value);
+    this.localStorage.setItem(name, value);
   }
 
   private getBoolean(name: string): Observable<Boolean> {
@@ -140,7 +140,7 @@ export class SettingsService {
   }
 
   private setNumber(name: string, value: number) {
-    this.localStorage.setItemSubscribe(name, value);
+    this.localStorage.setItem(name, value);
   }
 
   private getNumber(name: string): Observable<Number> {
