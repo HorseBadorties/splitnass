@@ -1,5 +1,3 @@
-/// <reference path="../../node_modules/@types/node/index.d.ts" />
-
 import { Server as HttpServer } from "http";
 import * as express from "express";
 import * as path from "path";
@@ -13,7 +11,6 @@ export class SplitnassServer {
   public port = process.env.PORT || 63085;
   private app: express.Application;
   private httpServer: HttpServer;
-  private websocketServer: WebsocketServer;
   private db: DB;
 
   constructor() {
@@ -26,7 +23,7 @@ export class SplitnassServer {
     this.httpServer = new HttpServer(this.app);
 
     try {
-      this.websocketServer = new WebsocketServer(this);
+      new WebsocketServer(this);
     } catch (error) {
       console.error("Failed to start WebsocketServer");
       console.error(error);

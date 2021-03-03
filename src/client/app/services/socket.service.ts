@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { Message } from "primeng/api";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Message } from 'primeng/api';
 
-import * as socketIo from "socket.io-client";
-import { Spieltag } from "src/model/spieltag";
+import * as socketIo from 'socket.io-client';
+import { Spieltag } from 'src/model/spieltag';
 
 const LOCAL_SERVER_URL = `http://localhost:${63085}`;
 //const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
 const REMOTE_SERVER_URL = `http://schruv.deneb.uberspace.de:63085`;
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class SocketService {
   private socket;
@@ -28,45 +28,46 @@ export class SocketService {
   public sendSpieltag(spieltag: Spieltag): void {
     const data = Spieltag.toJSON(spieltag);
     console.log(`sending spieltag update`);
-    this.socket.compress(true).emit("spieltagUpdated", data, spieltag.beginn);
+    this.socket.compress(true).emit('spieltagUpdated', data, spieltag.beginn);
   }
 
   public listSpieltage() {
-    this.socket.on("listSpieltage", list => {
-      this.socket.off("listSpieltage");
+    this.socket.on('listSpieltage', list => {
+      this.socket.off('listSpieltage');
       this.spieltagList.next(list);
     });
-    this.socket.emit("listSpieltage");
+    this.socket.emit('listSpieltage');
   }
 
   public joinSpieltag(beginn: string) {
-    this.socket.on("joinedSpieltag", s => {
-      this.socket.off("joinedSpieltag");
+    this.socket.on('joinedSpieltag', s => {
+      this.socket.off('joinedSpieltag');
       this._joinedSpieltagBeginn = beginn;
       this.joinedSpieltag.next(s);
     });
-    this.socket.emit("joinSpieltag", beginn);
+    this.socket.emit('joinSpieltag', beginn);
   }
 
   public sendMessage(message: Message) {
-    this.socket.emit("message", message);
+    this.socket.emit('message', message);
   }
 
   private initSocket(): void {
-    this.socket = socketIo(LOCAL_SERVER_URL);
+    
+    this.socket = socketIo.io(LOCAL_SERVER_URL, { withCredentials: false });
     this.registerListener();
-    this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
-    this.socket.on("connect_error", _ => this.connectToRemoteServer());
-    this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
+    this.socket.on('connect', _ => this.onConnect(LOCAL_SERVER_URL));
+    this.socket.on('connect_error', _ => this.connectToRemoteServer());
+    this.socket.on('connect_timeout', _ => this.connectToRemoteServer());
   }
 
   private registerListener() {
-    this.socket.on("disconnect", reason => this.onDisconnect(reason));
-    this.socket.on("spieltagUpdated", (data: string) => {
+    this.socket.on('disconnect', reason => this.onDisconnect(reason));
+    this.socket.on('spieltagUpdated', (data: string) => {
       console.log(`received updated spieltag`);
       this.nextSpieltag(data);
     });    
-    this.socket.on("message", message => this.messages.next(message));
+    this.socket.on('message', message => this.messages.next(message));
   }
 
   private onConnect(url: string) {
@@ -98,9 +99,9 @@ export class SocketService {
     if (this.socket) {
       this.socket.close();
     }
-    this.socket = socketIo(REMOTE_SERVER_URL);
+    this.socket = socketIo.io(REMOTE_SERVER_URL, { withCredentials: false });
     this.registerListener();
-    this.socket.on("connect", _ => this.onConnect(REMOTE_SERVER_URL));
+    this.socket.on('connect', _ => this.onConnect(REMOTE_SERVER_URL));
   }
 
   private nextSpieltag(data: string) {

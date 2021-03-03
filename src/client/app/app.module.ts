@@ -1,36 +1,36 @@
-import { NgModule, Injectable } from "@angular/core";
-import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule } from "@angular/forms";
-import { ButtonModule } from "primeng/button";
-import { SpinnerModule } from "primeng/spinner";
-import { TableModule } from "primeng/table";
-import { FieldsetModule } from "primeng/fieldset";
-import { ChipsModule } from "primeng/chips";
-import { DropdownModule } from "primeng/dropdown";
-import { CheckboxModule } from "primeng/checkbox";
-import { ToastModule } from "primeng/toast";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { ListboxModule } from "primeng/listbox";
-import { ToolbarModule } from "primeng/toolbar";
-import { MessageModule } from "primeng/message";
-import { PanelModule } from "primeng/panel";
-import { PickListModule } from "primeng/picklist";
-import { SidebarModule } from "primeng/sidebar";
-import { PanelMenuModule } from "primeng/panelmenu";
-import { InputTextModule } from "primeng/inputtext";
-import { ChartModule } from "primeng/chart";
-import { TabViewModule } from "primeng/tabview";
-import { CardModule } from "primeng/card";
+import { NgModule, Injectable } from '@angular/core';
+import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { SpinnerModule } from 'primeng/spinner';
+import { TableModule } from 'primeng/table';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ChipsModule } from 'primeng/chips';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
+import { PickListModule } from 'primeng/picklist';
+import { SidebarModule } from 'primeng/sidebar';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { InputTextModule } from 'primeng/inputtext';
+import { ChartModule } from 'primeng/chart';
+import { TabViewModule } from 'primeng/tabview';
+import { CardModule } from 'primeng/card';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { AccordionModule } from 'primeng/accordion';
 
 
-import { AppComponent } from "./app.component";
-import { RundeComponent } from "./components/runde/runde.component";
-import { RundenlisteComponent } from "./components/rundenliste/rundenliste.component";
-import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from './app.component';
+import { RundeComponent } from './components/runde/runde.component';
+import { RundenlisteComponent } from './components/rundenliste/rundenliste.component';
+import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CurrentChartsComponent } from './components/charts/current.charts.component';
@@ -51,7 +51,7 @@ import { RegelaenderungComponent } from './dialogs/regelaenderung/regelaenderung
 @Injectable()
 export class ScollFixHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
-    const mc = new (<any>window).Hammer(element);
+    const mc = new ( window as any).Hammer(element);
 
     for (const eventName in this.overrides) {
       if (eventName) {

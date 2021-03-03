@@ -15,9 +15,11 @@
     <div class="ui-toolbar-group-left">
       <p-button icon="pi pi-table" (click)="toRundenliste()"></p-button>
       <span *ngIf="spieltag">
-        <p-button style="padding-left: 1em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
+        <!-- <p-button style="padding-left: 1em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1"> -->
+        <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="runde.nr === 1">
         </p-button>
-        <p-button style="padding-left: .2em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
+        <!-- <p-button style="padding-left: .2em;" icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length"> -->
+        <p-button icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="runde.nr === spieltag.runden.length">
         </p-button>
       </span>
       <span class="box"> </span>
@@ -63,7 +65,8 @@
         <p-dropdown class="p-col" [options]="moeglicheReAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.reAngesagt"
           (onChange)="angesagtChanged(true)" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
-            <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+            <!-- <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span> -->
+            <span class="bold-text">{{item.label}}</span>
           </ng-template>
         </p-dropdown>
       </div>
@@ -74,7 +77,8 @@
         <p-dropdown class="p-col" [options]="moeglicheKontraAnsagen" [style]="{'width':'200px'}" [(ngModel)]="runde.kontraAngesagt"
           (onChange)="angesagtChanged(false)" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
-            <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+            <!-- <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span> -->
+            <span class="bold-text">{{item.label}}</span>
           </ng-template>
         </p-dropdown>
       </div>
@@ -106,7 +110,8 @@
         <span style="white-space: nowrap;">
           <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name" [disabled]="spieltag.isBeendet">
             <ng-template let-item pTemplate="selectedItem">
-              <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+              <!-- <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span> -->
+              <span class="bold-text">{{item.label}}</span>
             </ng-template>
           </p-dropdown>
           <span class="pad-left-1 fontsize">Extrapunkte </span>
@@ -119,7 +124,8 @@
       <div class="p-col">
         <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="runde.gespielt" [disabled]="spieltag.isBeendet">
           <ng-template let-item pTemplate="selectedItem">
-            <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+            <!-- <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span> -->
+            <span class="bold-text">{{item.label}}</span>
           </ng-template>
         </p-dropdown>
       </div>

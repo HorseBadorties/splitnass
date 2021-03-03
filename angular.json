@@ -23,7 +23,16 @@
               "src/client/assets",
               "src/manifest.json"
             ],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "hammerjs",
+              "chart.js",
+              "socket.io-client"
+            ],
             "styles": [
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
               "src/client/styles.css"
             ],
             "scripts": [
