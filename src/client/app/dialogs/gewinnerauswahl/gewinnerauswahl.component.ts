@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Spieler } from 'src/model/spieler';
-import { DynamicDialogConfig } from 'primeng/api';
-import { DynamicDialogRef } from 'primeng/api';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-gewinnerauswahl',

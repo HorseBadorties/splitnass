@@ -7,7 +7,7 @@ import { Ansage, Gespielt, Runde } from "src/model/runde";
 import { Solo } from "src/model/solo";
 import { Spieler } from "src/model/spieler";
 import { Spieltag } from "src/model/spieltag";
-import { DialogService } from "primeng/api";
+import { DialogService } from "primeng/dynamicdialog";
 import { SettingsService } from "../../services/settings.service";
 import { SpieltagService } from "../../services/spieltag.service";
 import { NumberpickerComponent } from "../../dialogs/numberpicker/numberpicker.component";

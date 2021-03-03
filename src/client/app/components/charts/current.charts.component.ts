@@ -10,7 +10,7 @@ import { Spieler } from 'src/model/spieler';
 import { Solo } from 'src/model/solo';
 import { playerColors } from './colors';
 import { ThemeService } from '../../services/theme.service';
-import { DialogService } from "primeng/api";
+import { DialogService } from "primeng/dynamicdialog";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { SettingsService } from '../../services/settings.service';
 import { MenuItem } from 'primeng/api';

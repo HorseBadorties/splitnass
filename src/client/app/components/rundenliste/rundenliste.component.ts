@@ -6,7 +6,7 @@ import { take } from "rxjs/operators";
 import smoothscroll from "smoothscroll-polyfill";
 import { Runde } from "src/model/runde";
 import { Spieltag } from "src/model/spieltag";
-import { DialogService } from "primeng/api";
+import { DialogService } from "primeng/dynamicdialog";
 import { SettingsComponent } from "../../dialogs/settings/settings.component";
 import { SpieltagauswahlComponent } from "../../dialogs/spieltagauswahl/spieltagauswahl.component";
 import { SettingsService } from "../../services/settings.service";

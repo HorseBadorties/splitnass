@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import * as _ from "lodash";
 
-import { DynamicDialogConfig } from 'primeng/api';
-import { DynamicDialogRef } from 'primeng/api';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Spieler } from 'src/model/spieler';
 import { SpieltagService } from '../../services/spieltag.service';
 import { formatDate } from "../../util"

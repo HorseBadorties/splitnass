@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/api';
-import { DynamicDialogRef } from 'primeng/api';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SettingsService } from '../../services/settings.service';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { SelectItem } from 'primeng/api';
