@@ -15,6 +15,8 @@ import { SpieltagService } from "../../services/spieltag.service";
 
 smoothscroll.polyfill();
 
+
+
 @Component({
   // encapsulation: ViewEncapsulation.None,
   selector: "app-rundenliste",
@@ -34,8 +36,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: Column[];
   displayMenu = false;
   menuItems: MenuItem[];
-  @ViewChildren("row", { read: ElementRef }) rowElement: QueryList<ElementRef>;
-  @ViewChildren("rowDetail", { read: ElementRef }) rowDetailElement: QueryList<ElementRef>;
+  @ViewChildren("row") rowElement: QueryList<ElementRef>;
+  @ViewChildren("rowDetail") rowDetailElement: QueryList<ElementRef>;
   private shouldPulse = false;
 
   constructor(
@@ -119,7 +121,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
       if (spieltag.aktuelleRunde.nr > 1) {
         const vorherigeRunde = spieltag.getVorherigeRunde(spieltag.aktuelleRunde);
         if (this.settingsService.autoShowRundendetails) {
-          this.expandedRunden[vorherigeRunde.nr] = 1;
+          this.expandedRunden[vorherigeRunde.nr] = true;
         }
         setTimeout(() => this.scrollToRunde(vorherigeRunde), 500);
       }
@@ -175,7 +177,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   rundeClicked(runde: Runde) {
-    this.expandedRunden[runde.nr] = this.expandedRunden[runde.nr] === 1 ? 0 : 1;
+    this.expandedRunden[runde.nr] = !this.expandedRunden[runde.nr];
   }
 
   scrollToRunde(runde: Runde) {
@@ -196,18 +198,20 @@ export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private pulse(el: ElementRef) {
-    el.nativeElement.animate([
-      {opacity: 1},
-      {opacity: 0.3},        
-      {opacity: 1}
-    ], {
-      duration: 2000,     
-      delay: 500
-    });
+    if (el) {
+      el.nativeElement.animate([
+        {opacity: 1},
+        {opacity: 0.3},        
+        {opacity: 1}
+      ], {
+        duration: 2000,     
+        delay: 500
+      });
+    }
   }
 
   private scrollTo(row: ElementRef) {
-    if (row != null) {
+    if (row) {
       row.nativeElement.scrollIntoView({behavior: "smooth", inline: "center", block: "center"});      
     }
   }

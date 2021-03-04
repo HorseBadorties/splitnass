@@ -3,7 +3,6 @@ import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angu
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { SpinnerModule } from 'primeng/spinner';
 import { TableModule } from 'primeng/table';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ChipsModule } from 'primeng/chips';
@@ -25,6 +24,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { AccordionModule } from 'primeng/accordion';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 import { AppComponent } from './app.component';
@@ -98,7 +98,6 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     FormsModule,
     TableModule,
     ButtonModule,
-    SpinnerModule,
     FieldsetModule,
     ChipsModule,
     DropdownModule,
@@ -120,6 +119,7 @@ export class ScollFixHammerConfig extends HammerGestureConfig {
     CardModule,
     DynamicDialogModule,
     AccordionModule,
+    InputNumberModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

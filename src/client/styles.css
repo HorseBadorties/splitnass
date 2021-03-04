@@ -26,6 +26,7 @@ body {
 }
 
 .verbindungsaufbau {
+  text-align: -webkit-center;
   padding: 2em;
   font-family: 'Lucida Console', Monaco, monospace;
   font-size: 12px; 

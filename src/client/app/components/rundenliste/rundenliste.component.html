@@ -27,7 +27,7 @@
 
   <div *ngIf="spieltag === undefined">
     <app-spinner></app-spinner>   
-    <div align="center" class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
+    <div class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
   </div>
 
   <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"

@@ -34,8 +34,8 @@
   <p-panel header="Charts" [toggleable]="true">
     <div class="div-padding">
       <span class="p-col">Schriftgröße:</span>
-      <p-spinner size="3" [(ngModel)]="settingsService.chartsFontSize">
-      </p-spinner>
+      <p-inputNumber mode="decimal" [showButtons]="true" [(ngModel)]="settingsService.chartsFontSize">
+      </p-inputNumber>
     </div>
   </p-panel>
 

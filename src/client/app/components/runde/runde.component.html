@@ -37,13 +37,13 @@
 
   <div *ngIf="spieltag === undefined">
     <app-spinner></app-spinner>
-    <div align="center" class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
+    <div class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
   </div>
 
   <p-panel *ngIf="spieltag" [toggleable]="true">
-    <p-header style="white-space: nowrap;">
+    <ng-template pTemplate="header" style="white-space: nowrap;">
       Runde Nr. {{runde.nr}} von {{spieltag.runden.length}} ({{getStatusDerRunde()}})
-    </p-header>
+    </ng-template>
     <span *ngFor="let info of getRundenInfo()" class="info">{{info}}</span>
     <div class="no-wrap" *ngIf="!isNochNichtGespielteRunde()" class="info">
       <span *ngFor="let stand of getPunktestaende(); let i=index">
@@ -56,7 +56,7 @@
   <div style="padding-top: 0.2em;"></div>
 
   <p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" [toggleable]="true">
-    <p-header><span>Angesagt</span></p-header>
+    <ng-template pTemplate="header">Angesagt</ng-template>
     <div class="p-grid p-dir-col">
       <div class="p-col">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.reVonVorneHerein" label="von vorneherein" binary="true"
@@ -93,7 +93,7 @@
   <div style="padding-top: 0.2em;"></div>
 
   <p-panel *ngIf="spieltag && !isNochNichtGespielteRunde()" [toggleable]="true">
-    <p-header><span>Gespielt</span></p-header>
+    <ng-template pTemplate="header">Gespielt</ng-template>
     <div class="p-grid p-dir-col">
       <div class="p-col" style="white-space: nowrap;">
         <p-checkbox class="p-col fontsize" [(ngModel)]="runde.armut" 
