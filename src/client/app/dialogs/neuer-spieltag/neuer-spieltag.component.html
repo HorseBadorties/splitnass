@@ -6,7 +6,7 @@
   </div>
   <div class="p-col">
     <span>Rundenanzahl: </span>
-    <p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="anzahlRunden"></p-spinner>
+    <p-inputNumber mode="decimal" [min]="1" [max]="1000" [showButtons]="true" [(ngModel)]="anzahlRunden"></p-inputNumber>
   </div>
   <div class="p-col"></div>
   <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler"

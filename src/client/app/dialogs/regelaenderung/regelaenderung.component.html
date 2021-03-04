@@ -1,10 +1,10 @@
 <p-card>
   <div class="div-padding">
-    <p-spinner size="2" [(ngModel)]="rules.maxBoeckeAtBegin" [min]="0" [max]="2"></p-spinner>
+    <p-inputNumber mode="decimal" [(ngModel)]="rules.maxBoeckeAtBegin" [min]="0" [max]="2" [showButtons]="true"></p-inputNumber>
     <span class="p-col">Maximale Anzahl vorzutragender Böcke</span>
   </div>
   <div class="div-padding">
-    <p-spinner size="2" [(ngModel)]="rules.maxBoecke" [min]="0" [max]="3"></p-spinner>
+    <p-inputNumber mode="decimal" [(ngModel)]="rules.maxBoecke" [min]="0" [max]="3" [showButtons]="true"></p-inputNumber>
     <span class="p-col">Maximale Anzahl Böcke</span>
   </div>
   <div class="div-padding">

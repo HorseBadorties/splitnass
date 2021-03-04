@@ -4,7 +4,7 @@
     <p-header>
       {{message}}
     </p-header>
-    <p-spinner size="3" [(ngModel)]="value" [min]="min" [max]="max"></p-spinner>
+    <p-inputNumber mode="decimal" [showButtons]="true" [(ngModel)]="value" [min]="min" [max]="max"></p-inputNumber>
   </p-panel>
 
   <div style="padding-top: 1em;" class="actions">
