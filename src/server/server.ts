@@ -10,6 +10,7 @@ export class SplitnassServer {
 
   // uberspace port 63085
   public static readonly PORT: number = 63085;
+  public static readonly HTML_DIR: string =  path.join(__dirname + '/../html');
   private app: express.Application;
   private httpServer: HttpServer;
   private db: DB;
@@ -17,9 +18,9 @@ export class SplitnassServer {
   constructor() {
     this.app = express();
     this.app.use(cors());
-    this.app.options('*', cors());
-    this.app.use(express.static(__dirname + '/../../../../html'));
-    this.app.get('/*', (_, res) => res.sendFile(path.join(__dirname + '/../../../../html/index.html')));
+    this.app.options('*', cors());    
+    this.app.use(express.static(SplitnassServer.HTML_DIR));
+    this.app.get('/*', (_, res) => res.sendFile(path.join(SplitnassServer.HTML_DIR + '/index.html')));
 
     this.httpServer = createServer(this.app);
 
@@ -50,7 +51,7 @@ export class SplitnassServer {
   public dbSuccessfullyInitialized() {
     // start server
     this.httpServer.listen(SplitnassServer.PORT, '0.0.0.0', () => {
-      console.log(`Splitnass server running on port ${SplitnassServer.PORT}`);
+      console.log(`Splitnass server running on port ${SplitnassServer.PORT} and serving ${SplitnassServer.HTML_DIR}`);
     });
   }
 

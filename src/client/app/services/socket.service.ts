@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Message } from 'primeng/api';
 
 import * as socketIo from 'socket.io-client';
 import { Spieltag } from 'src/model/spieltag';
 
-const LOCAL_SERVER_URL = `ws://localhost:63085`;
-//const REMOTE_SERVER_URL = `https://splitnass.herokuapp.com`;
-const REMOTE_SERVER_URL = `http://schruv.uber.space:63085`;
+const LOCAL_SERVER_URL = `http://localhost:63085`;
+const REMOTE_SERVER_URL = `https://schruv.uber.space`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private socket;
-  public spieltag = new BehaviorSubject<Spieltag>(undefined);
+  public spieltag = new Subject<Spieltag>();
   private _joinedSpieltagBeginn: string;
-  public joinedSpieltag = new BehaviorSubject<string>(undefined);
-  public spieltagList = new BehaviorSubject<Array<Spieltag>>(undefined);
-  public connected = new BehaviorSubject<boolean>(false);
-  public messages = new BehaviorSubject<Message>(undefined);
+  public joinedSpieltag = new Subject<string>();
+  public spieltagList = new Subject<Array<Spieltag>>();
+  public connected = new Subject<boolean>();
+  public messages = new Subject<Message>();
 
   constructor() {
     this.initSocket();
