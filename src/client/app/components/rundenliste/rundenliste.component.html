@@ -7,7 +7,7 @@
 
 <!-- Fenster -->
 
-<div class="flexcolumn container" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
+<div class="flexcolumn " (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
 
   <p-toolbar (swipeleft)="onSwipeLeft($event)">
     <div class="ui-toolbar-group-left">
@@ -29,7 +29,7 @@
     <app-spinner></app-spinner>   
     <div class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
   </div>
-
+  <div class="container">
   <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
     class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
 
@@ -61,4 +61,5 @@
     </ng-template>
   </p-table>
 
+</div>
 </div>
