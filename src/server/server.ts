@@ -1,5 +1,6 @@
-import { Server as HttpServer } from "http";
+import { Server as HttpServer, createServer } from "http";
 import * as express from "express";
+import * as cors from 'cors';
 import * as path from "path";
 
 import { DB } from "./db";
@@ -8,19 +9,19 @@ import { WebsocketServer } from "./websocket.server";
 export class SplitnassServer {
 
   // uberspace port 63085
-  public port = process.env.PORT || 63085;
+  public static readonly PORT: number = 63085;
   private app: express.Application;
   private httpServer: HttpServer;
   private db: DB;
 
   constructor() {
     this.app = express();
-    this.app.use(express.static(__dirname + "/../../dist/splitnass"));
-    this.app.get("/*", function (req, res) {
-      res.sendFile(path.join(__dirname + "/../../dist/splitnass/index.html"));
-    });
+    this.app.use(cors());
+    this.app.options('*', cors());
+    this.app.use(express.static(__dirname + '/../../../../html'));
+    this.app.get('/*', (_, res) => res.sendFile(path.join(__dirname + '/../../../../html/index.html')));
 
-    this.httpServer = new HttpServer(this.app);
+    this.httpServer = createServer(this.app);
 
     try {
       new WebsocketServer(this);
@@ -48,8 +49,8 @@ export class SplitnassServer {
 
   public dbSuccessfullyInitialized() {
     // start server
-    this.httpServer.listen(this.port, () => {
-      console.log(`Splitnass server running on port ${this.port}`);
+    this.httpServer.listen(SplitnassServer.PORT, '0.0.0.0', () => {
+      console.log(`Splitnass server running on port ${SplitnassServer.PORT}`);
     });
   }
 
