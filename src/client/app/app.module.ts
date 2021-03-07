@@ -50,28 +50,10 @@ import { RegelaenderungComponent } from './dialogs/regelaenderung/regelaenderung
 
 @Injectable()
 export class ScollFixHammerConfig extends HammerGestureConfig {
-  buildHammer(element: HTMLElement) {
-    const mc = new ( window as any).Hammer(element);
-
-    for (const eventName in this.overrides) {
-      if (eventName) {
-        mc.get(eventName).set(this.overrides[eventName]);
-      }
-    }
-
-    return mc;
+  overrides = <any> {
+    'pinch': { enable: false },
+    'rotate': { enable: false }
   }
-  // overrides = {
-  //   pan: {
-  //     direction: 6
-  //   },
-  //   pinch: {
-  //     enable: false
-  //   },
-  //   rotate: {
-  //     enable: false
-  //   }
-  // };
 }
 
 @NgModule({

@@ -7,33 +7,33 @@
 
 <!-- Fenster -->
 
-<div class="flexcolumn " (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
 
-  <p-toolbar (swipeleft)="onSwipeLeft($event)">
-    <div class="ui-toolbar-group-left">
-      <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
-      <span class="box"> </span>
-      <span class="box"> </span>
-      <span *ngIf="spieltag" class="spieltaginfo info-color">{{spieltag.name}}</span>
-      <span class="box"> </span>
-      <span class="attention">{{onlineStatus}}</span>
-    </div>
-    <div class="ui-toolbar-group-right">
-      <p-button type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
-    </div>
-  </p-toolbar>
-
-  <div style="padding-top: 0.2em;"></div>
-
-  <div *ngIf="spieltag === undefined">
-    <app-spinner></app-spinner>   
-    <div class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
+<p-toolbar (swipeleft)="onSwipeLeft($event)">
+  <div class="ui-toolbar-group-left">
+    <p-button *ngIf="settingsService.adminMode" icon="pi pi-pencil" (click)="toRunde()"></p-button>
+    <span class="box"> </span>
+    <span class="box"> </span>
+    <span *ngIf="spieltag" class="spieltaginfo info-color">{{spieltag.name}}</span>
+    <span class="box"> </span>
+    <span class="attention">{{onlineStatus}}</span>
   </div>
-  <div class="container">
-  <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" [scrollable]="true"
-    class="flexcolumn" [responsive]="false" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
+  <div class="ui-toolbar-group-right">
+    <p-button type="button" icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
+  </div>
+</p-toolbar>
 
-    <ng-template pTemplate="header" let-columns>
+<div *ngIf="spieltag === undefined">
+  <app-spinner></app-spinner>   
+  <div class="verbindungsaufbau">Connecting to Split'n Ass server...</div>
+</div>
+
+<div style="height: calc(100vh - 125px); padding-top: 0.2em;" (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)">
+
+  <p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" dataKey="nr" 
+    [scrollable]="true" scrollHeight="flex"
+     [responsive]="true" selectionMode="single" [(selection)]="selectedRunde" [expandedRowKeys]="expandedRunden">
+
+    <ng-template  pTemplate="header" let-columns>
       <tr class="table-header-row">
         <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}" >
           <span class="{{col.isActive ? '' : 'inactivePlayer'}}">{{col.header}}</span>
@@ -61,5 +61,4 @@
     </ng-template>
   </p-table>
 
-</div>
 </div>
