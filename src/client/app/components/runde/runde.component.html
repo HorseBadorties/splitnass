@@ -108,10 +108,10 @@
       </div>
       <div class="p-col">
         <span style="white-space: nowrap;">
-          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" optionLabel="name" [disabled]="spieltag.isBeendet">
-            <ng-template let-item pTemplate="selectedItem">
+          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="runde.solo" [disabled]="spieltag.isBeendet" >
+            <ng-template let-solo pTemplate="selectedItem">
               <!-- <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span> -->
-              <span class="bold-text">{{item.label}}</span>
+              <span class="bold-text">{{solo.name}}</span>
             </ng-template>
           </p-dropdown>
           <span class="pad-left-1 fontsize">Extrapunkte </span>
