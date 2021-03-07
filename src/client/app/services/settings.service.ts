@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorage } from '@ngx-pwa/local-storage';
+import { StorageMap } from '@ngx-pwa/local-storage';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Rules } from 'src/model/rules';
@@ -74,31 +74,31 @@ export class SettingsService {
 
   public set rules(value: Rules) {
     this._rules = value;
-    this.localStorage.setItem('rules', value);
+    this.localStorage.set('rules', value).subscribe(() => {});
   }
 
   public saveSpieltagJSON(spieltagJSON: string) {
-    this.localStorage.setItem('savedSpieltag', spieltagJSON);
+    this.setString('savedSpieltag', spieltagJSON);
   }
 
   public getSavedSpieltagJSON(): Observable<string> {
-    return this.localStorage.getItem<string>('savedSpieltag', { schema: { type: 'string' } });
+    return this.getString('savedSpieltag');
   }
 
   public joinedSpieltag(beginn: string) {
-    this.localStorage.setItem('joinedSpieltag', beginn);
+    this.setString('joinedSpieltag', beginn);
   }
 
   public getJoinedSpieltag(): Observable<string> {
-    return this.localStorage.getItem<string>('joinedSpieltag', { schema: { type: 'string' } });
+    return this.getString('joinedSpieltag');
   }
 
   public setTheme(themeName: string) {
-    this.localStorage.setItem('theme', themeName);
+    this.setString('theme', themeName);
   }
 
   public getTheme(): Observable<string> {
-    return this.localStorage.getItem<string>('theme', { schema: { type: 'string' } });
+    return this.getString('theme');
   }
 
   public get chartsFontSize(): number {
@@ -111,7 +111,7 @@ export class SettingsService {
     this.chartsFontSizeStatus.next(value);
   }
 
-  constructor(private localStorage: LocalStorage) {
+  constructor(private localStorage: StorageMap) {
     this.getBoolean('offline').pipe(first()).subscribe(value => {
         this._offline = value && value.valueOf();
         this.offlineStatus.next(this._offline);
@@ -124,7 +124,7 @@ export class SettingsService {
       .subscribe(value => this._autoShowRundendetails = value !== null ? value.valueOf() : true);
     this.getBoolean('hideInactivePlayers').pipe(first())
       .subscribe(value => this._hideInactivePlayers = value !== null ? value.valueOf() : true);
-    this.localStorage.getItem('rules').pipe(first())
+    this.localStorage.get('rules').pipe(first())
       .subscribe(value => this._rules = value !== null ? value as Rules : new Rules());
     this.getNumber('chartsFontSize').pipe(first())
       .subscribe(value => this._chartsFontSize = value !== null ? value.valueOf() : 12);
@@ -132,19 +132,27 @@ export class SettingsService {
   }
 
   private setBoolean(name: string, value: boolean) {
-    this.localStorage.setItem(name, value);
+    this.localStorage.set(name, value).subscribe(() => {});
   }
 
-  private getBoolean(name: string): Observable<Boolean> {
-    return this.localStorage.getItem<boolean>(name, { schema: { type: 'boolean' } });
+  private getBoolean(name: string): Observable<boolean> {
+    return this.localStorage.get(name, { type: 'boolean' });
   }
 
   private setNumber(name: string, value: number) {
-    this.localStorage.setItem(name, value);
+    this.localStorage.set(name, value).subscribe(() => {});
   }
 
-  private getNumber(name: string): Observable<Number> {
-    return this.localStorage.getItem<number>(name, { schema: { type: 'number' } });
+  private getNumber(name: string): Observable<number> {
+    return this.localStorage.get(name, { type: 'number' });
+  }
+
+  private setString(name: string, value: string) {
+    this.localStorage.set(name, value).subscribe(() => {});
+  }
+
+  private getString(name: string): Observable<string> {
+    return this.localStorage.get(name, { type: 'string' });
   }
 
 }
