@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
-import * as _ from "lodash";
+import { sortBy, forEach, flatMap, sum, max } from "lodash-es";
 import { Chart } from 'chart.js';
 
 import { Spieltag } from 'src/model/spieltag';
@@ -176,7 +176,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
 
   private calcData(data: Array<Spieltag>) {  
     if (!data) return;  
-    const _data = _.sortBy(data.filter(spieltag => spieltag.isBeendet), spieltag => spieltag.beginn);  
+    const _data = sortBy(data.filter(spieltag => spieltag.isBeendet), spieltag => spieltag.beginn);  
 
     // Punkte
     const newPunkteData = {};
@@ -194,7 +194,7 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
       dataset["borderWidth"] = 12;
       datasetsPunkte.push(dataset);
     });
-    _.forEach(datasetsPunkte, (value, index) => value["borderColor"] = playerColors[index]);
+    forEach(datasetsPunkte, (value, index) => value["borderColor"] = playerColors[index]);
     newPunkteData["datasets"] = datasetsPunkte;
     this.punkte = newPunkteData;
 
@@ -245,15 +245,15 @@ export class GlobalChartsComponent implements OnInit, OnDestroy {
   }
 
   private countSolo(solo: Solo, spieltage: Array<Spieltag>) {
-    return _.flatMap(spieltage, s => s.runden).filter(r => r.solo === solo).length;
+    return flatMap(spieltage, s => s.runden).filter(r => r.solo === solo).length;
   }
 
   private countBoecke(spieltag: Spieltag) {
-    return _.sum(spieltag.runden.map(r => r.boecke));
+    return sum(spieltag.runden.map(r => r.boecke));
   }
 
   private maxPunktestand(runde: Runde) {
-    return _.max(runde.spieltag.spieler.map(s => runde.spieltag.getPunktestand(runde, s)));
+    return max(runde.spieltag.spieler.map(s => runde.spieltag.getPunktestand(runde, s)));
   }
 
 }

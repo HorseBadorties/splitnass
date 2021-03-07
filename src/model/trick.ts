@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { isEmpty } from "lodash-es";
 import { CardPlayed } from "./cardPlayed";
 
 export class Trick {
@@ -14,7 +14,7 @@ export class Trick {
   }
 
   leadCard(): CardPlayed {
-    return _.isEmpty(this.cardsPlayed) ? undefined : this.cardsPlayed[0];
+    return isEmpty(this.cardsPlayed) ? undefined : this.cardsPlayed[0];
   }
 
 }

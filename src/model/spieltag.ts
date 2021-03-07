@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { difference, findLast, isEmpty, times, min, nth, remove } from "lodash-es";
 
 import { Runde } from "./runde";
 import { Spieler } from "./spieler";
@@ -62,7 +62,7 @@ export class Spieltag {
 
   public end() {
     this.isBeendet = true;
-    _.remove(this.runden, r => !r.isGestartet);
+    remove(this.runden, r => !r.isGestartet);
   }
 
   public startNaechsteRunde(): Spieltag {
@@ -83,7 +83,7 @@ export class Spieltag {
   public spielerSteigtEin(neuerSpieler: Spieler): Spieltag {
     const hadPaused = this.spieler.includes(neuerSpieler);
     neuerSpieler.isAktiv = true;
-    _.remove(this.spieler, s => s === neuerSpieler);
+    remove(this.spieler, s => s === neuerSpieler);
     this.spieler.splice(this.spieler.indexOf(this.aktuelleRunde.geber) + 1, 0, neuerSpieler);
     this.aktuelleRunde.geber = neuerSpieler;
     if (!hadPaused) {
@@ -106,7 +106,7 @@ export class Spieltag {
 
   public setzeRundenanzahl(anzahl: number): Spieltag {
     if (this.runden.length < anzahl) {
-      _.times(anzahl - this.runden.length, i => this.runden.push(new Runde(this, this.runden.length + 1)));
+      times(anzahl - this.runden.length, i => this.runden.push(new Runde(this, this.runden.length + 1)));
     } else if (this.runden.length > anzahl) {
       this.runden.splice(anzahl);
     }
@@ -129,9 +129,9 @@ export class Spieltag {
 
   public undoBoecke(anzahlBoecke: number): Spieltag {
     if (this.rules.maxBoeckeAtBegin > 0) {
-      _.times(anzahlBoecke, i => {
-        let runde = _.findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
-        if (!runde) runde = _.findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
+      times(anzahlBoecke, i => {
+        let runde = findLast(this.runden, r => r.boecke === 2 && !r.isBeendet);
+        if (!runde) runde = findLast(this.runden, r => r.boecke === 1 && !r.isBeendet);
         if (runde) runde.boecke--;
       });
     }
@@ -181,8 +181,8 @@ export class Spieltag {
       }
     }).join(" - ");
     // Spieler, die draußen warten
-    const notPlaying = _.difference(this.getAktiveSpieler(), this.aktuelleRunde.spieler);
-    if (!_.isEmpty(notPlaying)) {
+    const notPlaying = difference(this.getAktiveSpieler(), this.aktuelleRunde.spieler);
+    if (!isEmpty(notPlaying)) {
       result += "<br><br>Nicht am Tisch:<br>" + notPlaying.map(s => {
         let _result = `<b>${s.name}</b>`;
         if (this.aktuelleRunde.geber === s) {
@@ -230,7 +230,7 @@ export class Spieltag {
   }
 
   private lowestScoreOf(spieler: Array<Spieler>) {
-    return _.min(spieler.map(s => this.getPunktestand(this.aktuelleRunde, s)));
+    return min(spieler.map(s => this.getPunktestand(this.aktuelleRunde, s)));
   }
 
   private doBoecke(count: number) {
@@ -274,7 +274,7 @@ export class Spieltag {
   }
 
   private getVorherigenSpieler(spieler: Spieler) {
-    const previous = _.nth(this.spieler, this.spieler.indexOf(spieler) - 1);
+    const previous = nth(this.spieler, this.spieler.indexOf(spieler) - 1);
     return previous.isAktiv ? previous : this.getVorherigenSpieler(previous);
   }
 

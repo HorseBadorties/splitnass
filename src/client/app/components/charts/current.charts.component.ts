@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
-import * as _ from "lodash";
+import { forEach } from "lodash-es";
 import { Chart } from 'chart.js';
 
 import { SpieltagService } from '../../services/spieltag.service';
@@ -162,7 +162,7 @@ export class CurrentChartsComponent implements OnInit, OnDestroy {
       // dataset["pointStyle"] = "";      
       datasetsSpieltagsverlauf.push(dataset);
     });
-    _.forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
+    forEach(datasetsSpieltagsverlauf, (value, index) => value["borderColor"] = playerColors[index]);
     newSpieltagsverlaufData["datasets"] = datasetsSpieltagsverlauf;
     const letzteRunde = this.spieltag.getVorherigeRunde(this.spieltag.aktuelleRunde);    
     let rundenLabel = 'Runden';

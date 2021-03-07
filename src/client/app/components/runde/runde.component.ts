@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import * as _ from "lodash";
+import { difference, first } from "lodash-es";
 import { MenuItem, MessageService, SelectItem } from "primeng/api";
 import { Subscription } from "rxjs";
 import { Ansage, Gespielt, Runde } from "src/model/runde";
@@ -83,7 +83,7 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   spielerSteigtEin() {
     this.displayMenu = false;
-    const moeglicheSpieler = _.difference(Spieler.all.slice(), this.spieltag.spieler.filter(s => s.isAktiv));
+    const moeglicheSpieler = difference(Spieler.all.slice(), this.spieltag.spieler.filter(s => s.isAktiv));
     const config: any = {
       showHeader: false,
       data: {spieler: moeglicheSpieler, message: "Wer steigt ein?"}
@@ -544,7 +544,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       }
     } else if (this.runde.isDummyRunde()) {
       if (this.runde.ergebnisEvents) {
-       result.push(_.first(this.runde.ergebnisEvents)["event"]);
+       result.push(first(this.runde.ergebnisEvents)["event"]);
       }
     } else if (this.runde.isGespielteRunde()) {
       result.push(`Geber: ${this.runde.geber.name}`);

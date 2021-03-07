@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { shuffle, orderBy } from "lodash-es";
 
 import { Card, Suit, Rank } from "./card";
 
@@ -26,12 +26,12 @@ export class Deck {
   }
 
   public shuffle(): Deck {
-    this.cards = _.shuffle(this.cards);
+    this.cards = shuffle(this.cards);
     return this;
   }
 
   public sort(): Deck {
-    this.cards = _.orderBy(this.cards, card => card.sortValue(this), "desc");
+    this.cards = orderBy(this.cards, card => card.sortValue(this), "desc");
     return this;
   }
 

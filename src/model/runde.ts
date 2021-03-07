@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { times, range } from "lodash-es";
 
 import { Solo } from "./solo";
 import { Spieler } from "./spieler";
@@ -45,7 +45,7 @@ export class Runde {
     public armut = false,
     public herzGehtRum = false,
     public ergebnis: number = -1,
-    private _ergebnisEvents: Array<object> = null) { }
+    private rgebnisEvents: Array<object> = null) { }
 
   public reset(): Runde {
     this.isGestartet = false;
@@ -68,7 +68,7 @@ export class Runde {
     this.armut = false;
     this.herzGehtRum = false;
     this.ergebnis = -1;
-    this._ergebnisEvents = null;
+    this.rgebnisEvents = null;
     return this;
   }
 
@@ -152,24 +152,24 @@ export class Runde {
   public berechneErgebnis() {
     if (this.gespielt === null || this.isDummyRunde()) return;
     this.ergebnis = 0;
-    this._ergebnisEvents = [];
+    this.rgebnisEvents = [];
     if (this.herzGehtRum) {
-      this._ergebnisEvents.push({"event": "❤️ Herz geht rum ❤️"});
+      this.rgebnisEvents.push({"event": "❤️ Herz geht rum ❤️"});
     }
     // Boecke
-    let _boecke = this.boeckeBeiBeginn;
+    let oecke = this.boeckeBeiBeginn;
     if (this.reAngesagt) {
-      _boecke++;
+      oecke++;
     }
     if (this.kontraAngesagt) {
-      _boecke++;
+      oecke++;
     }
     if (this.subAngesagt) {
-      _boecke++;
+      oecke++;
     }
     if (this.gespielt === Gespielt.GespaltenerArsch) {
       // Gespaltener Arsch!?
-      this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
+      this.rgebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -180,13 +180,13 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "💩 Re und Kontra haben falsche Ansagen gemacht: Gespaltener Arsch 💩"});
+      this.rgebnisEvents.push({"event": "💩 Re und Kontra haben falsche Ansagen gemacht: Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this._ergebnisEvents.push({"event": "💩 Keine 6 oder besser ohne Ansage: Gespaltener Arsch 💩"});
+      this.rgebnisEvents.push({"event": "💩 Keine 6 oder besser ohne Ansage: Gespaltener Arsch 💩"});
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -201,9 +201,9 @@ export class Runde {
     const gespieltEvents = [];
     if (maxAnsage > gespieltePunkte && this.solo !== Solo.NULL) {
       const relevanteAnsage = this.reGewinnt ? this.kontraAngesagt : this.reAngesagt;
-      _.range(maxAnsage, gespieltePunkte, -1).forEach(value => {
+      range(maxAnsage, gespieltePunkte, -1).forEach(value => {
         if (relevanteAnsage >= value) {
-          _.times(2, v => gespieltEvents.push(this.translateAnsage(value)));
+          times(2, v => gespieltEvents.push(this.translateAnsage(value)));
           this.ergebnis += 2;
         }
       });
@@ -223,37 +223,37 @@ export class Runde {
           this.ergebnis++;
         }
       }
-      _.times(this.ergebnis - tmpErgebnis, v => gespieltEvents.push(this.translateAnsage(i)));
+      times(this.ergebnis - tmpErgebnis, v => gespieltEvents.push(this.translateAnsage(i)));
     }
-    this._ergebnisEvents.push({"event": gespieltEvents.join(", ")});
+    this.rgebnisEvents.push({"event": gespieltEvents.join(", ")});
     // Gegen die Alten?
     if (!this.reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich) {
-      this._ergebnisEvents.push({"event": "gegen die Alten"});
+      this.rgebnisEvents.push({"event": "gegen die Alten"});
       this.ergebnis++;
     }
     if (this.gegenDieSau && this.solo.sauMoeglich) {
-      this._ergebnisEvents.push({"event": "gegen die Sau"});
+      this.rgebnisEvents.push({"event": "gegen die Sau"});
       this.ergebnis++;
     }
     if (this.solo !== Solo.KEIN_SOLO) {
-      this._ergebnisEvents.push({"event": "Solo"});
+      this.rgebnisEvents.push({"event": "Solo"});
       this.ergebnis++;
     }
     // verlorenes Solo?
     if (this.ergebnis > 0 && this.solo !== Solo.KEIN_SOLO && !this.reGewinnt) {
-      this._ergebnisEvents.push({"event": "Solo verloren"});
+      this.rgebnisEvents.push({"event": "Solo verloren"});
       this.ergebnis++;
     }
     if (this.reVonVorneHerein) {
-      this._ergebnisEvents.push({"event": "Re von vorneherein"});
+      this.rgebnisEvents.push({"event": "Re von vorneherein"});
       this.ergebnis++;
     }
     if (this.kontraVonVorneHerein) {
-      this._ergebnisEvents.push({"event": "Kontra von vorneherein"});
+      this.rgebnisEvents.push({"event": "Kontra von vorneherein"});
       this.ergebnis++;
     }
     if (this.extrapunkte !== 0) {
-      this._ergebnisEvents.push({"event": `${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`});
+      this.rgebnisEvents.push({"event": `${this.extrapunkte} ${Math.abs(this.extrapunkte) === 1 ? "Extrapunkt" : "Extrapunkte"}`});
       this.ergebnis += this.extrapunkte;
     }
     // durch negative Extrapunkte kann die Gegenseite gewonnen haben...! (gegenDieAlten etc.)
@@ -262,15 +262,15 @@ export class Runde {
       this.reGewinnt = !this.reGewinnt;
     }
     // Böcke
-    _boecke = Math.min(_boecke, this.spieltag.rules.maxBoecke);
-    if (_boecke) {
-      this._ergebnisEvents.push({"event": `${_boecke} ${_boecke === 1 ? "Bock" : "Böcke"}`});
-      _.times(_boecke, v => this.ergebnis *= 2);
+    oecke = Math.min(oecke, this.spieltag.rules.maxBoecke);
+    if (oecke) {
+      this.rgebnisEvents.push({"event": `${oecke} ${oecke === 1 ? "Bock" : "Böcke"}`});
+      times(oecke, v => this.ergebnis *= 2);
     }
     if (this.isGespaltenerArsch()) {
-      this._ergebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
+      this.rgebnisEvents.push({"event": "💩 Gespaltener Arsch 💩"});
     } else {
-      this._ergebnisEvents.push({"event": `💎 ${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"} 💎`});
+      this.rgebnisEvents.push({"event": `💎 ${this.ergebnis} ${this.ergebnis === 1 ? "Punkt" : "Punkte"} 💎`});
     }
     return this.ergebnis;
   }
@@ -291,14 +291,14 @@ export class Runde {
   }
 
   public get ergebnisEvents() {
-    if (this._ergebnisEvents === null) {
+    if (this.rgebnisEvents === null) {
       this.berechneErgebnis();
     }
-    return this._ergebnisEvents;
+    return this.rgebnisEvents;
   }
 
   public setErgebnisEvents(value: Array<any>) {
-    this._ergebnisEvents = value;
+    this.rgebnisEvents = value;
   }
 }
 
