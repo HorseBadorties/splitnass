@@ -5,6 +5,9 @@ module.exports = {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash"
+    },
     "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.tsx?$",
     "moduleFileExtensions": [
       "ts",
