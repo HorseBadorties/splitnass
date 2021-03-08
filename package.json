@@ -12,7 +12,7 @@
     "test": "jest",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --aot --prod --output-path=/var/www/virtual/schruv/html/",
+    "postinstall": "ng build --aot --prod --preserve-symlinks --output-path=/home/schruv/html/",
     "start": "ts-node src/server/server.ts",
     "start-https": "ng serve --ssl true --ssl-key /node_modules/browser-sync/lib/server/certs/server.key --ssl-cert /node_modules/browser-sync/lib/server/certs/server.crt",
     "startlocal": "ng build --aot --prod && ts-node src/server/server.ts"
