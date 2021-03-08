@@ -10,7 +10,7 @@ export class SplitnassServer {
 
   // uberspace port 63085
   public static readonly PORT: number = 63085;
-  public static readonly HTML_DIR: string =  '/home/schruv/html';
+  public static readonly HTML_DIR: string =  '/home/schruv/splitnass/dist/splitnass';
   private app: express.Application;
   private httpServer: HttpServer;
   private db: DB;
